@@ -20,6 +20,7 @@ namespace MedManager.Models
         public required string Prenom { get; set; }
 
         [StringLength(100, ErrorMessage = "La ville ne peut pas dépasser 100 caractères.")]
+        [Required(ErrorMessage = "La ville est obligatoire")]
         public string? Ville { get; set; }
 
         public List<Patient> Patients { get; set; } = new List<Patient>();

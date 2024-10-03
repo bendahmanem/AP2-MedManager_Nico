@@ -3,43 +3,84 @@ using Microsoft.AspNetCore.Mvc;
 using MedManager.Models;
 using MedManager.ViewModel;
 
-public class AccountController : Controller
+namespace MedManager.Controllers
 {
-    private readonly SignInManager<Medecin> _signInManager; // permet de gerer la connexion et la deconnexion des utilisateurs, nous est fourni par ASP.NET Core Identity
-
-    public AccountController(SignInManager<Medecin> signInManager)
+    public class AccountController : Controller
     {
-        _signInManager = signInManager; // Signin manager est injecté dans le constructeur,
-        // c'est une classe generique qui prend en parametre Medecin
-    }
+        private readonly SignInManager<Medecin> _signInManager; // permet de gerer la connexion et la deconnexion des utilisateurs, nous est fourni par ASP.NET Core Identity
+        private readonly UserManager<Medecin> _userManager;
 
-    public IActionResult Login()
-    {
-        return View(); // Affiche la vue Login
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Login(LoginViewModel model)
-    {
-        if (ModelState.IsValid)
+        public AccountController(SignInManager<Medecin> signInManager, UserManager<Medecin> userManager)
         {
-            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
-
-            if (result.Succeeded)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            _signInManager = signInManager;
+            _userManager = userManager;
         }
 
-        return View(model);
-    }
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
 
-    public async Task<IActionResult> Logout()
-    {
-        await _signInManager.SignOutAsync();
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
 
-        return RedirectToAction("Index", "Home");
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            }
+
+            return RedirectToAction("Index", "Medecin");
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+
+            return RedirectToAction("Index", "Medecin");
+        }
+
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new Medecin
+                {
+                    UserName = model.UserName,
+                    Email = model.Email,
+                    Nom = model.Nom,
+                    Prenom = model.Prenom,
+                    Ville = model.Ville
+                };
+
+                var result = await _userManager.CreateAsync(user, model.Password);
+
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return RedirectToAction("Index", "Medecin");
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+
+            return RedirectToAction("Login", "Account");
+        }
     }
 }
