@@ -4,17 +4,18 @@ using MedManager.Models;
 
 namespace MedManager.Controllers;
 
-public class HomeController : Controller
+public class MedecinController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly ILogger<Medecin> _logger;
 
-    public HomeController(ILogger<HomeController> logger)
+    public MedecinController(ILogger<Medecin> logger)
     {
         _logger = logger;
     }
 
     public IActionResult Index()
     {
+        
         return View();
     }
 
