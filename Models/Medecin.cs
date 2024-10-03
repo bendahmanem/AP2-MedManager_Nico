@@ -31,4 +31,9 @@ public class Medecin
     public List<Patient> Patients { get; set; } = new List<Patient>();
 
     public List<Ordonnance> Ordonnances { get; set; } = new List<Ordonnance>();
+
+    public string NomComplet
+    {
+        get { return $"{Prenom} {Nom}"; }
+    }
 }
