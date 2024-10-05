@@ -9,7 +9,6 @@ namespace MedManager.Models
 {
     public class Medecin : IdentityUser
     {
-        public int MedecinId { get; set; }
 
         [Required(ErrorMessage = "Le nom est obligatoire")]
         [StringLength(50, MinimumLength = 2, ErrorMessage = "Le nom doit contenir entre 2 et 50 caractères.")]

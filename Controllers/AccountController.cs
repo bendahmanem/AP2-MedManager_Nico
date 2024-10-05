@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MedManager.Models;
-using MedManager.ViewModel;
+using MedManager.ViewModel.Account;
 
 namespace MedManager.Controllers
 {
@@ -27,11 +27,11 @@ namespace MedManager.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false ) ;
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Medecin");
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");

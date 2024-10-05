@@ -5,12 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var serverVersion = new MySqlServerVersion(new Version(10, 4, 32));
 
-//Ajout du dbcontext au service container
 builder.Services.AddDbContext<ApplicationDbContext>(
     options => options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"), serverVersion)
 );

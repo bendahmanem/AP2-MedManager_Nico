@@ -1,5 +1,9 @@
 ﻿@model RegisterViewModel
 
+@{
+    ViewData["Title"] = "Register";
+}
+
 <form asp-action="Register" asp-controller="Account" method="post">
     <div class="form-group">
         <label asp-for="UserName"></label>

@@ -36,8 +36,8 @@ namespace MedManager.Models
         [Required(ErrorMessage = "La ville est obligatoire")]
         [StringLength(50, ErrorMessage = "La ville ne peut pas dépasser 50 caractères.")]
         public required string Ville { get; set; }
-        public string? MedecinID { get; set; }
-        public Medecin? Medecin { get; set; }
+        public required string MedecinID { get; set; }
+        public Medecin? medecin { get; set; }
 
         public List<Allergie> Allergies { get; set; } = new List<Allergie>();
 

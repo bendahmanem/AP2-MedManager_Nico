@@ -1,9 +1,17 @@
 ﻿@model Medecin
 @{
-    ViewData["Title"] = "Page d'accueil - @Model.FullName ";
+    ViewData["Title"] = $"Page d'accueil - {Model.NomComplet} ";
 }
 
 <div class="text-center">
     <h1 class="display-4">Bienvenue sur votre page d'accueil Monsieur le médecin'</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p> @Model.Id, @Model.Email</p>
+
+    <div>
+        <p>
+            <a asp-action="Ajouter" asp-controller="Patient" asp-route-id="@Model.Id" class="btn btn-primary">Créer un patient</a>
+        </p>
+    </div>
+
 </div>

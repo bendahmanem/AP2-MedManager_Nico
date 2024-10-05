@@ -46,7 +46,7 @@ public class ApplicationDbContext : IdentityDbContext<Medecin>
 
         modelBuilder.Entity<Medecin>()
             .HasMany(m => m.Patients)
-            .WithOne(p => p.Medecin)
+            .WithOne(p => p.medecin)
             .HasForeignKey(p => p.MedecinID);
 
         modelBuilder.Entity<Medecin>()
