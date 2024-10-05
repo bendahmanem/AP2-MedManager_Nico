@@ -239,3 +239,5 @@ C:\Users\ponsn\OneDrive\Bureau\AP2 - MedManager\MedManager\bin\Debug\net8.0\runt
 C:\Users\ponsn\OneDrive\Bureau\AP2 - MedManager\MedManager\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Drawing.Common.dll
 C:\Users\ponsn\OneDrive\Bureau\AP2 - MedManager\MedManager\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\ponsn\OneDrive\Bureau\AP2 - MedManager\MedManager\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
+C:\Users\ponsn\OneDrive\Bureau\AP2 - MedManager\MedManager\bin\Debug\net8.0\X.PagedList.dll
+C:\Users\ponsn\OneDrive\Bureau\AP2 - MedManager\MedManager\bin\Debug\net8.0\X.PagedList.Mvc.Core.dll

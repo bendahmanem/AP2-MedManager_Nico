@@ -30,10 +30,12 @@ namespace MedManager.Controllers
             return View(viewModel);
         }
 
+        [HttpPost]
         public async Task<IActionResult> Ajouter(AjouterPatientViewModel model)
         {
-
+            
             Medecin? medecin = _dbContext.Users.FirstOrDefault(m => m.Id == model.IdMedecin);
+            //model.Patient.MedecinID = model.IdMedecin;
 
             if (ModelState.IsValid)
             {
@@ -74,12 +76,36 @@ namespace MedManager.Controllers
 
                 _dbContext.Patients.AddAsync(patient);
                 await _dbContext.SaveChangesAsync();
-                return RedirectToAction("Index", "Medcin");
+                return RedirectToAction("Index", "Medecin");
 
             };
             return View(model);
         }
-    }
 
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                Patient? patientToDelete = await _dbContext.Patients.FindAsync(id);
+                if (patientToDelete != null)
+                {
+                    _dbContext.Patients.Remove(patientToDelete);
+                    await _dbContext.SaveChangesAsync();
+                    return RedirectToAction("Index", "Medecin");
+                }
+                return NotFound();
+            }
+            catch (DbUpdateException ex)
+            {
+                //_logger.LogError(ex, "An error occurred while deleting the patient.");
+                return RedirectToAction("Error");
+            }
+            catch (Exception ex)
+            {
+                //_logger.LogError(ex, "An unexpected error occurred.");
+                return RedirectToAction("Error");
+            }
+        }
+    }
 }
 

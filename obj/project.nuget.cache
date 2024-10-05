@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "D6PkQVS8Do8=",
+  "dgSpecHash": "QPeBDResgLw=",
   "success": true,
   "projectFilePath": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\MedManager.csproj",
   "expectedPackageFiles": [
@@ -141,7 +141,9 @@
     "C:\\Users\\ponsn\\.nuget\\packages\\system.text.json\\8.0.4\\system.text.json.8.0.4.nupkg.sha512",
     "C:\\Users\\ponsn\\.nuget\\packages\\system.threading.channels\\7.0.0\\system.threading.channels.7.0.0.nupkg.sha512",
     "C:\\Users\\ponsn\\.nuget\\packages\\system.threading.tasks.dataflow\\7.0.0\\system.threading.tasks.dataflow.7.0.0.nupkg.sha512",
-    "C:\\Users\\ponsn\\.nuget\\packages\\system.windows.extensions\\7.0.0\\system.windows.extensions.7.0.0.nupkg.sha512"
+    "C:\\Users\\ponsn\\.nuget\\packages\\system.windows.extensions\\7.0.0\\system.windows.extensions.7.0.0.nupkg.sha512",
+    "C:\\Users\\ponsn\\.nuget\\packages\\x.pagedlist\\10.2.1\\x.pagedlist.10.2.1.nupkg.sha512",
+    "C:\\Users\\ponsn\\.nuget\\packages\\x.pagedlist.mvc.core\\10.2.1\\x.pagedlist.mvc.core.10.2.1.nupkg.sha512"
   ],
   "logs": []
 }
