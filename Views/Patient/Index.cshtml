@@ -1,0 +1,42 @@
+﻿@model IndexPatientViewModel
+@{
+    ViewData["Title"] = "Mes Patients ";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Bienvenue sur votre page d'accueil Monsieur le médecin'</h1>
+    
+
+    <div>
+        <a asp-action="Ajouter" asp-controller="Patient" asp-route-id="@Model.medecin.Id" class="btn btn-primary">Créer un patient</a>
+    </div>
+
+    <div class="row mt-3">
+        @foreach (var p in Model.Patients)
+
+        {
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    @* <img src="@Url.Content("~/images/patients/" + p.Photo)" class="card-img-top" alt="Photo du patient"> *@
+                    <div class="card-body">
+                        <h5 class="card-title">@p.Nom @p.Prenom</h5>
+                        <p class="card-text">Âge : @(DateTime.Now.Year - p.DateNaissance.Year) ans</p>
+                        <a asp-action="Details" asp-controller="Patient" asp-route-id="@p.PatientId">
+                        <i class="bi bi-eye"></i> 
+                    </a>
+                        <a asp-action="Edit" asp-controller="Patient" asp-route-id="@p.PatientId">
+                        <i class="bi bi-pencil"></i> 
+                    </a>
+                    <a asp-action="Delete" asp-controller="Patient" asp-route-id="@p.PatientId" onclick="return confirm('Êtes-vous sûr de vouloir supprimer @p.Nom, @p.Prenom ?');">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="d-flex justify-content-center">
+        @Html.PagedListPager(Model.Patients, page => Url.Action("Index", new { page }))
+    </div>
+</div>

@@ -5,7 +5,7 @@ namespace MedManager.ViewModel.PatientVM
 {
     public class AjouterPatientViewModel
     {
-        public Patient? Patient { get; set; }
+        public Patient? patient { get; set; }
         public List<Antecedent>? Antecedents { get; set; }
         public List<Allergie>? Allergies { get; set; }
         public List<int> SelectedAntecedentIds { get; set; } = new List<int>();
