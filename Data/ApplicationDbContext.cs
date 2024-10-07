@@ -58,9 +58,5 @@ public class ApplicationDbContext : IdentityDbContext<Medecin>
             .HasMany(o => o.Medicaments)
             .WithMany(m => m.Ordonnances);
 
-
-
-
-
     }
 }

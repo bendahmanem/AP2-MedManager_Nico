@@ -15,9 +15,9 @@ namespace MedManager.Controllers
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly UserManager<Medecin> _userManager;
-        private readonly ILogger<Medecin> _logger;
+        private readonly ILogger<Patient> _logger;
 
-        public PatientController(ApplicationDbContext dbContext, UserManager<Medecin> userManager, ILogger<Medecin> logger )
+        public PatientController(ApplicationDbContext dbContext, UserManager<Medecin> userManager, ILogger<Patient> logger )
         {
             _logger = logger;
             _dbContext = dbContext;
@@ -36,28 +36,25 @@ namespace MedManager.Controllers
 
                 string id = user.Id;
 
-                // Récupération du médecin et des données associées
                 Medecin? medecin = await _dbContext.Users
                                         .Include(u => u.Patients)
-                                            .ThenInclude(p => p.Allergies)
+                                        .ThenInclude(p => p.Allergies)
                                         .Include(u => u.Ordonnances)
-                                        .FirstOrDefaultAsync(p => p.Id == id);
+                                        .FirstOrDefaultAsync(m => m.Id == id);
 
                 if (medecin == null)
                 {
                     return RedirectToAction("Error");
                 }
 
-                // Gestion de la pagination des patients
-                int pageSize = 10; // Nombre de patients par page
+                int pageSize = 9; 
                 int pageNumber = (page ?? 1);
                 var patientsPagedList = medecin.Patients.ToPagedList(pageNumber, pageSize);
 
-                // Créer un ViewModel pour passer les données à la vue
                 var viewModel = new IndexPatientViewModel
                 {
                     medecin = medecin,
-                    Patients = patientsPagedList // Liste paginée de patients
+                    Patients = patientsPagedList 
                 };
 
                 return View(viewModel);
@@ -134,7 +131,7 @@ namespace MedManager.Controllers
 
                 await _dbContext.Patients.AddAsync(patient);
                 await _dbContext.SaveChangesAsync();
-                return RedirectToAction("Index", "Medecin");
+                return RedirectToAction("Index", "Patient");
 
             };
             return View(model);

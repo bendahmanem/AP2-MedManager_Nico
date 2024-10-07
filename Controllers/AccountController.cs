@@ -7,14 +7,17 @@ namespace MedManager.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly SignInManager<Medecin> _signInManager; // permet de gerer la connexion et la deconnexion des utilisateurs, nous est fourni par ASP.NET Core Identity
+        private readonly SignInManager<Medecin> _signInManager;
         private readonly UserManager<Medecin> _userManager;
+		private readonly ILogger<Medecin> _logger;
 
-        public AccountController(SignInManager<Medecin> signInManager, UserManager<Medecin> userManager)
-        {
+		public AccountController(SignInManager<Medecin> signInManager, UserManager<Medecin> userManager, ILogger<Medecin> logger)
+		{
             _signInManager = signInManager;
             _userManager = userManager;
-        }
+            _logger = logger;
+
+		}
 
         [HttpGet]
         public IActionResult Login()

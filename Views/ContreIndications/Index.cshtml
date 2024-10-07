@@ -1,0 +1,77 @@
+﻿@model (List<MedManager.Models.Allergie> Allergies, List<MedManager.Models.Antecedent> Antecedents)
+
+
+<h1>Allergies</h1>
+<table class="table table-striped table-hover">
+	<thead>
+		<tr>
+			<th>Nom</th>
+			<th>Modifier</th>
+			<th>Supprimer</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var allergie in Model.Allergies)
+		{
+			<tr>
+				<td>@allergie.Nom</td>
+				<td>
+					<a asp-action="ModifierAllergie" asp-controller="ContreIndications" asp-route-id="@allergie.AllergieId">
+						<i class="bi bi-pen"></i>
+					</a>
+				</td>
+				<td>
+					<a asp-action="SupprimerAllergie" asp-controller="ContreIndications" asp-route-id="@allergie.AllergieId">
+						<i class="bi bi-trash"></i>
+					</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+<div class="row">
+	<div class="col-8">
+		<p>
+			<a asp-action="AjouterAllergie" class="btn btn-primary">Ajouter une allergie</a>
+		</p>
+	</div>
+</div>
+
+<h1>Antécédents</h1>
+<table class="table table-striped table-hover">
+	<thead>
+		<tr>
+			<th>Nom</th>
+			<th>Modifier</th>
+			<th>Supprimer</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var antecedent in Model.Antecedents)
+		{
+			<tr>
+				<td>@antecedent.Nom</td>
+				<td>
+					<a asp-action="ModifierAntecedent" asp-controller="ContreIndications" asp-route-id="@antecedent.AntecedentId">
+						<i class="bi bi-pen"></i>
+					</a>
+				</td>
+				<td>
+					<a asp-action="SupprimerAntecedent" asp-controller="ContreIndications" asp-route-id="@antecedent.AntecedentId">
+						<i class="bi bi-trash"></i>
+					</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+<div class="row">
+	<div class="col-8">
+		<p>
+			<a asp-action="AjouterAllergie" class="btn btn-primary">Ajouter un antécédent</a>
+		</p>
+	</div>
+</div>
+
