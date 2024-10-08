@@ -8,8 +8,7 @@
 <form asp-action="Edit" asp-controller="Patient" method="post">
     <div class="form-group" hidden="hidden">
         <input type="hidden" asp-for="@Model.IdMedecin" />
-       @* Ligne commentée pour voir si ça marche quand même  *@
-        @* <input type="hidden" asp-for="patient.MedecinID" value="@Model.IdMedecin" /> *@
+       @*  <input type="hidden" asp-for="patient.MedecinID" value="@Model.IdMedecin" /> *@
     </div>
     <div class="form-group">
         <label asp-for="patient.Nom"></label>

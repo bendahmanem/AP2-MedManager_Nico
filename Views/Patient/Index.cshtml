@@ -21,7 +21,7 @@
                     <div class="card-body">
                         <h5 class="card-title">@p.Nom @p.Prenom</h5>
                         <p class="card-text">Âge : @(DateTime.Now.Year - p.DateNaissance.Year) ans</p>
-                        <a asp-action="Details" asp-controller="Patient" asp-route-id="@p.PatientId">
+                        <a asp-action="Detail" asp-controller="Patient" asp-route-id="@p.PatientId">
                         <i class="bi bi-eye"></i> 
                     </a>
                         <a asp-action="Edit" asp-controller="Patient" asp-route-id="@p.PatientId">

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Abstractions;
 using X.PagedList;
 using System.Data.Common;
 using Microsoft.CodeAnalysis.CSharp;
+using NuGet.Versioning;
 
 namespace MedManager.Controllers
 {
@@ -19,7 +20,7 @@ namespace MedManager.Controllers
         private readonly UserManager<Medecin> _userManager;
         private readonly ILogger<Patient> _logger;
 
-        public PatientController(ApplicationDbContext dbContext, UserManager<Medecin> userManager, ILogger<Patient> logger )
+        public PatientController(ApplicationDbContext dbContext, UserManager<Medecin> userManager, ILogger<Patient> logger)
         {
             _logger = logger;
             _dbContext = dbContext;
@@ -49,14 +50,14 @@ namespace MedManager.Controllers
                     return RedirectToAction("Error");
                 }
 
-                int pageSize = 9; 
+                int pageSize = 9;
                 int pageNumber = (page ?? 1);
                 var patientsPagedList = medecin.Patients.ToPagedList(pageNumber, pageSize);
 
                 var viewModel = new IndexPatientViewModel
                 {
                     medecin = medecin,
-                    Patients = patientsPagedList 
+                    Patients = patientsPagedList
                 };
 
                 return View(viewModel);
@@ -209,11 +210,11 @@ namespace MedManager.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(int id, AjouterPatientViewModel viewModel)
         {
-
-            if (ModelState.IsValid)
+            try
             {
-                try
+                if (ModelState.IsValid)
                 {
+
                     var patient = await _dbContext.Patients
                         .Include(p => p.Antecedents)
                         .Include(p => p.Allergies)
@@ -255,31 +256,35 @@ namespace MedManager.Controllers
                         }
                     }
                     _dbContext.Entry(patient).State = EntityState.Modified;
+                    viewModel.Antecedents = await _dbContext.Antecedents.ToListAsync();
+                    viewModel.Allergies = await _dbContext.Allergies.ToListAsync();
                     await _dbContext.SaveChangesAsync();
-                    return RedirectToAction("index", "Medecin");
-
+                    return RedirectToAction("index", "Patient");
                 }
-
-                catch (DbException ex)
-                {
-                    _logger.LogError(ex, "An error occurred while deleting the patient.");
+                else
                     return RedirectToAction("Error");
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "An unexpected error occurred.");
-                    return RedirectToAction("Error");
-                }
             }
-            viewModel.Antecedents = await _dbContext.Antecedents.ToListAsync();
-            viewModel.Allergies = await _dbContext.Allergies.ToListAsync();
-            return View(viewModel);
+            catch (DbException ex)
+            {
+                _logger.LogError(ex, "An error occurred while deleting the patient.");
+                return RedirectToAction("Error");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred.");
+                return RedirectToAction("Error");
+            }
         }
 
 
-        public async Task<IActionResult> Detail (int id)
+        public async Task<IActionResult> Detail(int id)
         {
-            Patient? patient = await _dbContext.Patients.FindAsync(id);
+            Patient? patient = await _dbContext.Patients
+                                    .Include(p => p.Ordonnances)
+                                    .ThenInclude(o => o.Medicaments)
+                                    .Include(p => p.Allergies)
+                                    .Include(p => p.Antecedents)
+                                    .FirstOrDefaultAsync(p => p.PatientId == id);
             return View(patient);
         }
     }

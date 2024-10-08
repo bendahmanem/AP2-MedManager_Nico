@@ -1,6 +1,108 @@
 ﻿@model Patient
-
 @{
-    ViewData["Title"] = $"Détail du patient : {Model.Nom} {Model.Prenom}";
+    ViewData["Title"] = "Détail du Patient";
 }
 
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h2>Informations Générales</h2>
+            <hr />
+            <p><strong>Nom :</strong> @Model.Nom</p>
+            <p><strong>Prénom :</strong> @Model.Prenom</p>
+            <p><strong>Âge :</strong> @(DateTime.Now.Year - Model.DateNaissance.Year) ans</p>
+            <p><strong>Sexe :</strong> @Model.Sexe</p>
+            <p><strong>Numéro de Sécurité Sociale :</strong> @Model.NuméroSécuritéSociale</p>
+            <p><strong>Adresse :</strong> @Model.Adresse, @Model.Ville</p>
+        </div>
+    </div>
+
+   
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h2>Historique Médical</h2>
+            <div class="btn-group mb-3" role="group" aria-label="Navigation historique médical">
+                <button type="button" class="btn btn-primary" onclick="showSection('ordonnances')">Ordonnances</button>
+                <button type="button" class="btn btn-primary" onclick="showSection('allergies')">Allergies</button>
+                <button type="button" class="btn btn-primary" onclick="showSection('antecedents')">Antécédents</button>
+            </div>
+
+            <div id="ordonnances" class="medical-section">
+                <h3>Ordonnances</h3>
+                @if (Model.Ordonnances.Any())
+                {
+                    <div class="card-deck">
+                        @foreach (var ordonnance in Model.Ordonnances)
+                        {
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Ordonnance du @ordonnance.DateDebut.ToShortDateString()</h5>
+                                    <p class="card-text">Médicaments : @string.Join(", ", ordonnance.Medicaments.Select(m => m.Nom))</p>
+                                    <p class="card-text">Info supplémentaire : @ordonnance.InfoSupplementaire</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p>Aucune ordonnance trouvée pour ce patient.</p>
+                }
+            </div>
+
+            <div id="allergies" class="medical-section" style="display: none;">
+                <h3>Allergies</h3>
+                @if (Model.Allergies.Any())
+                {
+                    <div class="card-deck">
+                        @foreach (var allergie in Model.Allergies)
+                        {
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Allergie : @allergie.Nom</h5>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p>Aucune allergie trouvée pour ce patient.</p>
+                }
+            </div>
+
+            <div id="antecedents" class="medical-section" style="display: none;">
+                <h3>Antécédents</h3>
+                @if (Model.Antecedents.Any())
+                {
+                    <div class="card-deck">
+                        @foreach (var antecedent in Model.Antecedents)
+                        {
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Antécédent : @antecedent.Nom</h5>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p>Aucun antécédent trouvé pour ce patient.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.medical-section');
+            sections.forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+        }
+    </script>
+}
