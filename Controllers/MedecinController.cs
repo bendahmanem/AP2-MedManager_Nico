@@ -23,7 +23,7 @@ public class MedecinController : Controller
 
     public IActionResult Index()
     {
-        return View();
+		return View();
     }
 
 

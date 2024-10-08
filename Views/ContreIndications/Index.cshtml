@@ -21,7 +21,7 @@
 					</a>
 				</td>
 				<td>
-					<a asp-action="SupprimerAllergie" asp-controller="ContreIndications" asp-route-id="@allergie.AllergieId">
+					<a asp-action="SupprimerAllergie" asp-controller="ContreIndications" asp-route-id="@allergie.AllergieId" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette antecédent ?');">
 						<i class="bi bi-trash"></i>
 					</a>
 				</td>
@@ -58,7 +58,7 @@
 					</a>
 				</td>
 				<td>
-					<a asp-action="SupprimerAntecedent" asp-controller="ContreIndications" asp-route-id="@antecedent.AntecedentId">
+					<a asp-action="SupprimerAntecedent" asp-controller="ContreIndications" asp-route-id="@antecedent.AntecedentId" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet antecédent ?');">
 						<i class="bi bi-trash"></i>
 					</a>
 				</td>

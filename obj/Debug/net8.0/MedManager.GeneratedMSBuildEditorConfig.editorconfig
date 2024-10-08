@@ -42,8 +42,24 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVkZWNpblxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/ponsn/OneDrive/Bureau/AP2 - MedManager/MedManager/Views/Medicament/Ajouter.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVkaWNhbWVudFxBam91dGVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ponsn/OneDrive/Bureau/AP2 - MedManager/MedManager/Views/Medicament/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVkaWNhbWVudFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ponsn/OneDrive/Bureau/AP2 - MedManager/MedManager/Views/Medicament/Modifier.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVkaWNhbWVudFxNb2RpZmllci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/ponsn/OneDrive/Bureau/AP2 - MedManager/MedManager/Views/Patient/Ajouter.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF0aWVudFxBam91dGVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ponsn/OneDrive/Bureau/AP2 - MedManager/MedManager/Views/Patient/Detail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF0aWVudFxEZXRhaWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/ponsn/OneDrive/Bureau/AP2 - MedManager/MedManager/Views/Patient/Edit.cshtml]

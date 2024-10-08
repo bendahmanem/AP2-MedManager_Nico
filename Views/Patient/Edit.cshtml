@@ -8,7 +8,8 @@
 <form asp-action="Edit" asp-controller="Patient" method="post">
     <div class="form-group" hidden="hidden">
         <input type="hidden" asp-for="@Model.IdMedecin" />
-        <input type="hidden" asp-for="patient.MedecinID" value="@Model.IdMedecin" />
+       @* Ligne commentée pour voir si ça marche quand même  *@
+        @* <input type="hidden" asp-for="patient.MedecinID" value="@Model.IdMedecin" /> *@
     </div>
     <div class="form-group">
         <label asp-for="patient.Nom"></label>
@@ -55,9 +56,6 @@
     <h4>Antécédents</h4>
     <div class="form-group">
         @foreach (var antecedent in Model.Antecedents)
-
-
-
         {
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" name="SelectedAntecedentIds" value="@antecedent.AntecedentId"

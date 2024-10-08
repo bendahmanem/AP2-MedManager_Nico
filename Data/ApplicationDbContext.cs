@@ -13,7 +13,7 @@ public class ApplicationDbContext : IdentityDbContext<Medecin>
     public DbSet<Medicament> Medicaments => Set<Medicament>();
     public DbSet<Antecedent> Antecedents => Set<Antecedent>();
 
-    // Constructeur
+    
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
     }

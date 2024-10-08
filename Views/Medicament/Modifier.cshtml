@@ -1,0 +1,38 @@
+﻿@model Medicament
+
+@{
+	ViewData["Title"] = "Modifier un medicament";
+}
+
+
+<form asp-action="Modifier" asp-controller="Medicament" method="post">
+	<div class="form-group" hidden="hidden">
+		<input type="hidden" asp-for="@Model.MedicamentId" />
+	</div>
+	<div class="form-group">
+		<label asp-for="Nom"></label>
+		<input asp-for="Nom" class="form-control" />
+		<span asp-validation-for="Nom" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="Quantite"></label>
+		<input asp-for="Quantite" class="form-control" />
+		<span asp-validation-for="Quantite" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="Posologie"></label>
+		<input asp-for="Posologie" class="form-control" />
+		<span asp-validation-for="Posologie" class="text-danger"></span>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="Composition"></label>
+		<input asp-for="Composition" class="form-control" />
+		<span asp-validation-for="Composition" class="text-danger"></span>
+	</div>
+
+
+
+	<button type="submit" class="btn btn-primary">Modifier le medicament</button>
+</form>
+

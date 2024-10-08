@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using MedManager.ViewModel.PatientVM;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using X.PagedList;
+using System.Data.Common;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace MedManager.Controllers
 {
@@ -59,7 +61,7 @@ namespace MedManager.Controllers
 
                 return View(viewModel);
             }
-            catch (DbUpdateException ex)
+            catch (DbException ex)
             {
                 _logger.LogError(ex, "An error occurred while updating the database.");
                 return RedirectToAction("Error");
@@ -146,11 +148,12 @@ namespace MedManager.Controllers
                 {
                     _dbContext.Patients.Remove(patientToDelete);
                     await _dbContext.SaveChangesAsync();
-                    return RedirectToAction("Index", "Medecin");
+                    return RedirectToAction("Index", "Patient");
                 }
                 return NotFound();
             }
-            catch (DbUpdateException ex)
+            catch (DbException ex)
+
             {
                 _logger.LogError(ex, "An error occurred while deleting the patient.");
                 return RedirectToAction("Error");
@@ -191,7 +194,7 @@ namespace MedManager.Controllers
                 };
                 return View(viewModel);
             }
-            catch (DbUpdateException ex)
+            catch (DbException ex)
             {
                 _logger.LogError(ex, "An error occurred while deleting the patient.");
                 return RedirectToAction("Error");
@@ -257,7 +260,7 @@ namespace MedManager.Controllers
 
                 }
 
-                catch (DbUpdateException ex)
+                catch (DbException ex)
                 {
                     _logger.LogError(ex, "An error occurred while deleting the patient.");
                     return RedirectToAction("Error");
@@ -271,6 +274,13 @@ namespace MedManager.Controllers
             viewModel.Antecedents = await _dbContext.Antecedents.ToListAsync();
             viewModel.Allergies = await _dbContext.Allergies.ToListAsync();
             return View(viewModel);
+        }
+
+
+        public async Task<IActionResult> Detail (int id)
+        {
+            Patient? patient = await _dbContext.Patients.FindAsync(id);
+            return View(patient);
         }
     }
 }
