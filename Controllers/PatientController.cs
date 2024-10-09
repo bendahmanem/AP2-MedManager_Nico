@@ -79,7 +79,7 @@ namespace MedManager.Controllers
         [HttpGet]
         public async Task<IActionResult> Ajouter(string id)
         {
-            var viewModel = new AjouterPatientViewModel
+            var viewModel = new PatientViewModel
             {
                 Allergies = await _dbContext.Allergies.ToListAsync(),
                 Antecedents = await _dbContext.Antecedents.ToListAsync(),
@@ -89,7 +89,7 @@ namespace MedManager.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Ajouter(AjouterPatientViewModel model)
+        public async Task<IActionResult> Ajouter(PatientViewModel model)
         {
 
             Medecin? medecin = await _dbContext.Users.FirstOrDefaultAsync(m => m.Id == model.IdMedecin);
@@ -184,7 +184,7 @@ namespace MedManager.Controllers
 
                 string idMedecin = user.Id;
 
-                var viewModel = new AjouterPatientViewModel
+                var viewModel = new PatientViewModel
                 {
                     IdMedecin = idMedecin,
                     patient = patient,
@@ -208,7 +208,7 @@ namespace MedManager.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, AjouterPatientViewModel viewModel)
+        public async Task<IActionResult> Edit(int id, PatientViewModel viewModel)
         {
             try
             {

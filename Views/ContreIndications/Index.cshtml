@@ -16,12 +16,12 @@
 			<tr>
 				<td>@allergie.Nom</td>
 				<td>
-					<a asp-action="ModifierAllergie" asp-controller="ContreIndications" asp-route-id="@allergie.AllergieId">
+					<a asp-action="Modifier" asp-controller="ContreIndications" asp-route-id="@allergie.AllergieId" asp-route-type="Allergie">
 						<i class="bi bi-pen"></i>
 					</a>
 				</td>
 				<td>
-					<a asp-action="SupprimerAllergie" asp-controller="ContreIndications" asp-route-id="@allergie.AllergieId" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette antecédent ?');">
+					<a asp-action="Supprimer" asp-controller="ContreIndications" asp-route-id="@allergie.AllergieId" asp-route-type="Allergie" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette antecédent ?');">
 						<i class="bi bi-trash"></i>
 					</a>
 				</td>
@@ -33,7 +33,7 @@
 <div class="row">
 	<div class="col-8">
 		<p>
-			<a asp-action="AjouterAllergie" class="btn btn-primary">Ajouter une allergie</a>
+			<a asp-action="Ajouter" asp-route-type="Allergie" class="btn btn-primary">Ajouter une allergie</a>
 		</p>
 	</div>
 </div>
@@ -53,12 +53,12 @@
 			<tr>
 				<td>@antecedent.Nom</td>
 				<td>
-					<a asp-action="ModifierAntecedent" asp-controller="ContreIndications" asp-route-id="@antecedent.AntecedentId">
+					<a asp-action="Modifier" asp-controller="ContreIndications" asp-route-id="@antecedent.AntecedentId" asp-route-type="Antecedent">
 						<i class="bi bi-pen"></i>
 					</a>
 				</td>
 				<td>
-					<a asp-action="SupprimerAntecedent" asp-controller="ContreIndications" asp-route-id="@antecedent.AntecedentId" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet antecédent ?');">
+					<a asp-action="Supprimer" asp-controller="ContreIndications" asp-route-id="@antecedent.AntecedentId" asp-route-type="Antecedent" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet antecédent ?');">
 						<i class="bi bi-trash"></i>
 					</a>
 				</td>
@@ -70,7 +70,7 @@
 <div class="row">
 	<div class="col-8">
 		<p>
-			<a asp-action="AjouterAllergie" class="btn btn-primary">Ajouter un antécédent</a>
+			<a asp-action="Ajouter" asp-route-type="Antecedent" class="btn btn-primary">Ajouter un antécédent</a>
 		</p>
 	</div>
 </div>

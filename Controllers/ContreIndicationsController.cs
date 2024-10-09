@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MedManager.Data;
 using MedManager.Models;
+using MedManager.ViewModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace MedManager.Controllers
@@ -25,56 +26,113 @@ namespace MedManager.Controllers
 			return View(model);
 		}
 
-		public async Task<IActionResult> SupprimerAllergie(int id)
-		{
-			try
-			{
-				Allergie? AllergieToDelete = await _dbContext.Allergies.FindAsync(id);
+        public async Task<IActionResult> Ajouter(string type)
+        {
+            var viewModel = new ContreIndicationViewModel { Type = type };
+            return View("Action", viewModel);
+        }
 
-				if (AllergieToDelete != null)
-				{
-					_dbContext.Allergies.Remove(AllergieToDelete);
-					await _dbContext.SaveChangesAsync();
-					return RedirectToAction("Index", "ContreIndications");
-				}
-				return NotFound();
-			}
-			catch(DbUpdateException ex)
-			{
-				_logger.LogError(ex, "An error occurred while deleting the patient.");
-				return RedirectToAction("Error");
-			}
-			catch (Exception ex)
-			{
-				_logger.LogError(ex, "An unexpected error occurred.");
-				return RedirectToAction("Error");
-			}
-		}
+        [HttpPost]
+        public async Task<IActionResult> Ajouter(ContreIndicationViewModel viewModel)
+        {
+            if(ModelState.IsValid)
+            {
+                if (viewModel.Type == "Allergie")
+                {
+                    Allergie allergie = new Allergie
+                    {
+                        Nom = viewModel.Nom
+                    };
 
-		public async Task<IActionResult> SupprimerAntecedent(int id)
-		{
-			try
-			{
-				Antecedent? AntecedentToDelete = await _dbContext.Antecedents.FindAsync(id);
+                    await _dbContext.Allergies.AddAsync(allergie);
+   
+                }
+                else if(viewModel.Type == "Antecedent")
+                {
+                    Antecedent antecedent = new Antecedent
+                    {
+                        Nom = viewModel.Nom
+                    };
+                    await _dbContext.Antecedents.AddAsync(antecedent);
+                }
+                    await _dbContext.SaveChangesAsync();
+                    return RedirectToAction("Index");
+            }
+            return NotFound();
+        }
 
-				if (AntecedentToDelete != null)
-				{
-					_dbContext.Antecedents.Remove(AntecedentToDelete);
-					await _dbContext.SaveChangesAsync();
-					return RedirectToAction("Index", "ContreIndications");
-				}
-				return NotFound();
-			}
-			catch (DbUpdateException ex)
-			{
-				_logger.LogError(ex, "An error occurred while deleting the patient.");
-				return RedirectToAction("Error");
-			}
-			catch (Exception ex)
-			{
-				_logger.LogError(ex, "An unexpected error occurred.");
-				return RedirectToAction("Error");
-			}
-		}
-	}
+        public async Task<IActionResult> Modifier(int id, string type)
+        {
+            if (type == "Allergie")
+            {
+                var allergie = await _dbContext.Allergies.FindAsync(id);
+                if (allergie == null) 
+                    return NotFound();
+                var viewModel = new ContreIndicationViewModel
+                {
+                    Id = allergie.AllergieId,
+                    Nom = allergie.Nom,
+                    Type = "Allergie"
+                };
+                return View("Action", viewModel);
+            }
+            else if (type == "Antecedent")
+            {
+                var antecedent = await _dbContext.Antecedents.FindAsync(id);
+                if (antecedent == null) 
+                    return NotFound();
+                var viewModel = new ContreIndicationViewModel
+                {
+                    Id = antecedent.AntecedentId,
+                    Nom = antecedent.Nom,
+                    Type = "Antecedent"
+                };
+                return View("Action", viewModel);
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Modifier(ContreIndicationViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (model.Type == "Allergie")
+                {
+                    var allergie = await _dbContext.Allergies.FindAsync(model.Id);
+                    if (allergie == null) 
+                        return NotFound();
+                    allergie.Nom = model.Nom;
+                }
+                else if (model.Type == "Antecedent")
+                {
+                    var antecedent = await _dbContext.Antecedents.FindAsync(model.Id);
+                    if (antecedent == null) 
+                        return NotFound();
+                    antecedent.Nom = model.Nom;
+                }
+                await _dbContext.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return View("Action", model);
+        }
+
+        public async Task<IActionResult> Supprimer(int id, string type)
+        {
+            if (type == "Allergie")
+            {
+                var allergie = await _dbContext.Allergies.FindAsync(id);
+                if (allergie != null) 
+                    _dbContext.Allergies.Remove(allergie);
+            }
+            else if (type == "Antecedent")
+            {
+                var antecedent = await _dbContext.Antecedents.FindAsync(id);
+                if (antecedent != null) 
+                    _dbContext.Antecedents.Remove(antecedent);
+            }
+            await _dbContext.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+    }
 }

@@ -1,0 +1,13 @@
+﻿@model ContreIndicationViewModel
+
+<form asp-action="@(Model.Id == null ? "Ajouter" : "Modifier")" method="post">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="Type" />
+    <div>
+        <label asp-for="Nom"></label>
+        <input asp-for="Nom" />
+    </div>
+    <button type="submit">
+        @(Model.Id == null ? "Ajouter" : "Modifier")
+    </button>
+</form>
