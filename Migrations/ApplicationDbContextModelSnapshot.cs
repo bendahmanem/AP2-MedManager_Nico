@@ -126,6 +126,11 @@ namespace MedManager.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("Adresse")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("longtext");
@@ -137,14 +142,16 @@ namespace MedManager.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<string>("Faculte")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<int>("MedecinId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Nom")
                         .IsRequired()
@@ -158,6 +165,10 @@ namespace MedManager.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
+
+                    b.Property<string>("NumTel")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("longtext");
@@ -176,6 +187,9 @@ namespace MedManager.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("longtext");
 
+                    b.Property<int>("Specialite")
+                        .HasColumnType("int");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("tinyint(1)");
 
@@ -184,6 +198,7 @@ namespace MedManager.Migrations
                         .HasColumnType("varchar(256)");
 
                     b.Property<string>("Ville")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
@@ -254,6 +269,9 @@ namespace MedManager.Migrations
                     b.Property<int>("PatientId")
                         .HasColumnType("int");
 
+                    b.Property<byte[]>("Pdf")
+                        .HasColumnType("longblob");
+
                     b.HasKey("OrdonnanceId");
 
                     b.HasIndex("MedecinId");
@@ -291,12 +309,23 @@ namespace MedManager.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<byte[]>("Photo")
+                        .IsRequired()
+                        .HasMaxLength(1048576)
+                        .HasColumnType("longblob");
+
+                    b.Property<float>("Poids")
+                        .HasColumnType("float");
+
                     b.Property<string>("Prenom")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
                     b.Property<int>("Sexe")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Taille")
                         .HasColumnType("int");
 
                     b.Property<string>("Ville")
@@ -543,11 +572,11 @@ namespace MedManager.Migrations
 
             modelBuilder.Entity("MedManager.Models.Patient", b =>
                 {
-                    b.HasOne("MedManager.Models.Medecin", "Medecin")
+                    b.HasOne("MedManager.Models.Medecin", "medecin")
                         .WithMany("Patients")
                         .HasForeignKey("MedecinID");
 
-                    b.Navigation("Medecin");
+                    b.Navigation("medecin");
                 });
 
             modelBuilder.Entity("MedicamentOrdonnance", b =>

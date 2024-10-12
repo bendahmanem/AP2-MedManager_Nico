@@ -66,7 +66,11 @@ namespace MedManager.Controllers
                     Email = model.Email,
                     Nom = model.Nom,
                     Prenom = model.Prenom,
-                    Ville = model.Ville
+                    Ville = model.Ville,
+                    Adresse = model.Adresse,
+                    Faculte = model.Faculte,
+                    Specialite = model.Specialite,
+                    NumTel = model.NumTel,
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);

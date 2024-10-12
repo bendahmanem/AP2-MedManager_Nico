@@ -21,15 +21,14 @@ namespace MedManager.Models
         [Required(ErrorMessage ="Les médicaments sont obligatoires")]
         public required List<Medicament> Medicaments { get; set; } 
 
-        [Required(ErrorMessage ="Le patient est obligatoire")]
+        public byte[]? Pdf { get; set; }
 
-        public string? MedecinId { get; set; }
-        [Required]
-        public required Patient Patient { get; set; }
+        public required int PatientId { get; set; }
+        public required string MedecinId { get; set; }
+        
+        public Patient? Patient { get; set; }
 
-        [Required]
-        public int PatientId { get; set; }
-        public required Medecin Medecin { get; set; }
+        public Medecin? Medecin { get; set; }
 
     }
 

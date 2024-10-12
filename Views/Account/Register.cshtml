@@ -26,9 +26,38 @@
         <span asp-validation-for="Prenom" class="text-danger"></span>
     </div>
     <div class="form-group">
+        <label asp-for="Adresse"></label>
+        <input asp-for="Adresse" class="form-control" />
+        <span asp-validation-for="Adresse" class="text-danger"></span>
+    </div>
+    <div class="form-group">
         <label asp-for="Ville"></label>
         <input asp-for="Ville" class="form-control" />
         <span asp-validation-for="Ville" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NumTel"></label>
+        <input asp-for="NumTel" class="form-control" type="tel"/>
+        <span asp-validation-for="NumTel" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Faculte"></label>
+        <input asp-for="Faculte" class="form-control" />
+        <span asp-validation-for="Faculte" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="Specialite"></label>
+        <select asp-for="Specialite" class="form-control">
+            <option value="">Sélectionnez la spécialité</option>
+            @foreach (var sexe in Enum.GetValues(typeof(Specialite)))
+            {
+                <option value="@sexe">@sexe</option>
+            }
+        </select>
+        <span asp-validation-for="Specialite" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Password"></label>

@@ -89,11 +89,9 @@ namespace MedManager.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Ajouter(PatientViewModel model)
+        public async Task<IActionResult> Ajouter(PatientViewModel model, IFormFile? photo)
         {
-
             Medecin? medecin = await _dbContext.Users.FirstOrDefaultAsync(m => m.Id == model.IdMedecin);
-            //model.patient.MedecinID = model.IdMedecin;
 
             if (ModelState.IsValid)
             {
@@ -103,12 +101,24 @@ namespace MedManager.Controllers
                     Prenom = model.patient.Prenom,
                     NuméroSécuritéSociale = model.patient.NuméroSécuritéSociale,
                     DateNaissance = model.patient.DateNaissance,
+                    Taille = model.patient.Taille,
+                    Poids = model.patient.Poids,
                     Adresse = model.patient.Adresse,
                     Ville = model.patient.Ville,
                     Sexe = model.patient.Sexe,
                     MedecinID = model.IdMedecin,
                     medecin = medecin,
                 };
+
+                // Gestion de l'upload de la photo
+                if (photo != null && photo.Length > 0)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await photo.CopyToAsync(memoryStream);
+                        patient.Photo = memoryStream.ToArray();
+                    }
+                }
 
                 if (model.SelectedAllergieIds != null)
                 {
@@ -135,10 +145,11 @@ namespace MedManager.Controllers
                 await _dbContext.Patients.AddAsync(patient);
                 await _dbContext.SaveChangesAsync();
                 return RedirectToAction("Index", "Patient");
+            }
 
-            };
             return View(model);
         }
+
 
         public async Task<IActionResult> Delete(int id)
         {
@@ -229,6 +240,10 @@ namespace MedManager.Controllers
                     patient.Ville = viewModel.patient.Ville;
                     patient.Sexe = viewModel.patient.Sexe;
                     patient.NuméroSécuritéSociale = viewModel.patient.NuméroSécuritéSociale;
+                    patient.Poids = viewModel.patient.Poids;
+                    patient.Taille = viewModel.patient.Taille;
+                    patient.Photo = viewModel.patient.Photo;
+                    
 
                     // Mise à jour des allergies
                     patient.Allergies.Clear();
@@ -287,6 +302,18 @@ namespace MedManager.Controllers
                                     .FirstOrDefaultAsync(p => p.PatientId == id);
             return View(patient);
         }
+
+        public async Task<IActionResult> GetPhoto(int id)
+        {
+            var patient = await _dbContext.Patients.FindAsync(id);
+            if (patient == null || patient.Photo == null)
+            {
+                return NotFound();
+            }
+
+            return File(patient.Photo, "image/jpeg"); 
+        }
+
     }
 }
 
