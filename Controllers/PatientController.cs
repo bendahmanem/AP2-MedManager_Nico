@@ -27,7 +27,7 @@ namespace MedManager.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index(int? page)
+        public async Task<IActionResult> Index(int? page, string searchString)
         {
             try
             {
@@ -50,15 +50,25 @@ namespace MedManager.Controllers
                     return RedirectToAction("Error");
                 }
 
+                
+                var patients = medecin.Patients.AsQueryable();
+                if (!string.IsNullOrEmpty(searchString))
+                {
+                    patients = patients.Where(p => p.Nom.ToUpper().Contains(searchString.ToUpper()) || p.Prenom.ToUpper().Contains(searchString.ToUpper()));
+                }
+
                 int pageSize = 9;
                 int pageNumber = (page ?? 1);
-                var patientsPagedList = medecin.Patients.ToPagedList(pageNumber, pageSize);
+                var patientsPagedList = patients.ToPagedList(pageNumber, pageSize);
 
                 var viewModel = new IndexPatientViewModel
                 {
                     medecin = medecin,
                     Patients = patientsPagedList
                 };
+
+                
+                ViewData["CurrentFilter"] = searchString;
 
                 return View(viewModel);
             }
@@ -73,6 +83,7 @@ namespace MedManager.Controllers
                 return RedirectToAction("Error");
             }
         }
+
 
 
 
