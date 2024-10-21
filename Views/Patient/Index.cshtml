@@ -20,14 +20,12 @@
 
 	<div class="row mt-3">
 		@foreach (var p in Model.Patients)
-
-
-
 		{
 			<div class="col-md-4 mb-3">
 				<div class="card">
-
-						<img src="@Url.Action("GetPhoto", "Patient", new { id = p.PatientId })" class="card-img-top fixed-dimension" alt="Photo du patient">
+					<div class="row">
+						<img class="card-img-top fixed-dimension" src="@Url.Action("GetPhoto", "Patient", new { id = p.PatientId })" alt="Photo du patient">
+					</div>
 
 					<div class="card-body">
 						<h5 class="card-title">@p.Nom @p.Prenom</h5>

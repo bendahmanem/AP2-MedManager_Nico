@@ -67,7 +67,7 @@
         <input type="file" name="Photo" class="form-control" accept=".jpg,.jpeg,.png" />
         <span asp-validation-for="patient.Photo" class="text-danger"></span>
     </div>
-    <h4>Antécédents</h4>
+    <p>Antécédents</p>
     <div class="form-group">
         @foreach (var antecedent in Model.Antecedents)
 
@@ -80,7 +80,7 @@
         }
     </div>
 
-    <h4>Allergies</h4>
+    <p>Allergies</p>
     <div class="form-group">
         @foreach (var allergie in Model.Allergies)
 
