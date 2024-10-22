@@ -93,7 +93,9 @@ namespace MedManager.Controllers
             List<Medicament> medicaments = await _dbContext.Medicaments.ToListAsync();
             if (type == "Allergie")
             {
-                var allergie = await _dbContext.Allergies.FindAsync(id);
+                var allergie = await _dbContext.Allergies
+                    .Include(a => a.Medicaments)
+                    .FirstOrDefaultAsync(a => a.AllergieId == id);
                 if (allergie == null)
                     return NotFound();
                 var viewModel = new ContreIndicationViewModel
@@ -101,13 +103,16 @@ namespace MedManager.Controllers
                     Id = allergie.AllergieId,
                     Nom = allergie.Nom,
                     Type = "Allergie",
-                    Medicaments = medicaments
+                    Medicaments = medicaments, 
+                    SelectedMedicamentIds =  allergie.Medicaments.Select(m => m.MedicamentId).ToList() ?? new List<int>()
                 };
                 return View("Action", viewModel);
             }
             else if (type == "Antecedent")
             {
-                var antecedent = await _dbContext.Antecedents.FindAsync(id);
+                var antecedent = await _dbContext.Antecedents
+                        .Include(a => a.Medicaments)
+                        .FirstOrDefaultAsync(a => a.AntecedentId == id);
                 if (antecedent == null)
                     return NotFound();
                 var viewModel = new ContreIndicationViewModel
@@ -115,7 +120,8 @@ namespace MedManager.Controllers
                     Id = antecedent.AntecedentId,
                     Nom = antecedent.Nom,
                     Type = "Antecedent",
-                    Medicaments = medicaments
+                    Medicaments = medicaments,
+                    SelectedMedicamentIds = antecedent.Medicaments.Select(m => m.MedicamentId).ToList() ?? new List<int>()
                 };
                 return View("Action", viewModel);
             }
@@ -127,28 +133,39 @@ namespace MedManager.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (model.Type == "Allergie")
+                if (ModelState.IsValid)
                 {
-                    var allergie = await _dbContext.Allergies.FindAsync(model.Id);
-                    if (allergie == null)
-                        return NotFound();
-                    allergie.Nom = model.Nom;
-
-                    allergie.Medicaments.Clear();
-                    if (model.SelectedMedicamentIds != null)
+                    if (model.Type == "Allergie")
                     {
-                        var MedicamentSelectionnes = await _dbContext.Medicaments
-                                .Where(m => model.SelectedMedicamentIds.Contains(m.MedicamentId))
-                                .ToListAsync();
-                        foreach (var medicament in MedicamentSelectionnes)
+                        var allergie = await _dbContext.Allergies
+                                .Include(a => a.Medicaments)
+                                .FirstOrDefaultAsync(a => a.AllergieId == model.Id);
+
+                        if (allergie == null)
+                            return NotFound();
+                        allergie.Nom = model.Nom;
+
+                        allergie.Medicaments.Clear();
+                        if (model.SelectedMedicamentIds != null)
                         {
-                            allergie.Medicaments.Add(medicament);
+                            var MedicamentSelectionnes = await _dbContext.Medicaments
+                                    .Where(m => model.SelectedMedicamentIds.Contains(m.MedicamentId))
+                                    .ToListAsync();
+                            foreach (var medicament in MedicamentSelectionnes)
+                            {
+                                allergie.Medicaments.Add(medicament);
+                            }
                         }
+                        _dbContext.Entry(allergie).State = EntityState.Modified;
+                        await _dbContext.SaveChangesAsync();
                     }
+                   
                 }
                 else if (model.Type == "Antecedent")
                 {
-                    var antecedent = await _dbContext.Antecedents.FindAsync(model.Id);
+                    var antecedent = await _dbContext.Antecedents
+                        .Include(a => a.Medicaments)
+                        .FirstOrDefaultAsync(a => a.AntecedentId == model.Id);
                     if (antecedent == null)
                         return NotFound();
                     antecedent.Nom = model.Nom;
@@ -164,8 +181,9 @@ namespace MedManager.Controllers
                             antecedent.Medicaments.Add(medicament);
                         }
                     }
+                    _dbContext.Entry(antecedent).State = EntityState.Modified;
+                    await _dbContext.SaveChangesAsync();
                 }
-                await _dbContext.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             return View("Action", model);
