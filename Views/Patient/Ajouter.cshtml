@@ -68,29 +68,24 @@
         <span asp-validation-for="patient.Photo" class="text-danger"></span>
     </div>
     <p>Antécédents</p>
-    <div class="form-group">
-        @foreach (var antecedent in Model.Antecedents)
 
-        {
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="SelectedAntecedentIds" value="@antecedent.AntecedentId"
-                @(Model.SelectedAntecedentIds != null && Model.SelectedAntecedentIds.Contains(antecedent.AntecedentId) ? "checked" : "") />
-                <label class="form-check-label">@antecedent.Nom</label>
-            </div>
-        }
+    <div class="form-group row">
+       @*  @Html.LabelFor(model => model.SelectedAntecedentIds, new { @class = "col-sm-2 col-form-label" }) *@
+        <div class="col-sm-10">
+            @Html.ListBoxFor(model => model.SelectedAntecedentIds,
+                     new MultiSelectList(Model.Antecedents, "AntecedentId", "Nom"),
+                     new { @class = "form-control", @id = "ComboBoxMultiselectAntecedents" })
+        </div>
     </div>
 
     <p>Allergies</p>
-    <div class="form-group">
-        @foreach (var allergie in Model.Allergies)
-
-        {
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="SelectedAllergieIds" value="@allergie.AllergieId"
-                @(Model.SelectedAllergieIds != null && Model.SelectedAllergieIds.Contains(allergie.AllergieId) ? "checked" : "") />
-                <label class="form-check-label">@allergie.Nom</label>
-            </div>
-        }
+    <div class="form-group row">
+        @* @Html.LabelFor(model => model.SelectedAllergieIds, new { @class = "col-sm-2 col-form-label" }) *@
+        <div class="col-sm-10">
+            @Html.ListBoxFor(model => model.SelectedAllergieIds,
+                     new MultiSelectList(Model.Allergies, "AllergieId", "Nom"),
+                     new { @class = "form-control", @id = "ComboBoxMultiselectAllergies" })
+        </div>
     </div>
 
     <button type="submit" class="btn btn-primary">Enregistrer le nouveau patient</button>
@@ -98,5 +93,24 @@
 <div>
     <a asp-action="Index">Retour à la liste</a>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#ComboBoxMultiselectAntecedents').multiselect({
+                enableFiltering: true,
+                includeSelectAllOption: true
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#ComboBoxMultiselectAllergies').multiselect({
+                enableFiltering: true,
+                includeSelectAllOption: true
+            });
+        });
+    </script>
+}
 
 

@@ -17,11 +17,19 @@ namespace MedManager.Controllers
 			_logger = logger;
 		}
 
-		public async Task<IActionResult> Index()
+		public async Task<IActionResult> Index(string searchString)
 		{
 
 			List<Medicament> medicaments = await _dbContext.Medicaments.ToListAsync();
 
+			if (!string.IsNullOrEmpty(searchString))
+			{
+				medicaments = medicaments
+					.Where(m => m.Nom.ToUpper().Contains(searchString.ToUpper()))
+					.ToList();
+			}
+
+			ViewData["CurrentFilter"] = searchString;
 			return View(medicaments);
 		}
 

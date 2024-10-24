@@ -25,7 +25,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 220px;
-    width:220px;
+    height: 200px;
+    width: 200px;
     /*padding-left: 150px;*/
 }

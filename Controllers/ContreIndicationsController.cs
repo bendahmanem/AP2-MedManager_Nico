@@ -16,14 +16,28 @@ namespace MedManager.Controllers
             _dbContext = dbContext;
             _logger = logger;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchStringAllergies, string searchStringAntecedents)
         {
             List<Allergie> allergies = await _dbContext.Allergies.ToListAsync();
             List<Antecedent> antecedents = await _dbContext.Antecedents.ToListAsync();
 
-            var model = (Allergies: allergies, Antecedents: antecedents);
+	
+			if (!string.IsNullOrEmpty(searchStringAllergies))
+			{
+				allergies = allergies.Where(a => a.Nom.ToUpper().Contains(searchStringAllergies.ToUpper())).ToList();
+			}
 
-            return View(model);
+			
+			if (!string.IsNullOrEmpty(searchStringAntecedents))
+			{
+				antecedents = antecedents.Where(a => a.Nom.ToUpper().Contains(searchStringAntecedents.ToUpper())).ToList();
+			}
+
+			var model = (Allergies: allergies, Antecedents: antecedents);
+			ViewData["CurrentFilterAllergie"] = searchStringAllergies;
+			ViewData["CurrentFilterAntecedent"] = searchStringAntecedents;
+
+			return View(model);
         }
 
         public async Task<IActionResult> Ajouter(string type)
