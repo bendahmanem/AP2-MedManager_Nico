@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MedManager.Data;
 using MedManager.Models;
-using MedManager.ViewModel;
 using Microsoft.EntityFrameworkCore;
+using MedManager.ViewModel.ContreIndication;
 
 namespace MedManager.Controllers
 {
@@ -141,6 +141,8 @@ namespace MedManager.Controllers
             }
             return NotFound();
         }
+
+        //Gérer les deux ModelState.IsValide et la valeur de retour
 
         [HttpPost]
         public async Task<IActionResult> Modifier(ContreIndicationViewModel model)

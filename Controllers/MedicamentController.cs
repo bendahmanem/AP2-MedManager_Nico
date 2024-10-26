@@ -103,7 +103,7 @@ namespace MedManager.Controllers
 			}
 		}
 		[HttpGet]
-		public async Task<IActionResult> Ajouter()
+		public IActionResult Ajouter()
 		{
 			return View();
 		}

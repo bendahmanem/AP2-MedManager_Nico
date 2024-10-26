@@ -1,12 +1,9 @@
 ﻿@model IndexPatientViewModel
 @{
-	ViewData["Title"] = "Mes Patients ";
+	ViewData["Title"] = "Mes Patients";
 }
 
 <div class="text-center">
-	<h1 class="display-4">Bienvenue sur votre page d'accueil Monsieur le médecin'</h1>
-
-
 	<div>
 		<a asp-action="Ajouter" asp-controller="Patient" asp-route-id="@Model.medecin.Id" class="btn btn-primary">Créer un patient</a>
 	</div>

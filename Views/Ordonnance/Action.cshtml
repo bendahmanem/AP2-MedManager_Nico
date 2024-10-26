@@ -1,5 +1,65 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@model OrdonnanceViewModel
+
+<form asp-action="@(Model.OrdonnanceId == null ? "Ajouter" : "Modifier")" method="post">
+    <input type="hidden" asp-for="OrdonnanceId" />
+    <div>
+        <label asp-for="@Model.PatientId"></label>
+        <select asp-for="@Model.PatientId" class="form-control">
+            <option value="">Sélectionnez le sexe</option>
+            @foreach (var P in Model.Medecin.Patients)
+            {
+                <option value="@Model.PatientId">@P.NomComplet</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DateDebut"></label>
+        <input asp-for="DateDebut" class="form-control" type="date" min="@DateTime.Now.ToString("yyyy-MM-dd")" id="dateDebut" />
+        <span asp-validation-for="DateDebut" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DateFin"></label>
+        <input asp-for="DateFin" class="form-control" type="date" id="dateFin" />
+        <span asp-validation-for="DateFin" class="text-danger"></span>
+    </div>
+
+    <div class="form-group row">
+        @Html.LabelFor(model => model.MedicamentIdSelectionnes, new { @class = "col-sm-2 col-form-label" })
+        <div class="col-sm-10">
+            @Html.ListBoxFor(model => model.MedicamentIdSelectionnes,
+                     new MultiSelectList(Model.Medicaments, "MedicamentId", "Nom"),
+                     new { @class = "form-control", @id = "Medicaments_CB" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="InfoSupplementaire"></label>
+        <textarea asp-for="InfoSupplementaire" class="form-control"></textarea>
+        <span asp-validation-for="InfoSupplementaire" class="text-danger"></span>
+    </div>
+
+    <button type="submit">
+        @(Model.OrdonnanceId == null ? "Ajouter" : "Modifier")
+    </button>
+</form>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#Medicaments_CB').multiselect({
+                enableFiltering: true,
+                includeSelectAllOption: true
+            });
+        });
+    </script>
+    <script>
+        const dateDebut = document.getElementById("dateDebut");
+        const dateFin = document.getElementById("dateFin");
+
+        dateDebut.addEventListener("change", function () {
+            dateFin.min = dateDebut.value;
+        });
+    </script>
 }

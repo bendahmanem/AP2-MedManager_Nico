@@ -27,6 +27,8 @@ namespace MedManager.Controllers
             _userManager = userManager;
         }
 
+        //Revoir ici l'appel à la base de données pour la construction de l'objet médecin. N'appeller que le nécessaire ! 
+
         public async Task<IActionResult> Index(int? page, string searchString)
         {
             try
