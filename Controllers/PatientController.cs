@@ -155,8 +155,6 @@ namespace MedManager.Controllers
                     }
                 }
 
-                await _dbContext.Patients.AddAsync(patient);
-                await _dbContext.SaveChangesAsync();
                 return RedirectToAction("Index", "Patient");
             }
 
