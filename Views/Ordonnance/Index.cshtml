@@ -5,7 +5,7 @@
 
 <div class="text-center">
 	<div>
-		<a asp-action="Ajouter" asp-controller="Ordonnance" asp-route-id="@Model.medecin.Id" class="btn btn-primary">Créer une ordonnance</a>
+		<a asp-action="Ajouter" asp-controller="Ordonnance" class="btn btn-primary">Créer une ordonnance</a>
 	</div>
 
 	<form asp-action="Index" method="get" class="mt-3">
@@ -23,17 +23,16 @@
 @* 					<div class="row">
 						<img class="card-img-top fixed-dimension" src="@Url.Action("GetPhoto", "Patient", new { id = p.PatientId })" alt="Photo du patient">
 					</div> *@
-
 					<div class="card-body">
 						<h5 class="card-title">@o.Patient.NomComplet</h5>
 						@* <p class="card-text">Âge : @(DateTime.Now.Year - p.DateNaissance.Year) ans</p> *@
 						<a asp-action="Detail" asp-controller="Patient" asp-route-id="@o.OrdonnanceId">
 							<i class="bi bi-eye"></i>
 						</a>
-						<a asp-action="Edit" asp-controller="Patient" asp-route-id="@o.OrdonnanceId">
+						<a asp-action="Editer" asp-controller="Ordonnance" asp-route-id="@o.OrdonnanceId">
 							<i class="bi bi-pencil"></i>
 						</a>
-						<a asp-action="Delete" asp-controller="Patient" asp-route-id="@o.OrdonnanceId" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette ordonnance ?');">
+						<a asp-action="Supprimer" asp-controller="Ordonnance" asp-route-id="@o.OrdonnanceId" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette ordonnance ?');">
 							<i class="bi bi-trash"></i>
 						</a>
 					</div>

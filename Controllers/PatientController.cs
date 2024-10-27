@@ -154,7 +154,6 @@ namespace MedManager.Controllers
                         patient.Antecedents.Add(antecedent);
                     }
                 }
-
                 return RedirectToAction("Index", "Patient");
             }
 

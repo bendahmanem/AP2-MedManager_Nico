@@ -32,8 +32,6 @@ namespace MedManager.ViewModel.OrdonnanceVM
 
         public required List<Patient> patients { get; set; } = new List<Patient>();
 
-        public required string MedecinID;
-
     }
 }
 

@@ -2,14 +2,13 @@
 
 <form asp-action="@(Model.OrdonnanceId == null ? "Ajouter" : "Modifier")" method="post">
     <input type="hidden" asp-for="OrdonnanceId" />
-    <input type="hidden" asp-for="MedecinID" />
     <div>
         <label asp-for="@Model.PatientId"></label>
         <select asp-for="@Model.PatientId" class="form-control">
             <option value="">Sélectionnez le patient</option>
-            @foreach (var P in Model.patients)
+            @foreach (var p in Model.patients)
             {
-                <option value="@Model.PatientId">@P.NomComplet</option>
+                <option value="@p.PatientId">@p.NomComplet</option>
             }
         </select>
     </div>
@@ -55,6 +54,7 @@
             });
         });
     </script>
+
     <script>
         const dateDebut = document.getElementById("dateDebut");
         const dateFin = document.getElementById("dateFin");
