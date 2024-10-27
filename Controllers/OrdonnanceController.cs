@@ -172,13 +172,35 @@ namespace MedManager.Controllers
                     return RedirectToAction("Login", "Account");
                 }
 
+                Ordonnance ordonnance = await _dbContext.Ordonnances
+                        .Include(o => o.Medicaments)
+						.Include(o => o.Patient)
+                        .FirstOrDefaultAsync(o => o.OrdonnanceId == id);
+
+                if (ordonnance == null)
+                    return NotFound();
+
+                List<int> MedicamentsSelectionnes = new List<int>();
+                foreach(var m in ordonnance.Medicaments)
+                {
+                    MedicamentsSelectionnes.Add(m.MedicamentId);
+
+				}
+
                 OrdonnanceViewModel model = new OrdonnanceViewModel
                 {
-
+                    OrdonnanceId = ordonnance.OrdonnanceId,
+                    DateDebut = ordonnance.DateDebut,
+                    DateFin = ordonnance.DateFin,
+                    InfoSupplementaire = ordonnance.InfoSupplementaire,
+                    MedicamentIdSelectionnes = MedicamentsSelectionnes,
+					Medicaments = await _dbContext.Medicaments.ToListAsync(),
+                    patients = await _dbContext.Patients.Where(p => p.medecin.Id == MedecinId).ToListAsync(),
+                    PatientId = ordonnance.Patient.PatientId
                 };
 
-                return RedirectToAction("Action", model);
-            }
+				return View("Action", model);
+			}
             catch (DbException ex)
             {
                 _logger.LogError(ex, "An error occurred while updating the database.");
