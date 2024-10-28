@@ -1,6 +1,6 @@
 ﻿@model OrdonnanceViewModel
 
-<form asp-action="@(Model.OrdonnanceId == null ? "Ajouter" : "Modifier")" method="post">
+<form asp-action="@(Model.OrdonnanceId == null ? "Ajouter" : "Editer")" method="post">
     <input type="hidden" asp-for="OrdonnanceId" />
     <div>
         <label asp-for="@Model.PatientId"></label>
