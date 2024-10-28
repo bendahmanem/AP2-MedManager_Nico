@@ -25,11 +25,11 @@ namespace MedManager.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Connexion(LoginViewModel modele)
+		public async Task<IActionResult> Connexion(ConnexionViewModel modele)
 		{
 			if (ModelState.IsValid)
 			{
-				var resultat = await _gestionConnexion.PasswordSignInAsync(modele.UserName, modele.Password, modele.RememberMe, false);
+				var resultat = await _gestionConnexion.PasswordSignInAsync(modele.NomUtilisateur, modele.MotDePasse, modele.SeRappelerDeMoi, false);
 
 				if (resultat.Succeeded)
 				{
@@ -39,7 +39,7 @@ namespace MedManager.Controllers
 				ModelState.AddModelError(string.Empty, "Tentative de connexion invalide.");
 			}
 
-			return RedirectToAction("Index", "Medecin");
+			return View(modele);
 		}
 
 		public async Task<IActionResult> Deconnexion()
@@ -55,7 +55,7 @@ namespace MedManager.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Inscription(RegisterViewModel modele)
+		public async Task<IActionResult> Inscription(InscriptionViewModel modele)
 		{
 			if (ModelState.IsValid)
 			{
@@ -86,7 +86,7 @@ namespace MedManager.Controllers
 				}
 			}
 
-			return RedirectToAction("Connexion", "Compte");
+			return View(modele);
 		}
 	}
 }

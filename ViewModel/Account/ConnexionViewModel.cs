@@ -2,15 +2,15 @@
 
 namespace MedManager.ViewModel.Account
 {
-    public class LoginViewModel
+    public class ConnexionViewModel
     {
         [Required]
         [DataType(DataType.Password)]
-        public required string Password { get; set; }
+        public required string MotDePasse { get; set; }
 
         [Required]
-        public required string UserName { get; set; }
+        public required string NomUtilisateur { get; set; }
         [Display(Name = "Remember me?")]
-        public bool RememberMe { get; set; }
+        public bool SeRappelerDeMoi { get; set; }
     }
 }

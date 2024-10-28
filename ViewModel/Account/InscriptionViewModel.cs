@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MedManager.ViewModel.Account
 {
-    public class RegisterViewModel
+    public class InscriptionViewModel
     {
         [Required]
         [Display(Name = "Nom d'utilisateur")]
