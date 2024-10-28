@@ -5,89 +5,88 @@ using MedManager.ViewModel.Account;
 
 namespace MedManager.Controllers
 {
-    public class AccountController : Controller
-    {
-        private readonly SignInManager<Medecin> _signInManager;
-        private readonly UserManager<Medecin> _userManager;
+	public class CompteController : Controller
+	{
+		private readonly SignInManager<Medecin> _gestionConnexion;
+		private readonly UserManager<Medecin> _gestionUtilisateurs;
 		private readonly ILogger<Medecin> _logger;
 
-		public AccountController(SignInManager<Medecin> signInManager, UserManager<Medecin> userManager, ILogger<Medecin> logger)
+		public CompteController(SignInManager<Medecin> gestionConnexion, UserManager<Medecin> gestionUtilisateurs, ILogger<Medecin> logger)
 		{
-            _signInManager = signInManager;
-            _userManager = userManager;
-            _logger = logger;
-
+			_gestionConnexion = gestionConnexion;
+			_gestionUtilisateurs = gestionUtilisateurs;
+			_logger = logger;
 		}
 
-        [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
-        }
+		[HttpGet]
+		public IActionResult Connexion()
+		{
+			return View();
+		}
 
-        [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false ) ;
+		[HttpPost]
+		public async Task<IActionResult> Connexion(LoginViewModel modele)
+		{
+			if (ModelState.IsValid)
+			{
+				var resultat = await _gestionConnexion.PasswordSignInAsync(modele.UserName, modele.Password, modele.RememberMe, false);
 
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index", "Medecin");
-                }
+				if (resultat.Succeeded)
+				{
+					return RedirectToAction("Index", "Medecin");
+				}
 
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-            }
+				ModelState.AddModelError(string.Empty, "Tentative de connexion invalide.");
+			}
 
-            return RedirectToAction("Index", "Medecin");
-        }
+			return RedirectToAction("Index", "Medecin");
+		}
 
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
+		public async Task<IActionResult> Deconnexion()
+		{
+			await _gestionConnexion.SignOutAsync();
 
-            return RedirectToAction("Index", "Medecin");
-        }
+			return RedirectToAction("Index", "Medecin");
+		}
 
-        public IActionResult Register()
-        {
-            return View();
-        }
+		public IActionResult Inscription()
+		{
+			return View();
+		}
 
-        [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = new Medecin
-                {
-                    UserName = model.UserName,
-                    Email = model.Email,
-                    Nom = model.Nom,
-                    Prenom = model.Prenom,
-                    Ville = model.Ville,
-                    Adresse = model.Adresse,
-                    Faculte = model.Faculte,
-                    Specialite = model.Specialite,
-                    NumTel = model.NumTel,
-                };
+		[HttpPost]
+		public async Task<IActionResult> Inscription(RegisterViewModel modele)
+		{
+			if (ModelState.IsValid)
+			{
+				var utilisateur = new Medecin
+				{
+					UserName = modele.UserName,
+					Email = modele.Email,
+					Nom = modele.Nom,
+					Prenom = modele.Prenom,
+					Ville = modele.Ville,
+					Adresse = modele.Adresse,
+					Faculte = modele.Faculte,
+					Specialite = modele.Specialite,
+					NumTel = modele.NumTel,
+				};
 
-                var result = await _userManager.CreateAsync(user, model.Password);
+				var resultat = await _gestionUtilisateurs.CreateAsync(utilisateur, modele.Password);
 
-                if (result.Succeeded)
-                {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Medecin");
-                }
+				if (resultat.Succeeded)
+				{
+					await _gestionConnexion.SignInAsync(utilisateur, isPersistent: false);
+					return RedirectToAction("Index", "Medecin");
+				}
 
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
-            }
+				foreach (var erreur in resultat.Errors)
+				{
+					ModelState.AddModelError(string.Empty, erreur.Description);
+				}
+			}
 
-            return RedirectToAction("Login", "Account");
-        }
-    }
+			return RedirectToAction("Connexion", "Compte");
+		}
+	}
 }
