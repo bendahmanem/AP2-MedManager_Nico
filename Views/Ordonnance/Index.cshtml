@@ -20,12 +20,22 @@
 		{
 			<div class="col-md-4 mb-3">
 				<div class="card">
-@* 					<div class="row">
-						<img class="card-img-top fixed-dimension" src="@Url.Action("GetPhoto", "Patient", new { id = p.PatientId })" alt="Photo du patient">
-					</div> *@
+					@* 					<div class="row">
+				<img class="card-img-top fixed-dimension" src="@Url.Action("GetPhoto", "Patient", new { id = p.PatientId })" alt="Photo du patient">
+				</div> *@
 					<div class="card-body">
 						<h5 class="card-title">@o.Patient.NomComplet</h5>
-						@* <p class="card-text">Âge : @(DateTime.Now.Year - p.DateNaissance.Year) ans</p> *@
+						<p class="card-text"> Date de début : @o.DateDebut.ToString("dd/MM/yyyy") </p>
+						<p class="card-text"> Date de fin : @o.DateFin.ToString("dd/MM/yyyy") </p>
+
+						<ul>
+							@foreach (var m in o.Medicaments)
+							{
+
+								<li>@m.Nom</li>
+
+							}
+						</ul>
 						<a asp-action="Detail" asp-controller="Patient" asp-route-id="@o.OrdonnanceId">
 							<i class="bi bi-eye"></i>
 						</a>
@@ -35,6 +45,10 @@
 						<a asp-action="Supprimer" asp-controller="Ordonnance" asp-route-id="@o.OrdonnanceId" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette ordonnance ?');">
 							<i class="bi bi-trash"></i>
 						</a>
+						<a asp-action="GenererPdf" asp-controller="Ordonnance" asp-route-ordonnanceId="@o.OrdonnanceId" asp-route-patientId="@o.PatientId">
+							<i class="bi bi-filetype-pdf"></i>
+						</a>
+
 					</div>
 				</div>
 			</div>

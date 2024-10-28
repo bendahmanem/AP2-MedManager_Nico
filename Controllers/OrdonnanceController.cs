@@ -16,6 +16,7 @@ namespace MedManager.Controllers
 		private readonly ApplicationDbContext _dbContext;
 		private readonly UserManager<Medecin> _userManager;
 		private readonly ILogger<Patient> _logger;
+		private readonly string _pdfDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "pdfs");
 
 		public OrdonnanceController(ApplicationDbContext dbContext, UserManager<Medecin> userManager, ILogger<Patient> logger)
 		{
@@ -37,9 +38,11 @@ namespace MedManager.Controllers
 				string id = user.Id;
 
 				Medecin? medecin = await _dbContext.Users
-										.Include(u => u.Ordonnances)
-										.ThenInclude(o => o.Patient)
-										.FirstOrDefaultAsync(m => m.Id == id);
+					.Include(u => u.Ordonnances)
+						.ThenInclude(o => o.Patient)
+					.Include(u => u.Ordonnances)
+						.ThenInclude(o => o.Medicaments)
+					.FirstOrDefaultAsync(m => m.Id == id);
 
 				if (medecin == null)
 				{
@@ -274,77 +277,6 @@ namespace MedManager.Controllers
 			}
 		}
 
-		//public async Task<IActionResult> Edit(int id, PatientViewModel viewModel)
-		//{
-		//	try
-		//	{
-		//		if (ModelState.IsValid)
-		//		{
-
-		//			var patient = await _dbContext.Patients
-		//				.Include(p => p.Antecedents)
-		//				.Include(p => p.Allergies)
-		//				.FirstOrDefaultAsync(p => p.PatientId == id);
-		//			if (patient == null)
-		//				return NotFound();
-
-		//			patient.Nom = viewModel.patient.Nom;
-		//			patient.Prenom = viewModel.patient.Prenom;
-		//			patient.Adresse = viewModel.patient.Adresse;
-		//			patient.DateNaissance = viewModel.patient.DateNaissance;
-		//			patient.Ville = viewModel.patient.Ville;
-		//			patient.Sexe = viewModel.patient.Sexe;
-		//			patient.NuméroSécuritéSociale = viewModel.patient.NuméroSécuritéSociale;
-		//			patient.Poids = viewModel.patient.Poids;
-		//			patient.Taille = viewModel.patient.Taille;
-		//			patient.Photo = viewModel.patient.Photo;
-
-
-		//			// Mise à jour des allergies
-		//			patient.Allergies.Clear();
-		//			if (viewModel.SelectedAllergieIds != null)
-		//			{
-		//				var selectedAllergies = await _dbContext.Allergies
-		//					.Where(a => viewModel.SelectedAllergieIds.Contains(a.AllergieId))
-		//					.ToListAsync();
-		//				foreach (var allergie in selectedAllergies)
-		//				{
-		//					patient.Allergies.Add(allergie);
-		//				}
-		//			}
-
-		//			// Mise à jour des antécédents
-		//			patient.Antecedents.Clear();
-		//			if (viewModel.SelectedAntecedentIds != null)
-		//			{
-		//				var selectedAntecedents = await _dbContext.Antecedents
-		//					.Where(a => viewModel.SelectedAntecedentIds.Contains(a.AntecedentId))
-		//					.ToListAsync();
-		//				foreach (var antecedent in selectedAntecedents)
-		//				{
-		//					patient.Antecedents.Add(antecedent);
-		//				}
-		//			}
-		//			_dbContext.Entry(patient).State = EntityState.Modified;
-		//			viewModel.Antecedents = await _dbContext.Antecedents.ToListAsync();
-		//			viewModel.Allergies = await _dbContext.Allergies.ToListAsync();
-		//			await _dbContext.SaveChangesAsync();
-		//			return RedirectToAction("index", "Patient");
-		//		}
-		//		else
-		//			return RedirectToAction("Error");
-		//	}
-		//	catch (DbException ex)
-		//	{
-		//		_logger.LogError(ex, "An error occurred while deleting the patient.");
-		//		return RedirectToAction("Error");
-		//	}
-		//	catch (Exception ex)
-		//	{
-		//		_logger.LogError(ex, "An unexpected error occurred.");
-		//		return RedirectToAction("Error");
-		//	}
-		//}
 
 		public async Task<IActionResult> Supprimer(int id)
 		{
@@ -371,5 +303,56 @@ namespace MedManager.Controllers
 				return RedirectToAction("Error");
 			}
 		}
+
+		public async Task<IActionResult> GenererPdf(int ordonnanceId, int patientId)
+		{
+			try
+			{
+
+				var MedecinId = _userManager.GetUserId(User);
+				if (MedecinId == null)
+				{
+					return RedirectToAction("Login", "Account");
+				}
+
+				var patient = await _dbContext.Patients.FirstOrDefaultAsync(p => p.PatientId == patientId);
+				var medecin = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == MedecinId);
+				var ordonnance = await _dbContext.Ordonnances
+					.Include(o => o.Medicaments)
+					.FirstOrDefaultAsync(o => o.OrdonnanceId == ordonnanceId);
+
+				if (patient != null && medecin != null && ordonnance != null)
+				{
+					string fileName = $"Ordonnance_{patient.NomComplet}_{ordonnanceId}.pdf";
+					string filePath = Path.Combine(_pdfDirectory, fileName);
+
+					OrdonnancePdfGenerateur pdfGenerateur = new OrdonnancePdfGenerateur();
+
+					pdfGenerateur.GenerateOrdonnance(filePath, medecin, patient, ordonnance);
+
+					if (!System.IO.File.Exists(filePath))
+					{
+						return NotFound("Le fichier PDF n'a pas pu être créé.");
+					}
+
+					var fileBytes = System.IO.File.ReadAllBytes(filePath);
+					return File(fileBytes, "application/pdf", fileName);
+				}
+				else
+					return NotFound();
+			}
+			catch (DbException ex)
+
+			{
+				_logger.LogError(ex, "An error occurred while deleting the patient.");
+				return RedirectToAction("Error");
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "An unexpected error occurred.");
+				return RedirectToAction("Error");
+			}
+		}
 	}
 }
+
