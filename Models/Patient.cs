@@ -55,6 +55,8 @@ namespace MedManager.Models
 
         public List<Antecedent> Antecedents { get; set; } = new List<Antecedent>();
         public List<Ordonnance> Ordonnances { get; set; } = new List<Ordonnance>();
+        [DataType(DataType.Date)]
+        public DateTime DateCreation { get; set; } = DateTime.Now;
 
         public string NomComplet
         {

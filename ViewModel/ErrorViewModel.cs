@@ -1,4 +1,4 @@
-namespace MedManager.Models;
+namespace MedManager.ViewModel;
 
 public class ErrorViewModel
 {

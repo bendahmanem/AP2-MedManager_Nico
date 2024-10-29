@@ -32,7 +32,7 @@ namespace MedManager.Models
         [Display(Name = "Numéro de téléphone")]
         [DataType(DataType.PhoneNumber)]
         [Required(ErrorMessage = "Le numéro de téléphone est obligatoire")]
-        public string? NumTel { get; set; }
+        public string? NumeroTel { get; set; }
 
         [Display(Name = "Faculté")]
         [StringLength(50, MinimumLength = 2, ErrorMessage = "La faculté doit contenir entre 2 et 50 caractères.")]

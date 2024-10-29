@@ -1,14 +1,14 @@
-﻿@model RegisterViewModel
+﻿@model InscriptionViewModel
 
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Inscription";
 }
 
-<form asp-action="Register" asp-controller="Account" method="post">
+<form asp-action="Inscription" asp-controller="Compte" method="post">
     <div class="form-group">
-        <label asp-for="UserName"></label>
-        <input asp-for="UserName" class="form-control" />
-        <span asp-validation-for="UserName" class="text-danger"></span>
+        <label asp-for="NomUtilisateur"></label>
+        <input asp-for="NomUtilisateur" class="form-control" />
+        <span asp-validation-for="NomUtilisateur" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Email"></label>
@@ -37,9 +37,9 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="NumTel"></label>
-        <input asp-for="NumTel" class="form-control" type="tel"/>
-        <span asp-validation-for="NumTel" class="text-danger"></span>
+        <label asp-for="NumeroTel"></label>
+        <input asp-for="NumeroTel" class="form-control" type="tel" />
+        <span asp-validation-for="NumeroTel" class="text-danger"></span>
     </div>
 
     <div class="form-group">
@@ -60,9 +60,9 @@
         <span asp-validation-for="Specialite" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Password"></label>
-        <input asp-for="Password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
+        <label asp-for="MotDePasse"></label>
+        <input asp-for="MotDePasse" class="form-control" />
+        <span asp-validation-for="MotDePasse" class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-primary">Register</button>
+    <button type="submit" class="btn btn-primary">S'enregistrer</button>
 </form>

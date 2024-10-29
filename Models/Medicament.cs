@@ -4,6 +4,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MedManager.Models
 {
+    public enum CategorieEnum
+    {
+        Analgesique,
+        Antibiotique,
+        Antiseptique,
+        Vaccin,
+        Antifongiques,
+        Antiviraux,
+        Autre
+    }
     public class Medicament
     {
         public int MedicamentId { get; set; }
@@ -21,6 +31,9 @@ namespace MedManager.Models
 
         [StringLength(500, ErrorMessage = "La composition ne peut pas dépasser 500 caractères.")]
         public required string Composition { get; set; }
+
+        [Required(ErrorMessage = "La catégorie est obligatoire")]
+        public CategorieEnum Categorie { get; set; }
 
         public List<Allergie> Allergies { get; set; } = new List<Allergie>();
 

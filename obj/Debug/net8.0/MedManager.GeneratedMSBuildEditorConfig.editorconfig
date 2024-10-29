@@ -26,12 +26,12 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\ponsn\OneDrive\Bureau\AP2 - MedManager\MedManager
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/ponsn/OneDrive/Bureau/AP2 - MedManager/MedManager/Views/Account/Login.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+[C:/Users/ponsn/OneDrive/Bureau/AP2 - MedManager/MedManager/Views/Compte/Connexion.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcHRlXENvbm5leGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/ponsn/OneDrive/Bureau/AP2 - MedManager/MedManager/Views/Account/Register.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
+[C:/Users/ponsn/OneDrive/Bureau/AP2 - MedManager/MedManager/Views/Compte/Inscription.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcHRlXEluc2NyaXB0aW9uLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/ponsn/OneDrive/Bureau/AP2 - MedManager/MedManager/Views/ContreIndications/Action.cshtml]

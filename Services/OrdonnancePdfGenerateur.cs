@@ -34,7 +34,7 @@ public class OrdonnancePdfGenerateur
 				.SetItalic()
 				.SetFontSize(10));
 
-			document.Add(new Paragraph($"{medecin.Adresse}\n{medecin.Ville}\n{medecin.NumTel}")
+			document.Add(new Paragraph($"{medecin.Adresse}\n{medecin.Ville}\n{medecin.NumeroTel}")
 				.SetFontSize(10));
 
 			
