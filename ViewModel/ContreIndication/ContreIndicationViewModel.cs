@@ -13,7 +13,7 @@ namespace MedManager.ViewModel.ContreIndication
         public List<Medicament> Medicaments { get; set; } = new List<Medicament>();
 
         [Display(Name = "Medicaments")]
-        public List<int>? SelectedMedicamentIds { get; set; } = new List<int>();
+        public List<int>? IdMedicamentsSelectionnes { get; set; } = new List<int>();
     }
 }
 

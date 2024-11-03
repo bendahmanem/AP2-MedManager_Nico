@@ -153,6 +153,8 @@ namespace MedManager.Controllers
                         patient.Antecedents.Add(antecedent);
                     }
                 }
+                await _dbContext.Patients.AddAsync(patient);
+                await _dbContext.SaveChangesAsync();
                 return RedirectToAction("Index", "Patient");
             }
 

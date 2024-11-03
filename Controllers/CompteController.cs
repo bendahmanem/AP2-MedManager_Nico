@@ -89,10 +89,5 @@ namespace MedManager.Controllers
 
 			return View(modele);
 		}
-        public async Task<IActionResult> Deconnexion()
-        {
-            await _gestionConnexion.SignOutAsync();
-            return RedirectToAction("Index", "Medecin");
-        }
 	}
 }

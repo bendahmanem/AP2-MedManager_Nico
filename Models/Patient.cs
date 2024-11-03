@@ -18,7 +18,7 @@ namespace MedManager.Models
         [StringLength(50, MinimumLength = 2, ErrorMessage = "Le prénom doit contenir entre 2 et 50 caractères.")]
         public required string Prenom { get; set; }
 
-        [Range(20, 250, ErrorMessage ="La taille doit être comprise entre 20cm et 250cm")]
+        [Range(20, 250, ErrorMessage = "La taille doit être comprise entre 20cm et 250cm")]
         [Required(ErrorMessage = "La taille est obligatoire")]
         public required int Taille { get; set; }
 

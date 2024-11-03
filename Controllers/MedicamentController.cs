@@ -66,12 +66,12 @@ namespace MedManager.Controllers
 			}
 			catch (DbException ex)
 			{
-				_logger.LogError(ex, "An error occurred while deleting the patient.");
+				_logger.LogError(ex, "Une erreur est apparue pendant la modification du médicament.");
 				return RedirectToAction("Error");
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "An unexpected error occurred.");
+				_logger.LogError(ex, "Une erreur innatendue est survenue.");
 				return RedirectToAction("Error");
 			}
 			return View();
@@ -93,12 +93,12 @@ namespace MedManager.Controllers
 			}
 			catch (DbException ex)
 			{
-				_logger.LogError(ex, "An error occurred while deleting the patient.");
+				_logger.LogError(ex, "Une erreur est apparue pendant la suppression du médicament.");
 				return RedirectToAction("Error");
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "An unexpected error occurred.");
+				_logger.LogError(ex, "Une erreur innatendue est survenue.");
 				return RedirectToAction("Error");
 			}
 		}
@@ -124,12 +124,12 @@ namespace MedManager.Controllers
 			}
 			catch (DbException ex)
 			{
-				_logger.LogError(ex, "An error occurred while deleting the patient.");
+				_logger.LogError(ex, "Une erreur est apparue pendant l'ajout du médicament.");
 				return RedirectToAction("Error");
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "An unexpected error occurred.");
+				_logger.LogError(ex, "Une erreur innatendue est survenue.");
 				return RedirectToAction("Error");
 			}
 

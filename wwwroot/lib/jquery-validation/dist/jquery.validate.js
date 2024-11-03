@@ -1510,7 +1510,7 @@ $.extend( $.validator, {
 		// https://jqueryvalidation.org/step-method/
 		step: function( value, element, param ) {
 			var type = $( element ).attr( "type" ),
-				errorMessage = "Step attribute on input type " + type + " is not supported.",
+				MessageErreur = "Step attribute on input type " + type + " is not supported.",
 				supportedTypes = [ "text", "number", "range" ],
 				re = new RegExp( "\\b" + type + "\\b" ),
 				notSupported = type && !re.test( supportedTypes.join() ),
@@ -1532,7 +1532,7 @@ $.extend( $.validator, {
 			// Works only for text, number and range input types
 			// TODO find a way to support input types date, datetime, datetime-local, month, time and week
 			if ( notSupported ) {
-				throw new Error( errorMessage );
+				throw new Error( MessageErreur );
 			}
 
 			decimals = decimalPlaces( param );

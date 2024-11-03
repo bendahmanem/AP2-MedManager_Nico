@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using MedManager.Data;
 using Microsoft.EntityFrameworkCore;
 using X.PagedList;
+using MedManager.ViewModel;
 
 namespace MedManager.Controllers;
 

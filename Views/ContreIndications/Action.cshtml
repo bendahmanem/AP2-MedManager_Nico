@@ -7,22 +7,11 @@
         <label asp-for="Nom"></label>
         <input asp-for="Nom" />
     </div>
-@*     <div class="form-group row">
-        <label asp-for="SelectedMedicamentIds" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
-            <select asp-for="SelectedMedicamentIds"
-                    asp-items="@(new MultiSelectList(Model.Medicaments, "MedicamentId", "Nom"))"
-                    class="form-control"
-                    multiple="multiple"
-                    id="Medicaments_CB">
-            </select>
-        </div>
-    </div> *@
 
     <div class="form-group row">
-        @Html.LabelFor(model => model.SelectedMedicamentIds, new { @class = "col-sm-2 col-form-label" })
+        @Html.LabelFor(model => model.IdMedicamentsSelectionnes, new { @class = "col-sm-2 col-form-label" })
         <div class="col-sm-10">
-            @Html.ListBoxFor(model => model.SelectedMedicamentIds,
+            @Html.ListBoxFor(model => model.IdMedicamentsSelectionnes,
                      new MultiSelectList(Model.Medicaments, "MedicamentId", "Nom"),
                      new { @class = "form-control", @id = "Medicaments_CB" })
         </div>
