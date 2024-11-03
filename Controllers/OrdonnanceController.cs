@@ -18,7 +18,7 @@ namespace MedManager.Controllers
 		private readonly ApplicationDbContext _dbContext;
 		private readonly UserManager<Medecin> _userManager;
 		private readonly ILogger<Patient> _logger;
-		private readonly string _pdfDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "pdfs");
+		private readonly string _RepertoirePdf = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "pdfs");
 
 		public OrdonnanceController(ApplicationDbContext dbContext, UserManager<Medecin> userManager, ILogger<Patient> logger)
 		{
@@ -27,14 +27,14 @@ namespace MedManager.Controllers
 			_userManager = userManager;
 		}
 
-		public async Task<IActionResult> Index(int? page, string searchString)
+		public async Task<IActionResult> Index(int? page, string filtre)
 		{
 			try
 			{
 				var user = await _userManager.GetUserAsync(User);
 				if (user == null)
 				{
-					return RedirectToAction("Login", "Account");
+					return RedirectToAction("Connexion", "Compte");
 				}
 
 				string id = user.Id;
@@ -53,37 +53,39 @@ namespace MedManager.Controllers
 
 
 				var ordonnances = medecin.Ordonnances.AsQueryable();
-				if (!string.IsNullOrEmpty(searchString))
+				if (!string.IsNullOrEmpty(filtre))
 				{
-					ordonnances = ordonnances.Where(p => p.Patient.Nom.ToUpper().Contains(searchString.ToUpper()) || p.Patient.Prenom.ToUpper().Contains(searchString.ToUpper()));
+					ordonnances = ordonnances.Where(p => p.Patient.Nom.ToUpper().Contains(filtre.ToUpper()) || p.Patient.Prenom.ToUpper().Contains(filtre.ToUpper()));
 				}
 
-				int pageSize = 9;
-				int pageNumber = (page ?? 1);
-				var OrdonnancePagedList = ordonnances.ToPagedList(pageNumber, pageSize);
+				int TaillePage = 9;
+				int NombrePage = (page ?? 1);
+				var ListePageeDesOrdonnances = ordonnances.ToPagedList(NombrePage, TaillePage);
 
 				var viewModel = new IndexOrdonnanceViewModel
 				{
 					medecin = medecin,
-					Ordonnances = OrdonnancePagedList
-				};
+					Ordonnances = ListePageeDesOrdonnances
+                };
 
 
-				ViewData["CurrentFilter"] = searchString;
+				ViewData["FiltreActuel"] = filtre;
 
 				return View(viewModel);
 			}
-			catch (DbException ex)
-			{
-				_logger.LogError(ex, "An error occurred while updating the database.");
-				return RedirectToAction("Error");
-			}
-			catch (Exception ex)
-			{
-				_logger.LogError(ex, "An unexpected error occurred.");
-				return RedirectToAction("Error");
-			}
-		}
+            catch (DbException ex)
+            {
+                _logger.LogError(ex, "Une erreur s'est produite lors de la récupération des données.");
+                TempData["ErrorMessage"] = "Une erreur s'est produite lors de la récupération des données.";
+                return RedirectToAction("Error");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Une erreur inattendue s'est produite.");
+                TempData["ErrorMessage"] = "Une erreur inattendue s'est produite.";
+                return RedirectToAction("Error");
+            }
+        }
 
 		[HttpGet]
 		public async Task<IActionResult> Ajouter()
@@ -93,7 +95,7 @@ namespace MedManager.Controllers
 				var MedecinId = _userManager.GetUserId(User);
 				if (MedecinId == null)
 				{
-					return RedirectToAction("Login", "Account");
+					return RedirectToAction("Connexion", "Compte");
 				}
 
 				var medecin = await _dbContext.Users
@@ -109,178 +111,206 @@ namespace MedManager.Controllers
 				};
 				return View("Action", viewModel);
 			}
-			catch (DbException ex)
-			{
-				_logger.LogError(ex, "An error occurred while updating the database.");
-				return RedirectToAction("Error");
-			}
-			catch (Exception ex)
-			{
-				_logger.LogError(ex, "An unexpected error occurred.");
-				return RedirectToAction("Error");
-			}
-		}
+            catch (DbException ex)
+            {
+                _logger.LogError(ex, "Une erreur s'est produite lors de la récupération des données.");
+                TempData["ErrorMessage"] = "Une erreur s'est produite lors de la récupération des données.";
+                return RedirectToAction("Error");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Une erreur inattendue s'est produite.");
+                TempData["ErrorMessage"] = "Une erreur inattendue s'est produite.";
+                return RedirectToAction("Error");
+            }
+        }
 
-		[HttpPost]
-		public async Task<IActionResult> Ajouter(OrdonnanceViewModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				var MedecinId = _userManager.GetUserId(User);
-				if (MedecinId == null)
-				{
-					return RedirectToAction("Login", "Account");
-				}
+        [HttpPost]
+        public async Task<IActionResult> Ajouter(OrdonnanceViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var MedecinId = _userManager.GetUserId(User);
+                    if (MedecinId == null)
+                    {
+                        return RedirectToAction("Connexion", "Compte");
+                    }
 
-				var medecin = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == MedecinId);
+                    var medecin = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == MedecinId);
 
-				if (medecin == null)
-					return NotFound();
+                    if (medecin == null)
+                        return NotFound();
 
-				var ordonnance = new Ordonnance
-				{
-					DateDebut = model.DateDebut,
-					DateFin = model.DateFin,
-					InfoSupplementaire = model.InfoSupplementaire,
-					Medecin = medecin,
-					PatientId = model.PatientId,
-					Medicaments = new List<Medicament>(),
-					MedecinId = MedecinId,
-				};
+                    var ordonnance = new Ordonnance
+                    {
+                        DateDebut = model.DateDebut,
+                        DateFin = model.DateFin,
+                        InfoSupplementaire = model.InfoSupplementaire,
+                        Medecin = medecin,
+                        PatientId = model.PatientId,
+                        Medicaments = new List<Medicament>(),
+                        MedecinId = MedecinId,
+                    };
 
-				if (model.MedicamentIdSelectionnes != null)
-				{
-					var MedicamentsSelectionnes = await _dbContext.Medicaments
-							.Where(m => model.MedicamentIdSelectionnes.Contains(m.MedicamentId))
-							.ToListAsync();
-					foreach (var medicament in MedicamentsSelectionnes)
-					{
-						ordonnance.Medicaments.Add(medicament);
-					}
-				}
+                    if (model.MedicamentIdSelectionnes != null)
+                    {
+                        var MedicamentsSelectionnes = await _dbContext.Medicaments
+                                .Where(m => model.MedicamentIdSelectionnes.Contains(m.MedicamentId))
+                                .ToListAsync();
+                        foreach (var medicament in MedicamentsSelectionnes)
+                        {
+                            ordonnance.Medicaments.Add(medicament);
+                        }
+                    }
 
-				await _dbContext.Ordonnances.AddAsync(ordonnance);
-				await _dbContext.SaveChangesAsync();
-				return RedirectToAction("Index", "Ordonnance");
-			}
-			return View(model);
-		}
-
-		[HttpGet]
-		public async Task<IActionResult> Editer(int id)
-		{
-			try
-			{
-				var MedecinId = _userManager.GetUserId(User);
-				if (MedecinId == null)
-				{
-					return RedirectToAction("Login", "Account");
-				}
-
-				Ordonnance ordonnance = await _dbContext.Ordonnances
-						.Include(o => o.Medicaments)
-						.Include(o => o.Patient)
-						.FirstOrDefaultAsync(o => o.OrdonnanceId == id);
-
-				if (ordonnance == null)
-					return NotFound();
-
-				List<int> MedicamentsSelectionnes = new List<int>();
-				foreach (var m in ordonnance.Medicaments)
-				{
-					MedicamentsSelectionnes.Add(m.MedicamentId);
-
-				}
-
-				OrdonnanceViewModel model = new OrdonnanceViewModel
-				{
-					OrdonnanceId = ordonnance.OrdonnanceId,
-					DateDebut = ordonnance.DateDebut,
-					DateFin = ordonnance.DateFin,
-					InfoSupplementaire = ordonnance.InfoSupplementaire,
-					MedicamentIdSelectionnes = MedicamentsSelectionnes,
-					Medicaments = await _dbContext.Medicaments.ToListAsync(),
-					patients = await _dbContext.Patients.Where(p => p.medecin.Id == MedecinId).ToListAsync(),
-					PatientId = ordonnance.Patient.PatientId
-				};
-
-				return View("Action", model);
-			}
-			catch (DbException ex)
-			{
-				_logger.LogError(ex, "An error occurred while updating the database.");
-				return RedirectToAction("Error");
-			}
-			catch (Exception ex)
-			{
-				_logger.LogError(ex, "An unexpected error occurred.");
-				return RedirectToAction("Error");
-			}
-		}
-
-		[HttpPost]
-		public async Task<IActionResult> Editer(OrdonnanceViewModel model)
-		{
-			try
-			{
-				var MedecinId = _userManager.GetUserId(User);
-				if (MedecinId == null)
-				{
-					return RedirectToAction("Login", "Account");
-				}
-
-				if (ModelState.IsValid)
-				{
-					var ordonannce = await _dbContext.Ordonnances
-						.Include(p => p.Medicaments)
-						.Include(p => p.Patient)
-						.FirstOrDefaultAsync(o => o.OrdonnanceId == model.OrdonnanceId);
-					var patient = await _dbContext.Patients.FirstOrDefaultAsync(p => p.PatientId == model.PatientId);
-
-					if (ordonannce == null || patient == null)
-					{
-						return NotFound();
-					}
-
-					ordonannce.DateDebut = model.DateDebut;
-					ordonannce.DateFin = model.DateFin;
-					ordonannce.Patient = patient;
-					ordonannce.InfoSupplementaire = model.InfoSupplementaire;
-
-					ordonannce.Medicaments.Clear();
-					if (model.MedicamentIdSelectionnes != null)
-					{
-						var MedicamentSelectionne = await _dbContext.Medicaments
-							.Where(m => model.MedicamentIdSelectionnes.Contains(m.MedicamentId))
-							.ToListAsync();
-
-						foreach (var medicament in MedicamentSelectionne)
-						{
-							ordonannce.Medicaments.Add(medicament);
-						}
-					}
-					_dbContext.Entry(ordonannce).State = EntityState.Modified;
-					model.Medicaments = await _dbContext.Medicaments.ToListAsync();
-					await _dbContext.SaveChangesAsync();
-					return RedirectToAction("index", "Ordonnance");
-				}
-				else
-					return RedirectToAction("Error");
-			}
-			catch (DbException ex)
-			{
-				_logger.LogError(ex, "An error occurred while updating the database.");
-				return RedirectToAction("Error");
-			}
-			catch (Exception ex)
-			{
-				_logger.LogError(ex, "An unexpected error occurred.");
-				return RedirectToAction("Error");
-			}
-		}
+                    await _dbContext.Ordonnances.AddAsync(ordonnance);
+                    await _dbContext.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "L'ordonnance a été ajoutée avec succès.";
+                    return RedirectToAction("Index", "Ordonnance");
+                }
+                catch (DbUpdateException ex)
+                {
+                    _logger.LogError(ex, "Erreur lors de l'ajout de l'ordonnance.");
+                    TempData["ErrorMessage"] = "Une erreur s'est produite lors de l'ajout de l'ordonnance. Veuillez réessayer.";
+                    return RedirectToAction("Index", "Ordonnance");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Une erreur inattendue s'est produite lors de l'ajout de l'ordonnance.");
+                    TempData["ErrorMessage"] = "Une erreur inattendue s'est produite. Veuillez réessayer.";
+                    return RedirectToAction("Index", "Ordonnance");
+                }
+            }
+            return View(model);
+        }
 
 
-		public async Task<IActionResult> Supprimer(int id)
+        [HttpGet]
+        public async Task<IActionResult> Editer(int id)
+        {
+            try
+            {
+                var MedecinId = _userManager.GetUserId(User);
+                if (MedecinId == null)
+                {
+                    return RedirectToAction("Connexion", "Compte");
+                }
+
+                Ordonnance ordonnance = await _dbContext.Ordonnances
+                        .Include(o => o.Medicaments)
+                        .Include(o => o.Patient)
+                        .FirstOrDefaultAsync(o => o.OrdonnanceId == id);
+
+                if (ordonnance == null)
+                    return NotFound();
+
+                List<int> MedicamentsSelectionnes = new List<int>();
+                foreach (var m in ordonnance.Medicaments)
+                {
+                    MedicamentsSelectionnes.Add(m.MedicamentId);
+                }
+
+                OrdonnanceViewModel model = new OrdonnanceViewModel
+                {
+                    OrdonnanceId = ordonnance.OrdonnanceId,
+                    DateDebut = ordonnance.DateDebut,
+                    DateFin = ordonnance.DateFin,
+                    InfoSupplementaire = ordonnance.InfoSupplementaire,
+                    MedicamentIdSelectionnes = MedicamentsSelectionnes,
+                    Medicaments = await _dbContext.Medicaments.ToListAsync(),
+                    patients = await _dbContext.Patients.Where(p => p.medecin.Id == MedecinId).ToListAsync(),
+                    PatientId = ordonnance.Patient.PatientId
+                };
+
+                return View("Action", model);
+            }
+            catch (DbException ex)
+            {
+                _logger.LogError(ex, $"Erreur lors de la récupération de l'ordonnance avec ID {id}.", id);
+                TempData["ErrorMessage"] = "Une erreur s'est produite lors de la récupération des informations de l'ordonnance. Veuillez réessayer.";
+                return RedirectToAction("Error");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Une erreur inattendue s'est produite lors de l'édition de l'ordonnance avec ID {id}.", id);
+                TempData["ErrorMessage"] = "Une erreur inattendue s'est produite lors de l'édition de l'ordonnance. Veuillez réessayer.";
+                return RedirectToAction("Error");
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Editer(OrdonnanceViewModel model)
+        {
+            try
+            {
+                var MedecinId = _userManager.GetUserId(User);
+                if (MedecinId == null)
+                {
+                    return RedirectToAction("Connexion", "Compte");
+                }
+
+                if (ModelState.IsValid)
+                {
+                    var ordonnance = await _dbContext.Ordonnances
+                        .Include(p => p.Medicaments)
+                        .Include(p => p.Patient)
+                        .FirstOrDefaultAsync(o => o.OrdonnanceId == model.OrdonnanceId);
+                    var patient = await _dbContext.Patients.FirstOrDefaultAsync(p => p.PatientId == model.PatientId);
+
+                    if (ordonnance == null || patient == null)
+                    {
+                        return NotFound();
+                    }
+
+                    ordonnance.DateDebut = model.DateDebut;
+                    ordonnance.DateFin = model.DateFin;
+                    ordonnance.Patient = patient;
+                    ordonnance.InfoSupplementaire = model.InfoSupplementaire;
+
+                    ordonnance.Medicaments.Clear();
+                    if (model.MedicamentIdSelectionnes != null)
+                    {
+                        var MedicamentSelectionne = await _dbContext.Medicaments
+                            .Where(m => model.MedicamentIdSelectionnes.Contains(m.MedicamentId))
+                            .ToListAsync();
+
+                        foreach (var medicament in MedicamentSelectionne)
+                        {
+                            ordonnance.Medicaments.Add(medicament);
+                        }
+                    }
+                    _dbContext.Entry(ordonnance).State = EntityState.Modified;
+                    model.Medicaments = await _dbContext.Medicaments.ToListAsync();
+                    await _dbContext.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "L'ordonnance a été modifiée avec succès.";
+                    return RedirectToAction("Index", "Ordonnance");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Les données soumises ne sont pas valides. Veuillez vérifier et réessayer.";
+                    return RedirectToAction("Error");
+                }
+            }
+            catch (DbException ex)
+            {
+                _logger.LogError(ex, $"Erreur lors de la mise à jour de l'ordonnance avec ID {model.OrdonnanceId}.", model.OrdonnanceId);
+                TempData["ErrorMessage"] = "Une erreur s'est produite lors de la mise à jour de l'ordonnance. Veuillez réessayer.";
+                return RedirectToAction("Error");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Une erreur inattendue s'est produite lors de l'édition de l'ordonnance avec ID {model.OrdonnanceId}.");
+                TempData["ErrorMessage"] = "Une erreur inattendue s'est produite lors de l'édition de l'ordonnance. Veuillez réessayer.";
+                return RedirectToAction("Error");
+            }
+        }
+
+
+
+        public async Task<IActionResult> Supprimer(int id)
 		{
 			try
 			{
@@ -289,22 +319,24 @@ namespace MedManager.Controllers
 				{
 					_dbContext.Ordonnances.Remove(OrdonnanceSupprimee);
 					await _dbContext.SaveChangesAsync();
-					return RedirectToAction("Index", "Ordonnance");
+                    TempData["SuccessMessage"] = "L'ordonnance a été supprimée avec succès.";
+                    return RedirectToAction("Index", "Ordonnance");
 				}
 				return NotFound();
 			}
-			catch (DbException ex)
-
-			{
-				_logger.LogError(ex, "An error occurred while deleting the patient.");
-				return RedirectToAction("Error");
-			}
-			catch (Exception ex)
-			{
-				_logger.LogError(ex, "An unexpected error occurred.");
-				return RedirectToAction("Error");
-			}
-		}
+            catch (DbException ex)
+            {
+                _logger.LogError(ex, $"Erreur lors de la suppresion de l'ordonnance avec ID {id}.");
+                TempData["ErrorMessage"] = "Une erreur s'est produite lors de la mise à jour de l'ordonnance. Veuillez réessayer.";
+                return RedirectToAction("Error");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Une erreur inattendue s'est produite lors de la suppresion de l'ordonnance avec ID {id}.");
+                TempData["ErrorMessage"] = "Une erreur inattendue s'est produite lors de l'édition de l'ordonnance. Veuillez réessayer.";
+                return RedirectToAction("Error");
+            }
+        }
 
 		public async Task<IActionResult> GenererPdf(int ordonnanceId, int patientId)
 		{
@@ -314,7 +346,7 @@ namespace MedManager.Controllers
 				var MedecinId = _userManager.GetUserId(User);
 				if (MedecinId == null)
 				{
-					return RedirectToAction("Login", "Account");
+					return RedirectToAction("Connexion", "Compte");
 				}
 
 				var patient = await _dbContext.Patients.FirstOrDefaultAsync(p => p.PatientId == patientId);
@@ -326,7 +358,7 @@ namespace MedManager.Controllers
 				if (patient != null && medecin != null && ordonnance != null)
 				{
 					string fileName = $"Ordonnance_{patient.NomComplet}_{ordonnanceId}.pdf";
-					string filePath = Path.Combine(_pdfDirectory, fileName);
+					string filePath = Path.Combine(_RepertoirePdf, fileName);
 
 					OrdonnancePdfGenerateur pdfGenerateur = new OrdonnancePdfGenerateur();
 
