@@ -3,6 +3,22 @@
 	ViewData["Title"] = "Mes ordonnances";
 }
 
+@if (TempData["MessageSucces"] != null)
+
+{
+	<div id="tempMessage" class="alert alert-success">
+		@TempData["MessageSucces"]
+	</div>
+}
+
+@if (TempData["MessageErreur"] != null)
+
+{
+	<div id="tempMessage" class="alert alert-danger">
+		@TempData["MessageErreur"]
+	</div>
+}
+
 <div class="text-center">
 	<div>
 		<a asp-action="Ajouter" asp-controller="Ordonnance" class="btn btn-primary">Créer une ordonnance</a>
@@ -20,9 +36,6 @@
 		{
 			<div class="col-md-4 mb-3">
 				<div class="card">
-					@* 					<div class="row">
-				<img class="card-img-top fixed-dimension" src="@Url.Action("GetPhoto", "Patient", new { id = p.PatientId })" alt="Photo du patient">
-				</div> *@
 					<div class="card-body">
 						<h5 class="card-title">@o.Patient.NomComplet</h5>
 						<p class="card-text"> Date de début : @o.DateDebut.ToString("dd/MM/yyyy") </p>
@@ -59,3 +72,14 @@
 		@Html.PagedListPager(Model.Ordonnances, page => Url.Action("Index", new { page }))
 	</div>
 </div>
+
+<script>
+	window.addEventListener('DOMContentLoaded', (event) => {
+		const tempMessage = document.getElementById("tempMessage");
+		if (tempMessage) {
+			setTimeout(() => {
+				tempMessage.style.display = "none";
+			}, 3000);
+		}
+	});
+</script>

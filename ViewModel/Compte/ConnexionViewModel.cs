@@ -4,10 +4,10 @@ namespace MedManager.ViewModel.Compte
 {
     public class ConnexionViewModel
     {
-        [Required]
-        [Display(Name = "Nom d'utilisateur")]
+		[Required(ErrorMessage = "Le nom d'utilisateur est requis")]
+		[Display(Name = "Nom d'utilisateur")]
         public required string NomUtilisateur { get; set; }
-        [Required]
+        [Required(ErrorMessage ="Le mot de passe est requis")]
         [DataType(DataType.Password)]
         [Display(Name = "Mot de passe")]
         public required string MotDePasse { get; set; }

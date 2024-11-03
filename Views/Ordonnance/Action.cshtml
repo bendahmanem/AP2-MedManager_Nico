@@ -25,12 +25,25 @@
         <span asp-validation-for="DateFin" class="text-danger"></span>
     </div>
 
-    <div class="form-group row">
+@*     <div class="form-group row">
         @Html.LabelFor(model => model.MedicamentIdSelectionnes, new { @class = "col-sm-2 col-form-label" })
         <div class="col-sm-10">
             @Html.ListBoxFor(model => model.MedicamentIdSelectionnes,
                      new MultiSelectList(Model.Medicaments, "MedicamentId", "Nom"),
                      new { @class = "form-control", @id = "Medicaments_CB" })
+        </div>
+    </div> *@
+
+    <div class="form-group row">
+        <label asp-for="MedicamentIdSelectionnes" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <select asp-for="MedicamentIdSelectionnes" multiple="multiple" class="form-control" id="Medicaments_CB">
+                @foreach (var medicament in Model.Medicaments)
+                {
+                    <option value="@medicament.MedicamentId">@medicament.Nom</option>
+                }
+            </select>
+            <span asp-validation-for="MedicamentIdSelectionnes" class="text-danger"></span>
         </div>
     </div>
 

@@ -1,4 +1,5 @@
-﻿using MedManager.Models;
+﻿using MedManager.Attributs;
+using MedManager.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace MedManager.ViewModel.OrdonnanceVM
@@ -16,19 +17,22 @@ namespace MedManager.ViewModel.OrdonnanceVM
         [DataType(DataType.Date)]
         [Required(ErrorMessage = "Le date de fin est obligatoire")]
         public DateTime DateFin { get; set; }
+
         [Display(Name = "Informations suplémentaires")]
         public string? InfoSupplementaire { get; set; }
 
-        [Required(ErrorMessage = "Les médicaments sont obligatoires")]
+        [Required]
         public required List<Medicament> Medicaments { get; set; } = new List<Medicament>();
 
-        [Display(Name="Médicaments sélectionnés")]
-        public List<int>? MedicamentIdSelectionnes { get; set; } = new List<int>();
+		[RequiredListeNonVide(ErrorMessage = "Veuillez sélectionner au moins un médicament")]
+		[Display(Name="Médicaments disponibles")]
+        public required List<int> MedicamentIdSelectionnes { get; set; } = new List<int>();
 
         public byte[]? Pdf { get; set; }
 
-        [Display(Name ="Sélectionner un patient")]
-        public int? PatientId { get; set; }
+		[Required(ErrorMessage = "Veuillez sélectionner un patient")]
+		[Display(Name ="Sélectionner un patient")]
+        public int PatientId { get; set; }
 
         public required List<Patient> patients { get; set; } = new List<Patient>();
 

@@ -107,7 +107,9 @@ namespace MedManager.Controllers
 				var viewModel = new OrdonnanceViewModel
 				{
 					Medicaments = await _dbContext.Medicaments.ToListAsync(),
-					patients = medecin.Patients
+					patients = medecin.Patients,
+                    MedicamentIdSelectionnes = new List<int>(),
+                    PatientId = 0,
 				};
 				return View("Action", viewModel);
 			}
@@ -154,7 +156,7 @@ namespace MedManager.Controllers
                         MedecinId = MedecinId,
                     };
 
-                    if (model.MedicamentIdSelectionnes != null)
+                    if (model.MedicamentIdSelectionnes != null && model.MedicamentIdSelectionnes.Count > 0)
                     {
                         var MedicamentsSelectionnes = await _dbContext.Medicaments
                                 .Where(m => model.MedicamentIdSelectionnes.Contains(m.MedicamentId))
@@ -183,7 +185,13 @@ namespace MedManager.Controllers
                     return RedirectToAction("Index", "Ordonnance");
                 }
             }
-            return View(model);
+            model.Medicaments = await _dbContext.Medicaments.ToListAsync();
+            model.patients = await _dbContext.Users
+                                             .Include(u => u.Patients)
+                                             .Where(u => u.Id == _userManager.GetUserId(User))
+                                             .SelectMany(u => u.Patients)
+                                             .ToListAsync();
+            return View("Action", model);
         }
 
 
@@ -228,13 +236,13 @@ namespace MedManager.Controllers
             }
             catch (DbException ex)
             {
-                _logger.LogError(ex, $"Erreur lors de la récupération de l'ordonnance avec ID {id}.", id);
+                _logger.LogError(ex, "Erreur lors de la récupération de l'ordonnance avec ID {OrdonnanceId}.", id);
                 TempData["ErrorMessage"] = "Une erreur s'est produite lors de la récupération des informations de l'ordonnance. Veuillez réessayer.";
                 return RedirectToAction("Error");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Une erreur inattendue s'est produite lors de l'édition de l'ordonnance avec ID {id}.", id);
+                _logger.LogError(ex, "Une erreur inattendue s'est produite lors de l'édition de l'ordonnance avec ID {OrdonnanceId}.", id);
                 TempData["ErrorMessage"] = "Une erreur inattendue s'est produite lors de l'édition de l'ordonnance. Veuillez réessayer.";
                 return RedirectToAction("Error");
             }
@@ -296,13 +304,13 @@ namespace MedManager.Controllers
             }
             catch (DbException ex)
             {
-                _logger.LogError(ex, $"Erreur lors de la mise à jour de l'ordonnance avec ID {model.OrdonnanceId}.", model.OrdonnanceId);
+                _logger.LogError(ex, "Erreur lors de la mise à jour de l'ordonnance avec ID {OrdonnanceId}.", model.OrdonnanceId);
                 TempData["ErrorMessage"] = "Une erreur s'est produite lors de la mise à jour de l'ordonnance. Veuillez réessayer.";
                 return RedirectToAction("Error");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Une erreur inattendue s'est produite lors de l'édition de l'ordonnance avec ID {model.OrdonnanceId}.");
+                _logger.LogError(ex, "Une erreur inattendue s'est produite lors de l'édition de l'ordonnance avec ID {OrdonnanceId}.", model.OrdonnanceId); 
                 TempData["ErrorMessage"] = "Une erreur inattendue s'est produite lors de l'édition de l'ordonnance. Veuillez réessayer.";
                 return RedirectToAction("Error");
             }
@@ -326,13 +334,13 @@ namespace MedManager.Controllers
 			}
             catch (DbException ex)
             {
-                _logger.LogError(ex, $"Erreur lors de la suppresion de l'ordonnance avec ID {id}.");
+                _logger.LogError(ex, "Erreur lors de la suppresion de l'ordonnance avec ID {OrdonnanceId}.", id);
                 TempData["ErrorMessage"] = "Une erreur s'est produite lors de la mise à jour de l'ordonnance. Veuillez réessayer.";
                 return RedirectToAction("Error");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Une erreur inattendue s'est produite lors de la suppresion de l'ordonnance avec ID {id}.");
+                _logger.LogError(ex, "Une erreur inattendue s'est produite lors de la suppresion de l'ordonnance avec ID {OrdonnanceId}.", id);
                 TempData["ErrorMessage"] = "Une erreur inattendue s'est produite lors de l'édition de l'ordonnance. Veuillez réessayer.";
                 return RedirectToAction("Error");
             }
@@ -375,18 +383,19 @@ namespace MedManager.Controllers
 				else
 					return NotFound();
 			}
-			catch (DbException ex)
-
-			{
-				_logger.LogError(ex, "An error occurred while deleting the patient.");
-				return RedirectToAction("Error");
-			}
-			catch (Exception ex)
-			{
-				_logger.LogError(ex, "An unexpected error occurred.");
-				return RedirectToAction("Error");
-			}
-		}
+            catch (DbException ex)
+            {
+                _logger.LogError(ex, "Une erreur est survenue lors de la génération du PDF pour l'ordonnance ID {OrdonnanceId} et le patient ID {PatientId}.", ordonnanceId, patientId);
+                TempData["ErrorMessage"] = "Une erreur s'est produite lors de la génération du PDF. Veuillez réessayer.";
+                return RedirectToAction("Error");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Une erreur inattendue est survenue lors de la génération du PDF pour l'ordonnance ID {OrdonnanceId}.", ordonnanceId);
+                TempData["ErrorMessage"] = "Une erreur inattendue est survenue. Veuillez réessayer.";
+                return RedirectToAction("Error");
+            }
+        }
 	}
 }
 
