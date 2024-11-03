@@ -2,7 +2,7 @@
 
 <form asp-action="Index" method="get" class="mt-3">
 	<div class="input-group mb-3">
-		<input type="text" name="searchString" class="form-control" placeholder="Rechercher par médicament" value="@ViewData["CurrentFilter"]" />
+		<input type="text" name="Filtre" class="form-control" placeholder="Rechercher par médicament" value="@ViewData["FiltreActuel"]" />
 		<button class="btn btn-outline-primary" type="submit">Rechercher</button>
 	</div>
 </form>
@@ -15,17 +15,21 @@
 			<th>Quantite</th>
 			<th>Posologie</th>
 			<th>Composition</th>
+			<th>Catégorie</th>
+			<th>Modifier</th>
+			<th>Supprimer</th>
 		</tr>
 	</thead>
 	<tbody>
 		@foreach (var m in Model)
 		{
 			<tr>
-				<td>@m.MedicamentId</td>
+				
 				<td>@m.Nom</td>
 				<td>@m.Quantite</td>
 				<td>@m.Posologie</td>
 				<td>@m.Composition</td>
+				<td>@m.Categorie</td>
 
 				<td>
 					<a asp-action="Modifier" asp-controller="Medicament" asp-route-id="@m.MedicamentId">

@@ -31,7 +31,17 @@
 		<span asp-validation-for="Composition" class="text-danger"></span>
 	</div>
 
-
+	<div>
+		<label asp-for="Categorie"></label>
+		<select asp-for="Categorie" class="form-control">
+			<option value="">Sélectionnez la catégorie</option>
+			@foreach (var categorie in Enum.GetValues(typeof(CategorieEnum)))
+			{
+				<option value="@categorie">@categorie</option>
+			}
+		</select>
+		<span asp-validation-for="Categorie" class="text-danger"></span>
+	</div>
 
 	<button type="submit" class="btn btn-primary">Modifier le medicament</button>
 </form>

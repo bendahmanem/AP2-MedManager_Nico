@@ -34,7 +34,7 @@ namespace MedManager.Models
         public required string Composition { get; set; }
 
         [Required(ErrorMessage = "La catégorie est obligatoire")]
-        public CategorieEnum Categorie { get; set; }
+        public required CategorieEnum Categorie { get; set; }
 
         public List<Allergie> Allergies { get; set; } = new List<Allergie>();
 

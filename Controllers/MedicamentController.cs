@@ -19,19 +19,19 @@ namespace MedManager.Controllers
 			_logger = logger;
 		}
 
-		public async Task<IActionResult> Index(string searchString)
+		public async Task<IActionResult> Index(string Filtre)
 		{
 
 			List<Medicament> medicaments = await _dbContext.Medicaments.ToListAsync();
 
-			if (!string.IsNullOrEmpty(searchString))
+			if (!string.IsNullOrEmpty(Filtre))
 			{
 				medicaments = medicaments
-					.Where(m => m.Nom.ToUpper().Contains(searchString.ToUpper()))
+					.Where(m => m.Nom.ToUpper().Contains(Filtre.ToUpper()))
 					.ToList();
 			}
 
-			ViewData["CurrentFilter"] = searchString;
+			ViewData["FiltreActuel"] = Filtre;
 			return View(medicaments);
 		}
 
@@ -61,6 +61,7 @@ namespace MedManager.Controllers
 					medicament.Quantite = model.Quantite;
 					medicament.Posologie = model.Posologie;
 					medicament.Composition = model.Composition;
+					medicament.Categorie = model.Categorie;
 					_dbContext.Entry(medicament).State = EntityState.Modified;
 					await _dbContext.SaveChangesAsync();
 					return RedirectToAction("Index", "Medicament");

@@ -10,7 +10,7 @@
 
 	<form asp-action="Index" method="get" class="mt-3">
 		<div class="input-group mb-3">
-			<input type="text" name="searchString" class="form-control" placeholder="Rechercher par nom ou prénom" value="@ViewData["CurrentFilter"]" />
+			<input type="text" name="Filtre" class="form-control" placeholder="Rechercher par nom ou prénom" value="@ViewData["FiltreActuel"]" />
 			<button class="btn btn-outline-primary" type="submit">Rechercher</button>
 		</div>
 	</form>
@@ -30,10 +30,10 @@
 						<a asp-action="Detail" asp-controller="Patient" asp-route-id="@p.PatientId">
 							<i class="bi bi-eye"></i>
 						</a>
-						<a asp-action="Edit" asp-controller="Patient" asp-route-id="@p.PatientId">
+						<a asp-action="Editer" asp-controller="Patient" asp-route-id="@p.PatientId">
 							<i class="bi bi-pencil"></i>
 						</a>
-						<a asp-action="Delete" asp-controller="Patient" asp-route-id="@p.PatientId" onclick="return confirm('Êtes-vous sûr de vouloir supprimer @p.Nom, @p.Prenom ?');">
+						<a asp-action="Supprimer" asp-controller="Patient" asp-route-id="@p.PatientId" onclick="return confirm('Êtes-vous sûr de vouloir supprimer @p.Nom, @p.Prenom ?');">
 							<i class="bi bi-trash"></i>
 						</a>
 					</div>
