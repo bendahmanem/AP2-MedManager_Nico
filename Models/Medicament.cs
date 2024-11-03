@@ -22,7 +22,8 @@ namespace MedManager.Models
         [StringLength(100, MinimumLength = 2, ErrorMessage = "Le nom du médicament doit contenir entre 2 et 100 caractères.")]
         public required string Nom { get; set; }
 
-        [Required(ErrorMessage = "La quantité est obligatoire")]
+        [Required(ErrorMessage = "La quantité est requise")]
+        [Range(1, int.MaxValue, ErrorMessage = "La quantité doit être un nombre positif.")]
         public int Quantite { get; set; }
 
         [Required(ErrorMessage = "La posologie est obligatoire")]

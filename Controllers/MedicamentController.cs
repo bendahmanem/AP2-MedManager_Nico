@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
+using Microsoft.AspNetCore.Authorization;
 namespace MedManager.Controllers
 {
-	public class MedicamentController : Controller
+    [Authorize]
+    public class MedicamentController : Controller
 	{
 		private readonly ILogger<Medecin> _logger;
 		private readonly ApplicationDbContext _dbContext;
@@ -63,7 +65,8 @@ namespace MedManager.Controllers
 					await _dbContext.SaveChangesAsync();
 					return RedirectToAction("Index", "Medicament");
 				}
-			}
+                return View(model);
+            }
 			catch (DbException ex)
 			{
 				_logger.LogError(ex, "Une erreur est apparue pendant la modification du médicament.");
@@ -74,10 +77,9 @@ namespace MedManager.Controllers
 				_logger.LogError(ex, "Une erreur innatendue est survenue.");
 				return RedirectToAction("Error");
 			}
-			return View();
 		}
 
-		public async Task<IActionResult> Suprimer(int id)
+		public async Task<IActionResult> Supprimer(int id)
 		{
 			try
 			{
@@ -86,10 +88,10 @@ namespace MedManager.Controllers
 				if (medicament == null)
 					return NotFound();
 
-				_dbContext.Remove(medicament);
-				_dbContext.SaveChanges();
+                _dbContext.Remove(medicament);
+                await _dbContext.SaveChangesAsync();
 
-				return RedirectToAction("Index", "Medicament");
+                return RedirectToAction("Index", "Medicament");
 			}
 			catch (DbException ex)
 			{
@@ -111,7 +113,6 @@ namespace MedManager.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Ajouter(Medicament model)
 		{
-
 			try
 			{
 				if (ModelState.IsValid)
@@ -120,8 +121,9 @@ namespace MedManager.Controllers
 					await _dbContext.SaveChangesAsync();
 					return RedirectToAction("Index", "Medicament");
 				}
+                return View(model);
 
-			}
+            }
 			catch (DbException ex)
 			{
 				_logger.LogError(ex, "Une erreur est apparue pendant l'ajout du médicament.");
@@ -132,8 +134,6 @@ namespace MedManager.Controllers
 				_logger.LogError(ex, "Une erreur innatendue est survenue.");
 				return RedirectToAction("Error");
 			}
-
-			return View();
 		}
 	}
 }

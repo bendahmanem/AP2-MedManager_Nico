@@ -10,10 +10,11 @@ using X.PagedList;
 using System.Data.Common;
 using Microsoft.CodeAnalysis.CSharp;
 using NuGet.Versioning;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MedManager.Controllers
 {
-
+    [Authorize]
     public class PatientController : Controller
     {
         private readonly ApplicationDbContext _dbContext;

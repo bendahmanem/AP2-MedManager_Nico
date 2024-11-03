@@ -4,10 +4,12 @@ using MedManager.Models;
 using Microsoft.EntityFrameworkCore;
 using MedManager.ViewModel.ContreIndication;
 using System.Data.Common;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MedManager.Controllers
 {
-	public class ContreIndicationsController : Controller
+    [Authorize]
+    public class ContreIndicationsController : Controller
 	{
 		private readonly ApplicationDbContext _dbContext;
 		private readonly ILogger<Patient> _logger;

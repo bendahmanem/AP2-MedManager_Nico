@@ -2,6 +2,7 @@
 using MedManager.Models;
 using MedManager.ViewModel.OrdonnanceVM;
 using MedManager.ViewModel.PatientVM;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +12,8 @@ using X.PagedList;
 
 namespace MedManager.Controllers
 {
-	public class OrdonnanceController : Controller
+    [Authorize]
+    public class OrdonnanceController : Controller
 	{
 		private readonly ApplicationDbContext _dbContext;
 		private readonly UserManager<Medecin> _userManager;
