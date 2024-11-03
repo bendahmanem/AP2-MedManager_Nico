@@ -32,7 +32,7 @@ namespace MedManager.Models
 
         [Required(ErrorMessage = "La date de naissance est obligatoire")]
         [DataType(DataType.Date, ErrorMessage = "La date de naissance n'est pas valide.")]
-        public DateTime DateNaissance { get; set; }
+        public required DateTime DateNaissance { get; set; }
 
         [Required(ErrorMessage = "L'adresse est obligatoire")]
         [StringLength(100, ErrorMessage = "L'adresse ne peut pas dépasser 100 caractères.")]

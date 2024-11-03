@@ -28,7 +28,6 @@ namespace MedManager.Controllers
             _userManager = userManager;
         }
 
-        //Revoir ici l'appel à la base de données pour la construction de l'objet médecin. N'appeller que le nécessaire ! 
         public async Task<IActionResult> Index(int? page, string Filtre)
         {
             try
@@ -43,8 +42,6 @@ namespace MedManager.Controllers
 
                 Medecin? medecin = await _dbContext.Users
                                         .Include(u => u.Patients)
-                                        .ThenInclude(p => p.Allergies)
-                                        .Include(u => u.Ordonnances)
                                         .FirstOrDefaultAsync(m => m.Id == id);
 
                 if (medecin == null)
@@ -65,7 +62,6 @@ namespace MedManager.Controllers
 
                 var viewModel = new IndexPatientViewModel
                 {
-                    medecin = medecin,
                     Patients = ListePagineesPatients
 				};
 
@@ -89,15 +85,24 @@ namespace MedManager.Controllers
 
 
 		[HttpGet]
-		public async Task<IActionResult> Ajouter(string id)
+		public async Task<IActionResult> Ajouter()
 		{
 			try
 			{
 				var viewModel = new PatientViewModel
 				{
+					Nom = "",
+					Prenom = "",
+					DateNaissance = DateTime.Now,
+					Adresse = "",
+					Ville = "",
+					Poids = 0,
+					Taille = 0,
+					Photo = null,
+					NuméroSécuritéSociale = "",
+					Sexe = 0,
 					Allergies = await _dbContext.Allergies.ToListAsync(),
 					Antecedents = await _dbContext.Antecedents.ToListAsync(),
-					IdMedecin = id,
 				};
 				return View(viewModel);
 			}
@@ -119,22 +124,31 @@ namespace MedManager.Controllers
 		{
 			try
 			{
-				Medecin? medecin = await _dbContext.Users.FirstOrDefaultAsync(m => m.Id == model.IdMedecin);
+
+				var user = await _userManager.GetUserAsync(User);
+				if (user == null)
+				{
+					return RedirectToAction("Connexion", "Compte");
+				}
+
+				string id = user.Id;
+
+				Medecin? medecin = await _dbContext.Users.FirstOrDefaultAsync(m => m.Id == id);
 
 				if (ModelState.IsValid)
 				{
 					var patient = new Patient
 					{
-						Nom = model.patient.Nom,
-						Prenom = model.patient.Prenom,
-						NuméroSécuritéSociale = model.patient.NuméroSécuritéSociale,
-						DateNaissance = model.patient.DateNaissance,
-						Taille = model.patient.Taille,
-						Poids = model.patient.Poids,
-						Adresse = model.patient.Adresse,
-						Ville = model.patient.Ville,
-						Sexe = model.patient.Sexe,
-						MedecinID = model.IdMedecin,
+						Nom = model.Nom,
+						Prenom = model.Prenom,
+						NuméroSécuritéSociale = model.NuméroSécuritéSociale,
+						DateNaissance = model.DateNaissance,
+						Taille = model.Taille,
+						Poids = model.Poids,
+						Adresse = model.Adresse,
+						Ville = model.Ville,
+						Sexe = model.Sexe,
+						MedecinID = medecin.Id,
 						medecin = medecin,
 					};
 
@@ -181,13 +195,13 @@ namespace MedManager.Controllers
 			{
 				_logger.LogError(ex, "Une erreur s'est produite lors de la mise à jour de la base de données.");
 				TempData["ErrorMessage"] = "Une erreur s'est produite lors de l'ajout du patient. Veuillez réessayer.";
-				return RedirectToAction("Ajouter", new { id = model.IdMedecin });
+				return RedirectToAction("Ajouter");
 			}
 			catch (Exception ex)
 			{
 				_logger.LogError(ex, "Une erreur inattendue est survenue lors de l'ajout du patient.");
 				TempData["ErrorMessage"] = "Une erreur inattendue est survenue. Veuillez réessayer.";
-				return RedirectToAction("Ajouter", new { id = model.IdMedecin });
+				return RedirectToAction("Ajouter");
 			}
 		}
 
@@ -230,19 +244,21 @@ namespace MedManager.Controllers
 													.Include(p => p.Allergies)
 													.Include(p => p.Antecedents)
 													.FirstOrDefaultAsync(p => p.PatientId == id);
-				var user = await _userManager.GetUserAsync(User);
 
-				if (patient == null || user == null)
-				{
+				if (patient == null)
 					return NotFound();
-				}
-
-				string idMedecin = user.Id;
 
 				var viewModel = new PatientViewModel
 				{
-					IdMedecin = idMedecin,
-					patient = patient,
+					Nom = patient.Nom,
+					Prenom = patient.Prenom,
+					NuméroSécuritéSociale = patient.NuméroSécuritéSociale,
+					DateNaissance = patient.DateNaissance,
+					Taille = patient.Taille,
+					Poids = patient.Poids,
+					Adresse = patient.Adresse,
+					Ville = patient.Ville,
+					Sexe = patient.Sexe,
 					Allergies = await _dbContext.Allergies.ToListAsync(),
 					Antecedents = await _dbContext.Antecedents.ToListAsync(),
 					SelectedAllergieIds = patient.Allergies.Select(a => a.AllergieId).ToList() ?? new List<int>(),
@@ -280,16 +296,16 @@ namespace MedManager.Controllers
 					if (patient == null)
 						return NotFound();
 
-					patient.Nom = viewModel.patient.Nom;
-					patient.Prenom = viewModel.patient.Prenom;
-					patient.Adresse = viewModel.patient.Adresse;
-					patient.DateNaissance = viewModel.patient.DateNaissance;
-					patient.Ville = viewModel.patient.Ville;
-					patient.Sexe = viewModel.patient.Sexe;
-					patient.NuméroSécuritéSociale = viewModel.patient.NuméroSécuritéSociale;
-					patient.Poids = viewModel.patient.Poids;
-					patient.Taille = viewModel.patient.Taille;
-					patient.Photo = viewModel.patient.Photo;
+					patient.Nom = viewModel.Nom;
+					patient.Prenom = viewModel.Prenom;
+					patient.Adresse = viewModel.Adresse;
+					patient.DateNaissance = viewModel.DateNaissance;
+					patient.Ville = viewModel.Ville;
+					patient.Sexe = viewModel.Sexe;
+					patient.NuméroSécuritéSociale = viewModel.NuméroSécuritéSociale;
+					patient.Poids = viewModel.Poids;
+					patient.Taille = viewModel.Taille;
+					patient.Photo = viewModel.Photo;
 
 					patient.Allergies.Clear();
 					if (viewModel.SelectedAllergieIds != null)
@@ -371,7 +387,7 @@ namespace MedManager.Controllers
 		}
 
 
-		public async Task<IActionResult> GetPhoto(int id)
+		public async Task<IActionResult> ObtenirPhoto(int id)
 		{
 			try
 			{

@@ -5,7 +5,7 @@
 
 <div class="text-center">
 	<div>
-		<a asp-action="Ajouter" asp-controller="Patient" asp-route-id="@Model.medecin.Id" class="btn btn-primary">Créer un patient</a>
+		<a asp-action="Ajouter" asp-controller="Patient" class="btn btn-primary">Créer un patient</a>
 	</div>
 
 	<form asp-action="Index" method="get" class="mt-3">
@@ -21,7 +21,7 @@
 			<div class="col-md-4 mb-3">
 				<div class="card">
 					<div class="row">
-						<img class="card-img-top fixed-dimension" src="@Url.Action("GetPhoto", "Patient", new { id = p.PatientId })" alt="Photo du patient">
+						<img class="card-img-top fixed-dimension" src="@Url.Action("ObtenirPhoto", "Patient", new { id = p.PatientId })" alt="Photo du patient">
 					</div>
 
 					<div class="card-body">
