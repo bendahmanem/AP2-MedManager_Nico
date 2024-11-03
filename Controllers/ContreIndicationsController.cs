@@ -6,221 +6,213 @@ using MedManager.ViewModel.ContreIndication;
 
 namespace MedManager.Controllers
 {
-    public class ContreIndicationsController : Controller
-    {
-        private readonly ApplicationDbContext _dbContext;
-        private readonly ILogger<Patient> _logger;
+	public class ContreIndicationsController : Controller
+	{
+		private readonly ApplicationDbContext _dbContext;
+		private readonly ILogger<Patient> _logger;
 
-        public ContreIndicationsController(ApplicationDbContext dbContext, ILogger<Patient> logger)
-        {
-            _dbContext = dbContext;
-            _logger = logger;
-        }
-        public async Task<IActionResult> Index(string searchStringAllergies, string searchStringAntecedents)
-        {
-            List<Allergie> allergies = await _dbContext.Allergies.ToListAsync();
-            List<Antecedent> antecedents = await _dbContext.Antecedents.ToListAsync();
+		public ContreIndicationsController(ApplicationDbContext dbContext, ILogger<Patient> logger)
+		{
+			_dbContext = dbContext;
+			_logger = logger;
+		}
 
-	
-			if (!string.IsNullOrEmpty(searchStringAllergies))
+		public async Task<IActionResult> Index(string filtreAllergies, string filtreAntecedents)
+		{
+			List<Allergie> allergies = await _dbContext.Allergies.ToListAsync();
+			List<Antecedent> antecedents = await _dbContext.Antecedents.ToListAsync();
+
+			if (!string.IsNullOrEmpty(filtreAllergies))
 			{
-				allergies = allergies.Where(a => a.Nom.ToUpper().Contains(searchStringAllergies.ToUpper())).ToList();
+				allergies = allergies.Where(a => a.Nom.ToUpper().Contains(filtreAllergies.ToUpper())).ToList();
 			}
 
-			
-			if (!string.IsNullOrEmpty(searchStringAntecedents))
+			if (!string.IsNullOrEmpty(filtreAntecedents))
 			{
-				antecedents = antecedents.Where(a => a.Nom.ToUpper().Contains(searchStringAntecedents.ToUpper())).ToList();
+				antecedents = antecedents.Where(a => a.Nom.ToUpper().Contains(filtreAntecedents.ToUpper())).ToList();
 			}
 
-			var model = (Allergies: allergies, Antecedents: antecedents);
-			ViewData["CurrentFilterAllergie"] = searchStringAllergies;
-			ViewData["CurrentFilterAntecedent"] = searchStringAntecedents;
+			var modele = (Allergies: allergies, Antecedents: antecedents);
+			ViewData["FiltreActuelAllergie"] = filtreAllergies;
+			ViewData["FiltreActuelAntecedent"] = filtreAntecedents;
 
-			return View(model);
-        }
+			return View(modele);
+		}
 
-        public async Task<IActionResult> Ajouter(string type)
-        {
-            List<Medicament> medicaments = await _dbContext.Medicaments.ToListAsync();
-            var viewModel = new ContreIndicationViewModel {
-                Medicaments = medicaments,
-                Type = type
-            };
-            return View("Action", viewModel);
-        }
+		public async Task<IActionResult> Ajouter(string type)
+		{
+			List<Medicament> medicaments = await _dbContext.Medicaments.ToListAsync();
+			var model = new ContreIndicationViewModel
+			{
+				Medicaments = medicaments,
+				Type = type
+			};
+			return View("Action", model);
+		}
 
-        [HttpPost]
-        public async Task<IActionResult> Ajouter(ContreIndicationViewModel viewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                if (viewModel.Type == "Allergie")
-                {
+		[HttpPost]
+		public async Task<IActionResult> Ajouter(ContreIndicationViewModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				if (model.Type == "Allergie")
+				{
+					Allergie allergie = new Allergie
+					{
+						Nom = model.Nom
+					};
 
-                    Allergie allergie = new Allergie
-                    {
-                        Nom = viewModel.Nom
-                    };
+					if (model.SelectedMedicamentIds != null)
+					{
+						var medicamentsSelectionnes = await _dbContext.Medicaments
+								.Where(m => model.SelectedMedicamentIds.Contains(m.MedicamentId))
+								.ToListAsync();
+						foreach (var medicament in medicamentsSelectionnes)
+						{
+							allergie.Medicaments.Add(medicament);
+						}
+					}
 
-                    if (viewModel.SelectedMedicamentIds != null)
-                    {
-                        var MedicamentSelectionnes = await _dbContext.Medicaments
-                                .Where(m => viewModel.SelectedMedicamentIds.Contains(m.MedicamentId))
-                                .ToListAsync();
-                        foreach (var medicament in MedicamentSelectionnes)
-                        {
-                            allergie.Medicaments.Add(medicament);
-                        }
-                    }
+					await _dbContext.Allergies.AddAsync(allergie);
+				}
+				else if (model.Type == "Antecedent")
+				{
+					Antecedent antecedent = new Antecedent
+					{
+						Nom = model.Nom
+					};
 
-                    await _dbContext.Allergies.AddAsync(allergie);
+					if (model.SelectedMedicamentIds != null)
+					{
+						var medicamentsSelectionnes = await _dbContext.Medicaments
+								.Where(m => model		.SelectedMedicamentIds.Contains(m.MedicamentId))
+								.ToListAsync();
+						foreach (var medicament in medicamentsSelectionnes)
+						{
+							antecedent.Medicaments.Add(medicament);
+						}
+					}
+					await _dbContext.Antecedents.AddAsync(antecedent);
+				}
+				await _dbContext.SaveChangesAsync();
+				return RedirectToAction("Index");
+			}
+			return NotFound();
+		}
 
-                }
-                else if (viewModel.Type == "Antecedent")
-                {
-                    Antecedent antecedent = new Antecedent
-                    {
-                        Nom = viewModel.Nom
-                    };
+		public async Task<IActionResult> Modifier(int id, string type)
+		{
+			List<Medicament> medicaments = await _dbContext.Medicaments.ToListAsync();
+			if (type == "Allergie")
+			{
+				var allergie = await _dbContext.Allergies
+					.Include(a => a.Medicaments)
+					.FirstOrDefaultAsync(a => a.AllergieId == id);
+				if (allergie == null)
+					return NotFound();
+				var viewModel = new ContreIndicationViewModel
+				{
+					Id = allergie.AllergieId,
+					Nom = allergie.Nom,
+					Type = "Allergie",
+					Medicaments = medicaments,
+					SelectedMedicamentIds = allergie.Medicaments.Select(m => m.MedicamentId).ToList() ?? new List<int>()
+				};
+				return View("Action", viewModel);
+			}
+			else if (type == "Antecedent")
+			{
+				var antecedent = await _dbContext.Antecedents
+						.Include(a => a.Medicaments)
+						.FirstOrDefaultAsync(a => a.AntecedentId == id);
+				if (antecedent == null)
+					return NotFound();
+				var viewModel = new ContreIndicationViewModel
+				{
+					Id = antecedent.AntecedentId,
+					Nom = antecedent.Nom,
+					Type = "Antecedent",
+					Medicaments = medicaments,
+					SelectedMedicamentIds = antecedent.Medicaments.Select(m => m.MedicamentId).ToList() ?? new List<int>()
+				};
+				return View("Action", viewModel);
+			}
+			return NotFound();
+		}
 
-                    if (viewModel.SelectedMedicamentIds != null)
-                    {
-                        var MedicamentSelectionnes = await _dbContext.Medicaments
-                                .Where(m => viewModel.SelectedMedicamentIds.Contains(m.MedicamentId))
-                                .ToListAsync();
-                        foreach (var medicament in MedicamentSelectionnes)
-                        {
-                            antecedent.Medicaments.Add(medicament);
-                        }
-                    }
-                    await _dbContext.Antecedents.AddAsync(antecedent);
-                }
-                await _dbContext.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-            return NotFound();
-        }
+		[HttpPost]
+		public async Task<IActionResult> Modifier(ContreIndicationViewModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				if (model.Type == "Allergie")
+				{
+					var allergie = await _dbContext.Allergies
+							.Include(a => a.Medicaments)
+							.FirstOrDefaultAsync(a => a.AllergieId == model.Id);
 
-        public async Task<IActionResult> Modifier(int id, string type)
-        {
-            List<Medicament> medicaments = await _dbContext.Medicaments.ToListAsync();
-            if (type == "Allergie")
-            {
-                var allergie = await _dbContext.Allergies
-                    .Include(a => a.Medicaments)
-                    .FirstOrDefaultAsync(a => a.AllergieId == id);
-                if (allergie == null)
-                    return NotFound();
-                var viewModel = new ContreIndicationViewModel
-                {
-                    Id = allergie.AllergieId,
-                    Nom = allergie.Nom,
-                    Type = "Allergie",
-                    Medicaments = medicaments, 
-                    SelectedMedicamentIds =  allergie.Medicaments.Select(m => m.MedicamentId).ToList() ?? new List<int>()
-                };
-                return View("Action", viewModel);
-            }
-            else if (type == "Antecedent")
-            {
-                var antecedent = await _dbContext.Antecedents
-                        .Include(a => a.Medicaments)
-                        .FirstOrDefaultAsync(a => a.AntecedentId == id);
-                if (antecedent == null)
-                    return NotFound();
-                var viewModel = new ContreIndicationViewModel
-                {
-                    Id = antecedent.AntecedentId,
-                    Nom = antecedent.Nom,
-                    Type = "Antecedent",
-                    Medicaments = medicaments,
-                    SelectedMedicamentIds = antecedent.Medicaments.Select(m => m.MedicamentId).ToList() ?? new List<int>()
-                };
-                return View("Action", viewModel);
-            }
-            return NotFound();
-        }
+					if (allergie == null)
+						return NotFound();
+					allergie.Nom = model.Nom;
 
-        //Gérer les deux ModelState.IsValide et la valeur de retour
+					allergie.Medicaments.Clear();
+					if (model.SelectedMedicamentIds != null)
+					{
+						var medicamentsSelectionnes = await _dbContext.Medicaments
+								.Where(m => model.SelectedMedicamentIds.Contains(m.MedicamentId))
+								.ToListAsync();
+						foreach (var medicament in medicamentsSelectionnes)
+						{
+							allergie.Medicaments.Add(medicament);
+						}
+					}
+					_dbContext.Entry(allergie).State = EntityState.Modified;
+					await _dbContext.SaveChangesAsync();
+				}
+				else if (model.Type == "Antecedent")
+				{
+					var antecedent = await _dbContext.Antecedents
+						.Include(a => a.Medicaments)
+						.FirstOrDefaultAsync(a => a.AntecedentId == model.Id);
+					if (antecedent == null)
+						return NotFound();
+					antecedent.Nom = model.Nom;
 
-        [HttpPost]
-        public async Task<IActionResult> Modifier(ContreIndicationViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                if (ModelState.IsValid)
-                {
-                    if (model.Type == "Allergie")
-                    {
-                        var allergie = await _dbContext.Allergies
-                                .Include(a => a.Medicaments)
-                                .FirstOrDefaultAsync(a => a.AllergieId == model.Id);
+					antecedent.Medicaments.Clear();
+					if (model.SelectedMedicamentIds != null)
+					{
+						var medicamentsSelectionnes = await _dbContext.Medicaments
+								.Where(m => model.SelectedMedicamentIds.Contains(m.MedicamentId))
+								.ToListAsync();
+						foreach (var medicament in medicamentsSelectionnes)
+						{
+							antecedent.Medicaments.Add(medicament);
+						}
+					}
+					_dbContext.Entry(antecedent).State = EntityState.Modified;
+					await _dbContext.SaveChangesAsync();
+				}
+				return RedirectToAction("Index");
+			}
+			return View("Action", model);
+		}
 
-                        if (allergie == null)
-                            return NotFound();
-                        allergie.Nom = model.Nom;
-
-                        allergie.Medicaments.Clear();
-                        if (model.SelectedMedicamentIds != null)
-                        {
-                            var MedicamentSelectionnes = await _dbContext.Medicaments
-                                    .Where(m => model.SelectedMedicamentIds.Contains(m.MedicamentId))
-                                    .ToListAsync();
-                            foreach (var medicament in MedicamentSelectionnes)
-                            {
-                                allergie.Medicaments.Add(medicament);
-                            }
-                        }
-                        _dbContext.Entry(allergie).State = EntityState.Modified;
-                        await _dbContext.SaveChangesAsync();
-                    }
-                   
-                }
-                else if (model.Type == "Antecedent")
-                {
-                    var antecedent = await _dbContext.Antecedents
-                        .Include(a => a.Medicaments)
-                        .FirstOrDefaultAsync(a => a.AntecedentId == model.Id);
-                    if (antecedent == null)
-                        return NotFound();
-                    antecedent.Nom = model.Nom;
-
-                    antecedent.Medicaments.Clear();
-                    if (model.SelectedMedicamentIds != null)
-                    {
-                        var MedicamentSelectionnes = await _dbContext.Medicaments
-                                .Where(m => model.SelectedMedicamentIds.Contains(m.MedicamentId))
-                                .ToListAsync();
-                        foreach (var medicament in MedicamentSelectionnes)
-                        {
-                            antecedent.Medicaments.Add(medicament);
-                        }
-                    }
-                    _dbContext.Entry(antecedent).State = EntityState.Modified;
-                    await _dbContext.SaveChangesAsync();
-                }
-                return RedirectToAction("Index");
-            }
-            return View("Action", model);
-        }
-
-        public async Task<IActionResult> Supprimer(int id, string type)
-        {
-            if (type == "Allergie")
-            {
-                var allergie = await _dbContext.Allergies.FindAsync(id);
-                if (allergie != null)
-                    _dbContext.Allergies.Remove(allergie);
-            }
-            else if (type == "Antecedent")
-            {
-                var antecedent = await _dbContext.Antecedents.FindAsync(id);
-                if (antecedent != null)
-                    _dbContext.Antecedents.Remove(antecedent);
-            }
-            await _dbContext.SaveChangesAsync();
-            return RedirectToAction("Index");
-        }
-    }
+		public async Task<IActionResult> Supprimer(int id, string type)
+		{
+			if (type == "Allergie")
+			{
+				var allergie = await _dbContext.Allergies.FindAsync(id);
+				if (allergie != null)
+					_dbContext.Allergies.Remove(allergie);
+			}
+			else if (type == "Antecedent")
+			{
+				var antecedent = await _dbContext.Antecedents.FindAsync(id);
+				if (antecedent != null)
+					_dbContext.Antecedents.Remove(antecedent);
+			}
+			await _dbContext.SaveChangesAsync();
+			return RedirectToAction("Index");
+		}
+	}
 }
