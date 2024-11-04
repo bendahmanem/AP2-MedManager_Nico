@@ -23,9 +23,9 @@ namespace MedManager.Controllers
 
         public PatientController(ApplicationDbContext dbContext, UserManager<Medecin> userManager, ILogger<Patient> logger)
         {
-            _logger = logger;
             _dbContext = dbContext;
             _userManager = userManager;
+            _logger = logger;
         }
 
         public async Task<IActionResult> Index(int? page, string Filtre)
@@ -53,7 +53,9 @@ namespace MedManager.Controllers
                 var patients = medecin.Patients.AsQueryable();
                 if (!string.IsNullOrEmpty(Filtre))
                 {
-                    patients = patients.Where(p => p.Nom.ToUpper().Contains(Filtre.ToUpper()) || p.Prenom.ToUpper().Contains(Filtre.ToUpper()));
+                    patients = patients.Where(p =>
+                        (p.Nom != null && p.Nom.Contains(Filtre, StringComparison.OrdinalIgnoreCase)) ||
+                        (p.Prenom != null && p.Prenom.Contains(Filtre, StringComparison.OrdinalIgnoreCase)));
                 }
 
                 int TaillePage = 9;
@@ -91,16 +93,6 @@ namespace MedManager.Controllers
 			{
 				var viewModel = new PatientViewModel
 				{
-					Nom = "",
-					Prenom = "",
-					DateNaissance = DateTime.Now,
-					Adresse = "",
-					Ville = "",
-					Poids = 0,
-					Taille = 0,
-					Photo = null,
-					NuméroSécuritéSociale = "",
-					Sexe = 0,
 					Allergies = await _dbContext.Allergies.ToListAsync(),
 					Antecedents = await _dbContext.Antecedents.ToListAsync(),
 				};
@@ -134,6 +126,8 @@ namespace MedManager.Controllers
 				string id = user.Id;
 
 				Medecin? medecin = await _dbContext.Users.FirstOrDefaultAsync(m => m.Id == id);
+				if (medecin == null)
+					return NotFound();
 
 				if (ModelState.IsValid)
 				{
@@ -152,16 +146,15 @@ namespace MedManager.Controllers
 						medecin = medecin,
 					};
 
-					if (photo != null && photo.Length > 0)
-					{
-						using (var memoryStream = new MemoryStream())
-						{
-							await photo.CopyToAsync(memoryStream);
-							patient.Photo = memoryStream.ToArray();
-						}
-					}
+                    if (photo != null && photo.Length > 0)
+                    {
+                        await using var memoryStream = new MemoryStream();
+                        await photo.CopyToAsync(memoryStream);
+                        patient.Photo = memoryStream.ToArray();
+                    }
 
-					if (model.SelectedAllergieIds != null)
+
+                    if (model.SelectedAllergieIds != null)
 					{
 						var selectedAllergies = await _dbContext.Allergies
 							.Where(a => model.SelectedAllergieIds.Contains(a.AllergieId))
@@ -261,8 +254,8 @@ namespace MedManager.Controllers
 					Sexe = patient.Sexe,
 					Allergies = await _dbContext.Allergies.ToListAsync(),
 					Antecedents = await _dbContext.Antecedents.ToListAsync(),
-					SelectedAllergieIds = patient.Allergies.Select(a => a.AllergieId).ToList() ?? new List<int>(),
-					SelectedAntecedentIds = patient.Antecedents.Select(a => a.AntecedentId).ToList() ?? new List<int>()
+					SelectedAllergieIds = patient.Allergies.Select(a => a.AllergieId).ToList(),
+					SelectedAntecedentIds = patient.Antecedents.Select(a => a.AntecedentId).ToList()
 				};
 				return View(viewModel);
 			}

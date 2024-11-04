@@ -10,7 +10,7 @@
             <hr />
             <p><strong>Nom :</strong> @Model.Nom</p>
             <p><strong>Prénom :</strong> @Model.Prenom</p>
-            <p><strong>Âge :</strong> @(DateTime.Now.Year - Model.DateNaissance.Year) ans</p>
+            <p><strong>Âge :</strong> @(Model.DateNaissance.HasValue ? (DateTime.Now.Year - Model.DateNaissance.Value.Year) : "N/A") ans</p>
             <p><strong>Sexe :</strong> @Model.Sexe</p>
             <p><strong>Numéro de Sécurité Sociale :</strong> @Model.NuméroSécuritéSociale</p>
             <p><strong>Adresse :</strong> @Model.Adresse, @Model.Ville</p>
