@@ -46,7 +46,7 @@ namespace MedManager.ViewModel.PatientVM
 		public byte[]? Photo { get; set; }
 		public List<Antecedent> Antecedents { get; set; } = new();
         public List<Allergie> Allergies { get; set; } = new();
-        public List<int>? SelectedAntecedentIds { get; set; } = new();
-        public List<int>? SelectedAllergieIds { get; set; } = new();
+        public List<int>? AntecedentIdSelectionnes { get; set; } = new();
+        public List<int>? AllergieIdSelectionnes { get; set; } = new();
     }
 }

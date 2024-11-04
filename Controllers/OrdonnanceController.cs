@@ -53,12 +53,15 @@ namespace MedManager.Controllers
 
 
 				var ordonnances = medecin.Ordonnances.AsQueryable();
-				if (!string.IsNullOrEmpty(filtre))
-				{
-					ordonnances = ordonnances.Where(p => p.Patient.Nom.ToUpper().Contains(filtre.ToUpper()) || p.Patient.Prenom.ToUpper().Contains(filtre.ToUpper()));
-				}
+                if (!string.IsNullOrEmpty(filtre))
+                {
+                    ordonnances = ordonnances.Where(p =>
+                        (p.Patient != null && p.Patient.Nom != null && p.Patient.Nom.Contains(filtre, StringComparison.OrdinalIgnoreCase)) ||
+                        (p.Patient != null && p.Patient.Prenom != null && p.Patient.Prenom.Contains(filtre, StringComparison.OrdinalIgnoreCase))
+                    );
+                }
 
-				int TaillePage = 9;
+                int TaillePage = 9;
 				int NombrePage = (page ?? 1);
 				var ListePageeDesOrdonnances = ordonnances.ToPagedList(NombrePage, TaillePage);
 
@@ -206,7 +209,7 @@ namespace MedManager.Controllers
                     return RedirectToAction("Connexion", "Compte");
                 }
 
-                Ordonnance ordonnance = await _dbContext.Ordonnances
+                Ordonnance? ordonnance = await _dbContext.Ordonnances
                         .Include(o => o.Medicaments)
                         .Include(o => o.Patient)
                         .FirstOrDefaultAsync(o => o.OrdonnanceId == id);
@@ -214,13 +217,13 @@ namespace MedManager.Controllers
                 if (ordonnance == null)
                     return NotFound();
 
-                List<int> MedicamentsSelectionnes = new List<int>();
+                List<int> MedicamentsSelectionnes = new ();
                 foreach (var m in ordonnance.Medicaments)
                 {
                     MedicamentsSelectionnes.Add(m.MedicamentId);
                 }
 
-                OrdonnanceViewModel model = new OrdonnanceViewModel
+                var model = new OrdonnanceViewModel
                 {
                     OrdonnanceId = ordonnance.OrdonnanceId,
                     DateDebut = ordonnance.DateDebut,
@@ -228,8 +231,8 @@ namespace MedManager.Controllers
                     InfoSupplementaire = ordonnance.InfoSupplementaire,
                     MedicamentIdSelectionnes = MedicamentsSelectionnes,
                     Medicaments = await _dbContext.Medicaments.ToListAsync(),
-                    patients = await _dbContext.Patients.Where(p => p.medecin.Id == MedecinId).ToListAsync(),
-                    PatientId = ordonnance.Patient.PatientId
+                    patients = await _dbContext.Patients.Where(p => p.medecin != null && p.medecin.Id == MedecinId).ToListAsync(),
+                    PatientId = ordonnance.Patient?.PatientId
                 };
 
                 return View("Action", model);
@@ -368,7 +371,7 @@ namespace MedManager.Controllers
 					string fileName = $"Ordonnance_{patient.NomComplet}_{ordonnanceId}.pdf";
 					string filePath = Path.Combine(_RepertoirePdf, fileName);
 
-					OrdonnancePdfGenerateur pdfGenerateur = new OrdonnancePdfGenerateur();
+					var pdfGenerateur = new OrdonnancePdfGenerateur();
 
 					pdfGenerateur.GenerateOrdonnance(filePath, medecin, patient, ordonnance);
 

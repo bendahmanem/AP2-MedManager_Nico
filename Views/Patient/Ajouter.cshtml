@@ -64,12 +64,13 @@
         <input type="file" name="Photo" class="form-control" accept=".jpg,.jpeg,.png" />
         <span asp-validation-for="Photo" class="text-danger"></span>
     </div>
-    <p>Antécédents</p>
 
+
+    <p>Antécédents</p>
     <div class="form-group row">
        @*  @Html.LabelFor(model => model.SelectedAntecedentIds, new { @class = "col-sm-2 col-form-label" }) *@
         <div class="col-sm-10">
-            @Html.ListBoxFor(model => model.SelectedAntecedentIds,
+            @Html.ListBoxFor(model => model.AntecedentIdSelectionnes,
                      new MultiSelectList(Model.Antecedents, "AntecedentId", "Nom"),
                      new { @class = "form-control", @id = "ComboBoxMultiselectAntecedents" })
         </div>
@@ -79,7 +80,7 @@
     <div class="form-group row">
         @* @Html.LabelFor(model => model.SelectedAllergieIds, new { @class = "col-sm-2 col-form-label" }) *@
         <div class="col-sm-10">
-            @Html.ListBoxFor(model => model.SelectedAllergieIds,
+            @Html.ListBoxFor(model => model.AllergieIdSelectionnes,
                      new MultiSelectList(Model.Allergies, "AllergieId", "Nom"),
                      new { @class = "form-control", @id = "ComboBoxMultiselectAllergies" })
         </div>
@@ -100,6 +101,7 @@
             });
         });
     </script>
+
     <script>
         $(document).ready(function () {
             $('#ComboBoxMultiselectAllergies').multiselect({

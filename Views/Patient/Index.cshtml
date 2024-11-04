@@ -3,6 +3,21 @@
 	ViewData["Title"] = "Mes Patients";
 }
 
+@if (TempData["SuccessMessage"] != null)
+
+{
+	<div id="tempMessage" class="alert alert-success">
+		@TempData["MessageSucces"]
+	</div>
+}
+
+@if (TempData["MessageErreur"] != null)
+{
+	<div id="tempMessage" class="alert alert-danger">
+		@TempData["MessageErreur"]
+	</div>
+}
+
 <div class="text-center">
 	<div>
 		<a asp-action="Ajouter" asp-controller="Patient" class="btn btn-primary">Créer un patient</a>
@@ -46,3 +61,14 @@
 		@Html.PagedListPager(Model.Patients, page => Url.Action("Index", new { page }))
 	</div>
 </div>
+
+<script>
+	window.addEventListener('DOMContentLoaded', (event) => {
+		const tempMessage = document.getElementById("tempMessage");
+		if (tempMessage) {
+			setTimeout(() => {
+				tempMessage.style.display = "none";
+			}, 3000);
+		}
+	});
+</script>

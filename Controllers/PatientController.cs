@@ -154,23 +154,23 @@ namespace MedManager.Controllers
                     }
 
 
-                    if (model.SelectedAllergieIds != null)
+                    if (model.AllergieIdSelectionnes != null)
 					{
-						var selectedAllergies = await _dbContext.Allergies
-							.Where(a => model.SelectedAllergieIds.Contains(a.AllergieId))
+						var AllergiesSelectionnes = await _dbContext.Allergies
+							.Where(a => model.AllergieIdSelectionnes.Contains(a.AllergieId))
 							.ToListAsync();
-						foreach (var allergie in selectedAllergies)
+						foreach (var allergie in AllergiesSelectionnes)
 						{
 							patient.Allergies.Add(allergie);
 						}
 					}
 
-					if (model.SelectedAntecedentIds != null)
+					if (model.AntecedentIdSelectionnes != null)
 					{
-						var selectedAntecedents = await _dbContext.Antecedents
-							.Where(a => model.SelectedAntecedentIds.Contains(a.AntecedentId))
+						var AntecedentsSelectionnes = await _dbContext.Antecedents
+							.Where(a => model.AntecedentIdSelectionnes.Contains(a.AntecedentId))
 							.ToListAsync();
-						foreach (var antecedent in selectedAntecedents)
+						foreach (var antecedent in AntecedentsSelectionnes)
 						{
 							patient.Antecedents.Add(antecedent);
 						}
@@ -254,8 +254,8 @@ namespace MedManager.Controllers
 					Sexe = patient.Sexe,
 					Allergies = await _dbContext.Allergies.ToListAsync(),
 					Antecedents = await _dbContext.Antecedents.ToListAsync(),
-					SelectedAllergieIds = patient.Allergies.Select(a => a.AllergieId).ToList(),
-					SelectedAntecedentIds = patient.Antecedents.Select(a => a.AntecedentId).ToList()
+					AllergieIdSelectionnes = patient.Allergies.Select(a => a.AllergieId).ToList(),
+					AntecedentIdSelectionnes = patient.Antecedents.Select(a => a.AntecedentId).ToList()
 				};
 				return View(viewModel);
 			}
@@ -301,10 +301,10 @@ namespace MedManager.Controllers
 					patient.Photo = viewModel.Photo;
 
 					patient.Allergies.Clear();
-					if (viewModel.SelectedAllergieIds != null)
+					if (viewModel.AllergieIdSelectionnes != null)
 					{
 						var selectedAllergies = await _dbContext.Allergies
-							.Where(a => viewModel.SelectedAllergieIds.Contains(a.AllergieId))
+							.Where(a => viewModel.AllergieIdSelectionnes.Contains(a.AllergieId))
 							.ToListAsync();
 						foreach (var allergie in selectedAllergies)
 						{
@@ -313,10 +313,10 @@ namespace MedManager.Controllers
 					}
 
 					patient.Antecedents.Clear();
-					if (viewModel.SelectedAntecedentIds != null)
+					if (viewModel.AntecedentIdSelectionnes != null)
 					{
 						var selectedAntecedents = await _dbContext.Antecedents
-							.Where(a => viewModel.SelectedAntecedentIds.Contains(a.AntecedentId))
+							.Where(a => viewModel.AntecedentIdSelectionnes.Contains(a.AntecedentId))
 							.ToListAsync();
 						foreach (var antecedent in selectedAntecedents)
 						{

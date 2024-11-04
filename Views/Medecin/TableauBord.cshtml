@@ -1,0 +1,13 @@
+﻿@model List<MedicamentUtilisationViewModel>
+@{
+    ViewData["Title"] = "Tableau de bord";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Bienvenue sur le tableau de bord </h1>
+    @foreach(var medicament in Model)
+    {
+        <p> @medicament.Nom</p>
+        <p> @medicament.UtilisationCount</p>
+    }
+</div>

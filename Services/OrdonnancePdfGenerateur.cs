@@ -11,10 +11,10 @@ public class OrdonnancePdfGenerateur
 {
 	public void GenerateOrdonnance(string filePath, Medecin medecin, Patient patient, Ordonnance ordonnance)
 	{
-		using (PdfWriter writer = new PdfWriter(filePath))
+		using (var writer = new PdfWriter(filePath))
 		{
-			PdfDocument pdf = new PdfDocument(writer);
-			Document document = new Document(pdf);
+			var pdf = new PdfDocument(writer);
+			var document = new Document(pdf);
 
 			
 			var bold = iText.Kernel.Font.PdfFontFactory.CreateFont(iText.IO.Font.Constants.StandardFonts.HELVETICA_BOLD);
