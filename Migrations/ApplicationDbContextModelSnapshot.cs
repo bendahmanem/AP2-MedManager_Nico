@@ -303,7 +303,8 @@ namespace MedManager.Migrations
                     b.Property<DateTime>("DateCreation")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("DateNaissance")
+                    b.Property<DateTime?>("DateNaissance")
+                        .IsRequired()
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("MedecinID")
@@ -314,7 +315,7 @@ namespace MedManager.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<string>("NuméroSécuritéSociale")
+                    b.Property<string>("NumeroSecuriteSocial")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -322,7 +323,8 @@ namespace MedManager.Migrations
                         .HasMaxLength(1048576)
                         .HasColumnType("longblob");
 
-                    b.Property<float>("Poids")
+                    b.Property<float?>("Poids")
+                        .IsRequired()
                         .HasColumnType("float");
 
                     b.Property<string>("Prenom")
@@ -333,7 +335,8 @@ namespace MedManager.Migrations
                     b.Property<int>("Sexe")
                         .HasColumnType("int");
 
-                    b.Property<int>("Taille")
+                    b.Property<int?>("Taille")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Ville")

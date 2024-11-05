@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MedManager")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+21252cf346963a35a209c74b0b9dadbdb2d5014d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+866a1e2f23c9ea65cb27b5da3843ea7f61aed428")]
 [assembly: System.Reflection.AssemblyProductAttribute("MedManager")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MedManager")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

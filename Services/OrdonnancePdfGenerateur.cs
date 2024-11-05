@@ -45,7 +45,7 @@ public class OrdonnancePdfGenerateur
 				.SetFont(bold)
 				.SetFontSize(12));
 
-			document.Add(new Paragraph($"{patient.Adresse}\n{patient.Ville}\n{patient.NuméroSécuritéSociale}")
+			document.Add(new Paragraph($"{patient.Adresse}\n{patient.Ville}\n{patient.NumeroSecuriteSocial}")
 				.SetFontSize(10));
 
 			

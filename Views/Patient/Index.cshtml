@@ -41,7 +41,7 @@
 
 					<div class="card-body">
 						<h5 class="card-title">@p.Nom @p.Prenom</h5>
-						<p class="card-text">Âge : @(@p.DateNaissance.HasValue ? (DateTime.Now.Year - p.DateNaissance.Value.Year) : "N/A") ans</p>
+						<p class="card-text">Âge : @(@p.Age) ans</p>
 						<a asp-action="Detail" asp-controller="Patient" asp-route-id="@p.PatientId">
 							<i class="bi bi-eye"></i>
 						</a>

@@ -1,13 +1,43 @@
-﻿@model List<MedicamentUtilisationViewModel>
+﻿@model TableauDeBordViewModel
 @{
-    ViewData["Title"] = "Tableau de bord";
+	ViewData["Title"] = "Tableau de bord";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Bienvenue sur le tableau de bord </h1>
-    @foreach(var medicament in Model)
-    {
-        <p> @medicament.Nom</p>
-        <p> @medicament.UtilisationCount</p>
-    }
+	<h1 class="display-4">Bienvenue sur le tableau de bord </h1>
+	@if (Model.MedicamentPlusUtilises.Count > 0)
+	{
+		foreach (var medicament in Model.MedicamentPlusUtilises)
+		{
+			<p> @medicament.Nom</p>
+			<p> @medicament.UtilisationCount</p>
+		}
+	}
+
+	@if (Model.FrequenceAllergies.Count > 0)
+	{
+		foreach (var allergie in Model.FrequenceAllergies)
+		{
+			<p> @allergie.nom</p>
+			<p> @allergie.compte</p>
+		}
+	}
+
+	@if (Model.FrequenceAntecedents.Count > 0)
+	{
+		foreach (var antecedent in Model.FrequenceAntecedents)
+		{
+			<p> @antecedent.nom</p>
+			<p> @antecedent.compte</p>
+		}
+	}
+
+	@if (Model.RepartitionAges.Count > 0)
+	{
+		foreach (var age in Model.RepartitionAges)
+		{
+			<p> @age.categorie</p>
+			<p> @age.compte</p>
+		}
+	}
 </div>

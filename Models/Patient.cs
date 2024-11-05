@@ -40,7 +40,7 @@ namespace MedManager.Models
 
         [Required(ErrorMessage = "Le numéro de sécurité sociale est obligatoire")]
         //[RegularExpression("^[1-3][0-9]{2}(0[1-9]|1[0-2])[0-9]{2}[0-9]{3}[0-9]{3}[0-9]{2}$", ErrorMessage = "Le numéro de sécurité sociale n'est pas valide.")]
-        public string? NuméroSécuritéSociale { get; set; }
+        public string? NumeroSecuriteSocial { get; set; }
 
         [Required(ErrorMessage = "La ville est obligatoire")]
         [StringLength(50, ErrorMessage = "La ville ne peut pas dépasser 50 caractères.")]
@@ -61,6 +61,23 @@ namespace MedManager.Models
         public string NomComplet
         {
             get { return $"{Prenom} {Nom}"; }
+        }
+
+        public int Age
+        {
+            get
+            {
+                if (DateNaissance.HasValue)
+                {
+                    var age = DateTime.Now.Year - DateNaissance.Value.Year;
+                    if (DateTime.Now < DateNaissance.Value.AddYears(age))
+                    {
+                        age--;
+                    }
+                    return age;
+                }
+                return 0;
+            }
         }
     }
 }

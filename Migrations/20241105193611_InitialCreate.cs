@@ -276,7 +276,7 @@ namespace MedManager.Migrations
                     DateNaissance = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Adresse = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    NuméroSécuritéSociale = table.Column<string>(type: "longtext", nullable: false)
+                    NumeroSecuriteSocial = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Ville = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),

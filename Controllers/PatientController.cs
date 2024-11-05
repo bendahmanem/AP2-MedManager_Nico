@@ -135,7 +135,7 @@ namespace MedManager.Controllers
 					{
 						Nom = model.Nom,
 						Prenom = model.Prenom,
-						NuméroSécuritéSociale = model.NuméroSécuritéSociale,
+						NumeroSecuriteSocial = model.NuméroSécuritéSociale,
 						DateNaissance = model.DateNaissance,
 						Taille = model.Taille,
 						Poids = model.Poids,
@@ -245,7 +245,7 @@ namespace MedManager.Controllers
 				{
 					Nom = patient.Nom,
 					Prenom = patient.Prenom,
-					NuméroSécuritéSociale = patient.NuméroSécuritéSociale,
+					NuméroSécuritéSociale = patient.NumeroSecuriteSocial,
 					DateNaissance = patient.DateNaissance,
 					Taille = patient.Taille,
 					Poids = patient.Poids,
@@ -295,7 +295,7 @@ namespace MedManager.Controllers
 					patient.DateNaissance = viewModel.DateNaissance;
 					patient.Ville = viewModel.Ville;
 					patient.Sexe = viewModel.Sexe;
-					patient.NuméroSécuritéSociale = viewModel.NuméroSécuritéSociale;
+					patient.NumeroSecuriteSocial = viewModel.NuméroSécuritéSociale;
 					patient.Poids = viewModel.Poids;
 					patient.Taille = viewModel.Taille;
 					patient.Photo = viewModel.Photo;
