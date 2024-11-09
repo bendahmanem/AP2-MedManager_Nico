@@ -136,5 +136,27 @@ namespace MedManager.Controllers
 				return RedirectToAction("Error");
 			}
 		}
+
+		public async Task<IActionResult> Detail(int id )
+		{
+			try
+			{
+				var medicament = await _dbContext.Medicaments
+								.Include(m => m.Allergies)
+								.Include(m => m.Antecedents)
+								.FirstOrDefaultAsync(m => m.MedicamentId == id);
+				return View(medicament);
+			}
+			catch (DbException ex)
+			{
+				_logger.LogError(ex, "Une erreur est apparue pendant la récupération des données du médicament.");
+				return RedirectToAction("Error");
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "Une erreur innatendue est survenue.");
+				return RedirectToAction("Error");
+			}
+		}
 	}
 }

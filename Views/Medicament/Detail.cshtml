@@ -1,0 +1,30 @@
+﻿@model Medicament
+@{
+    ViewData["Title"] = "Détail du Médicament";
+}
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h2>Informations Générales</h2>
+            <hr />
+            <p><strong>Nom :</strong> @Model.Nom</p>
+            <p><strong>Quantité :</strong> @Model.Quantite</p>
+            <p><strong>Posologie :</strong> @Model.Posologie</p>
+            <p><strong>Composition :</strong> @Model.Composition</p>
+            <p>
+                <strong>Allergies :</strong>
+                @foreach (var a in @Model.Allergies)
+                {
+                    <span>@a.Nom</span>
+                }
+            </p>
+            <p>
+                <strong>Antécédents :</strong>
+                @foreach (var ant in @Model.Antecedents)
+                {
+                    <span>@ant.Nom</span>
+                }
+            </p>
+        </div>
+    </div>
+</div>
