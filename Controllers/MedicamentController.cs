@@ -19,8 +19,12 @@ namespace MedManager.Controllers
 			_logger = logger;
 		}
 
-		public async Task<IActionResult> Index(string Filtre)
+		public async Task<IActionResult> Index(string Filtre, string OrdreTri)
 		{
+			OrdreTri ??= "";
+			ViewData["NomParamTri"] = string.IsNullOrEmpty(OrdreTri) ? "nom_desc" : "";
+			ViewData["CategorieParamTri"] = OrdreTri == "categorie_asc" ? "categorie_desc" : "categorie_asc";
+
 
 			List<Medicament> medicaments = await _dbContext.Medicaments.ToListAsync();
 
@@ -31,6 +35,24 @@ namespace MedManager.Controllers
 					.ToList();
 			}
 
+			switch (OrdreTri)
+			{
+				case "nom_desc": 
+					medicaments = medicaments.OrderByDescending(m => m.Nom).ToList();
+					break;
+				case "categorie_asc":
+					medicaments = medicaments.OrderBy(m => m.Categorie).ToList();
+					break;
+				case "categorie_desc":
+					medicaments = medicaments.OrderByDescending(m => m.Categorie).ToList();
+					break;
+				default:
+					medicaments = medicaments.OrderBy(m => m.Nom).ToList();
+					break;
+
+			}
+
+			ViewData["TriActuel"] = OrdreTri;
 			ViewData["FiltreActuel"] = Filtre;
 			return View(medicaments);
 		}

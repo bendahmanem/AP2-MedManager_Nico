@@ -8,11 +8,11 @@ namespace MedManager.Models
     {
         Analgesique,
         Antibiotique,
-        Antiseptique,
-        Vaccin,
         Antifongiques,
+        Antiseptique,
         Antiviraux,
-        Autre
+        Autre,
+        Vaccin
     }
     public class Medicament
     {
