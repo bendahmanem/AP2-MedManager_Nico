@@ -1,4 +1,4 @@
-﻿@model (List<MedManager.Models.Allergie> Allergies, List<MedManager.Models.Antecedent> Antecedents)
+﻿@model (List<Allergie> Allergies, List<Antecedent> Antecedents)
 
 @if (TempData["MessageSucces"] != null)
 
@@ -28,6 +28,7 @@
     <thead>
         <tr>
             <th>Nom</th>
+            <th>Détail</th>
             <th>Modifier</th>
             <th>Supprimer</th>
         </tr>
@@ -38,6 +39,11 @@
         {
             <tr>
                 <td>@allergie.Nom</td>
+                <td>
+                    <a asp-action="Detail" asp-controller="ContreIndications" asp-route-id="@allergie.AllergieId" asp-route-type="Allergie">
+                        <i class="bi bi-eye"></i>
+                    </a>
+                </td>
                 <td>
                     <a asp-action="Modifier" asp-controller="ContreIndications" asp-route-id="@allergie.AllergieId" asp-route-type="Allergie">
                         <i class="bi bi-pen"></i>
@@ -73,6 +79,7 @@
     <thead>
         <tr>
             <th>Nom</th>
+            <th>Détail</th>
             <th>Modifier</th>
             <th>Supprimer</th>
         </tr>
@@ -83,6 +90,11 @@
         {
             <tr>
                 <td>@antecedent.Nom</td>
+                <td>
+                    <a asp-action="Detail" asp-controller="ContreIndications" asp-route-id="@antecedent.AntecedentId" asp-route-type="Antecedent">
+                        <i class="bi bi-eye"></i>
+                    </a>
+                </td>
                 <td>
                     <a asp-action="Modifier" asp-controller="ContreIndications" asp-route-id="@antecedent.AntecedentId" asp-route-type="Antecedent">
                         <i class="bi bi-pen"></i>

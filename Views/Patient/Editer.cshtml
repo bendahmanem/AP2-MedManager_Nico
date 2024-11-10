@@ -59,9 +59,14 @@
         <span asp-validation-for="Ville" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label for="Photo">Photo</label>
-        <input type="file" name="Photo" class="form-control" accept=".jpg,.jpeg,.png" />
+        <label asp-for="Photo" class="control-label"></label>
+        <input asp-for="Photo" type="file" class="form-control" id="photoInput" accept=".jpg,.jpeg,.png" />
         <span asp-validation-for="Photo" class="text-danger"></span>
+        @if (Model.Photo != null && Model.Photo.Length > 0)
+        {
+            <img src="data:image;base64,@(Convert.ToBase64String(Model.Photo))" alt="Patient Photo" style="max-width: 200px; max-height: 200px;" />
+            <input type="hidden" asp-for="PhotoBase64" value="@(Convert.ToBase64String(Model.Photo))" />
+        }
     </div>
 
 
@@ -112,4 +117,15 @@
             });
         });
     </script>
+@*     <script>
+        document.getElementById('photoInput').addEventListener('change', function () {
+            var fileName = this.value.split('\\').pop();
+            console.log("fileName", fileName);
+            if (fileName) {
+                this.nextElementSibling.innerHTML = fileName;
+            } else {
+                this.nextElementSibling.innerHTML = 'Aucun fichier sélectionné';
+            }
+        });
+    </script> *@
 }
