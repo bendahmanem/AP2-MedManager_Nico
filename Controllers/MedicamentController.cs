@@ -19,7 +19,7 @@ namespace MedManager.Controllers
 			_logger = logger;
 		}
 
-		public async Task<IActionResult> Index(string Filtre, string OrdreTri)
+		public async Task<IActionResult> Index(string Filtre, string OrdreTri, string FiltreCate)
 		{
 			OrdreTri ??= "";
 			ViewData["NomParamTri"] = string.IsNullOrEmpty(OrdreTri) ? "nom_desc" : "";
@@ -34,6 +34,14 @@ namespace MedManager.Controllers
 					.Where(m => m.Nom.ToUpper().Contains(Filtre.ToUpper()))
 					.ToList();
 			}
+
+			if (!string.IsNullOrEmpty(FiltreCate))
+			{
+				medicaments = medicaments
+					.Where(m => m.Categorie.ToString() == FiltreCate)
+					.ToList();
+			}
+
 
 			switch (OrdreTri)
 			{
