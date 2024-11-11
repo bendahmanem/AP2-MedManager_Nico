@@ -189,8 +189,13 @@ namespace MedManager.Controllers
                     return RedirectToAction("Index", "Patient");
                 }
 
-                return View(model);
-            }
+				var modele = new PatientViewModel
+				{
+					Allergies = await _dbContext.Allergies.ToListAsync(),
+					Antecedents = await _dbContext.Antecedents.ToListAsync(),
+				};
+				return View(modele);
+			}
             catch (DbUpdateException ex)
             {
                 _logger.LogError(ex, "Une erreur s'est produite lors de la mise à jour de la base de données.");
@@ -287,7 +292,6 @@ namespace MedManager.Controllers
         {
             if (!ModelState.IsValid)
             {
-                // Recharger les listes d'antécédents et d'allergies en cas d'erreur de validation
                 viewModel.Allergies = await _dbContext.Allergies.ToListAsync();
                 viewModel.Antecedents = await _dbContext.Antecedents.ToListAsync();
                 return View(viewModel);

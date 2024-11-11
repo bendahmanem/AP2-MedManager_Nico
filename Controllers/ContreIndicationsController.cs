@@ -88,7 +88,6 @@ namespace MedManager.Controllers
         {
             try
             {
-
                 if (ModelState.IsValid)
                 {
                     if (model.Type == "Allergie")
@@ -130,8 +129,16 @@ namespace MedManager.Controllers
                     TempData["MessageSucces"] = $"L'{model.Type.ToLower()} a été ajoutée avec succès.";
                     return RedirectToAction("Index");
                 }
-                return NotFound();
-            }
+
+				List<Medicament> medicaments = await _dbContext.Medicaments.ToListAsync();
+                var modelView = new ContreIndicationViewModel
+                {
+                    Medicaments = medicaments,
+                    Type = model.Type
+                };
+				return View("Action", modelView);
+
+			}
             catch (DbException ex)
             {
                 _logger.LogError(ex, "Une erreur est apparue pendant l'ajout de la contre-indication'.");
