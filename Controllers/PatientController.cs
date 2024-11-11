@@ -28,65 +28,75 @@ namespace MedManager.Controllers
             _logger = logger;
         }
 
-        public async Task<IActionResult> Index(int? page, string Filtre)
-        {
-            try
-            {
-                var user = await _userManager.GetUserAsync(User);
-                if (user == null)
-                {
-                    return RedirectToAction("Connexion", "Compte");
-                }
+		public async Task<IActionResult> Index(int? page, string Filtre, string sortBy = "", string sortDir = "asc")
+		{
+			try
+			{
+				var user = await _userManager.GetUserAsync(User);
+				if (user == null)
+				{
+					return RedirectToAction("Connexion", "Compte");
+				}
 
-                string id = user.Id;
+				string id = user.Id;
+				Medecin? medecin = await _dbContext.Users
+					.Include(u => u.Patients)
+					.FirstOrDefaultAsync(m => m.Id == id);
 
-                Medecin? medecin = await _dbContext.Users
-                                        .Include(u => u.Patients)
-                                        .FirstOrDefaultAsync(m => m.Id == id);
+				if (medecin == null)
+				{
+					return RedirectToAction("Error");
+				}
 
-                if (medecin == null)
-                {
-                    return RedirectToAction("Error");
-                }
+				var patients = medecin.Patients.AsQueryable();
+
+				// Filtre
+				if (!string.IsNullOrEmpty(Filtre))
+				{
+					patients = patients.Where(p =>
+						(p.Nom != null && p.Nom.Contains(Filtre, StringComparison.OrdinalIgnoreCase)) ||
+						(p.Prenom != null && p.Prenom.Contains(Filtre, StringComparison.OrdinalIgnoreCase)));
+				}
+
+				// Tri
+				ViewData["ActiveSort"] = sortBy;
+				ViewData["SortDir"] = sortDir;
+
+				patients = sortBy.ToLower() switch
+				{
+					"nom" => sortDir == "asc" ? patients.OrderBy(p => p.Nom) : patients.OrderByDescending(p => p.Nom),
+					"prenom" => sortDir == "asc" ? patients.OrderBy(p => p.Prenom) : patients.OrderByDescending(p => p.Prenom),
+					"age" => sortDir == "asc" ? patients.OrderBy(p => p.Age) : patients.OrderByDescending(p => p.Age),
+					_ => patients.OrderBy(p => p.Nom) // Tri par défaut
+				};
+
+				// Pagination
+				int TaillePage = 9;
+				int NombrePage = (page ?? 1);
+				var ListePagineesPatients = patients.ToPagedList(NombrePage, TaillePage);
+
+				var viewModel = new IndexPatientViewModel
+				{
+					Patients = ListePagineesPatients
+				};
+
+				ViewData["FiltreActuel"] = Filtre;
+				return View(viewModel);
+			}
+			catch (DbException ex)
+			{
+				_logger.LogError(ex, "Une erreur s'est produite lors de la récupération des données.");
+				return RedirectToAction("Error");
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "Une erreur inattendue est survenue.");
+				return RedirectToAction("Error");
+			}
+		}
 
 
-                var patients = medecin.Patients.AsQueryable();
-                if (!string.IsNullOrEmpty(Filtre))
-                {
-                    patients = patients.Where(p =>
-                        (p.Nom != null && p.Nom.Contains(Filtre, StringComparison.OrdinalIgnoreCase)) ||
-                        (p.Prenom != null && p.Prenom.Contains(Filtre, StringComparison.OrdinalIgnoreCase)));
-                }
-
-                int TaillePage = 9;
-                int NombrePage = (page ?? 1);
-                var ListePagineesPatients = patients.ToPagedList(NombrePage, TaillePage);
-
-                var viewModel = new IndexPatientViewModel
-                {
-                    Patients = ListePagineesPatients
-                };
-
-
-                ViewData["FiltreActuel"] = Filtre;
-
-                return View(viewModel);
-            }
-            catch (DbException ex)
-            {
-                _logger.LogError(ex, "Une erreur s'est produite lors de la récupération des données.");
-                return RedirectToAction("Error");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Une erreur inattendue est survenue.");
-                return RedirectToAction("Error");
-            }
-
-        }
-
-
-        [HttpGet]
+		[HttpGet]
         public async Task<IActionResult> Ajouter()
         {
             try

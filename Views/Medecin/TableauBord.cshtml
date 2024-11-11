@@ -1,43 +1,150 @@
 ﻿@model TableauDeBordViewModel
-@{
-	ViewData["Title"] = "Tableau de bord";
-}
 
-<div class="text-center">
-	<h1 class="display-4">Bienvenue sur le tableau de bord </h1>
-	@if (Model.MedicamentPlusUtilises.Count > 0)
-	{
-		foreach (var medicament in Model.MedicamentPlusUtilises)
-		{
-			<p> @medicament.Nom</p>
-			<p> @medicament.UtilisationCount</p>
-		}
-	}
+<div class="container mt-4">
+	<div class="d-flex justify-content-between align-items-center mb-4">
+		<h1>Tableau de Bord</h1>
+	</div>
 
-	@if (Model.FrequenceAllergies.Count > 0)
-	{
-		foreach (var allergie in Model.FrequenceAllergies)
-		{
-			<p> @allergie.nom</p>
-			<p> @allergie.compte</p>
-		}
-	}
+	<div id="dashboardContent">
+		<div class="row">
+			<!-- Répartition des âges -->
+			<div class="col-md-6 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Répartition des âges</h5>
+						<canvas id="ageChart"></canvas>
+					</div>
+				</div>
+			</div>
 
-	@if (Model.FrequenceAntecedents.Count > 0)
-	{
-		foreach (var antecedent in Model.FrequenceAntecedents)
-		{
-			<p> @antecedent.nom</p>
-			<p> @antecedent.compte</p>
-		}
-	}
+			<!-- Médicaments les plus utilisés -->
+			<div class="col-md-6 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Top 5 des médicaments prescrits</h5>
+						<canvas id="medicamentChart"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
 
-	@if (Model.RepartitionAges.Count > 0)
-	{
-		foreach (var age in Model.RepartitionAges)
-		{
-			<p> @age.categorie</p>
-			<p> @age.compte</p>
-		}
-	}
+		<div class="row">
+			<!-- Allergies fréquentes -->
+			<div class="col-md-6 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Allergies les plus fréquentes</h5>
+						<canvas id="allergieChart"></canvas>
+					</div>
+				</div>
+			</div>
+
+			<!-- Antécédents fréquents -->
+			<div class="col-md-6 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Antécédents les plus fréquents</h5>
+						<canvas id="antecedentChart"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
+
+@section Scripts {
+	<script>
+		// Configuration commune pour les couleurs
+		const colors = [
+			'rgba(54, 162, 235, 0.7)',
+			'rgba(255, 99, 132, 0.7)',
+			'rgba(75, 192, 192, 0.7)',
+			'rgba(255, 205, 86, 0.7)',
+			'rgba(153, 102, 255, 0.7)'
+		];
+
+		// Graphique répartition des âges
+		new Chart(document.getElementById('ageChart'), {
+			type: 'bar',
+			data: {
+				labels: @Json.Serialize(Model.RepartitionAges.Select(x => x.categorie)),
+				datasets: [{
+					data: @Json.Serialize(Model.RepartitionAges.Select(x => x.compte)),
+					backgroundColor: colors
+				}]
+			},
+			options: {
+				responsive: true,
+				plugins: {
+					legend: {
+						position: 'bottom'
+					}
+				}
+			}
+		});
+
+		// Graphique médicaments
+		new Chart(document.getElementById('medicamentChart'), {
+			type: 'doughnut',
+			data: {
+				labels: @Json.Serialize(Model.MedicamentPlusUtilises.Select(x => x.Nom)),
+				datasets: [{
+					label: 'Nombre de prescriptions',
+					data: @Json.Serialize(Model.MedicamentPlusUtilises.Select(x => x.UtilisationCount)),
+					backgroundColor: colors[0]
+				}]
+			},
+			options: {
+				responsive: true,
+				scales: {
+					y: {
+						beginAtZero: true
+					}
+				}
+			}
+		});
+
+		// Graphique allergies
+		new Chart(document.getElementById('allergieChart'), {
+			type: 'doughnut',
+			data: {
+				labels: @Json.Serialize(Model.FrequenceAllergies.Select(x => x.nom)),
+				datasets: [{
+					data: @Json.Serialize(Model.FrequenceAllergies.Select(x => x.compte)),
+					backgroundColor: colors
+				}]
+			},
+			options: {
+				responsive: true,
+				plugins: {
+					legend: {
+						position: 'bottom'
+					}
+				}
+			}
+		});
+
+		// Graphique antécédents
+		new Chart(document.getElementById('antecedentChart'), {
+			type: 'doughnut',
+			data: {
+				labels: @Json.Serialize(Model.FrequenceAntecedents.Select(x => x.nom)),
+				datasets: [{
+					label: 'Nombre de patients',
+					data: @Json.Serialize(Model.FrequenceAntecedents.Select(x => x.compte)),
+					backgroundColor: colors[2]
+				}]
+			},
+			options: {
+				responsive: true,
+				scales: {
+					y: {
+						beginAtZero: true
+					}
+				}
+			}
+		});
+
+
+	</script>
+}
