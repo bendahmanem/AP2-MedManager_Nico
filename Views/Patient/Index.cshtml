@@ -28,10 +28,10 @@
 	</div>
 
 	<div class="col-10 align-items-center justify-content-between d-inline-flex">
-		<input type="text" class=" col-4 form-control" id="searchInput" placeholder="Rechercher par nom ou prénom..."
+		<input type="text" class=" col-4 form-control" id="RechercheEntree" placeholder="Rechercher par nom ou prénom..."
 			   value="@ViewData["FiltreActuel"]" />
 
-		<a href="@Url.Action("Index", new { sortBy = "nom", sortDir = ViewData["SortDir"]?.ToString() == "asc" ? "desc" : "asc" })"
+		<a href="@Url.Action("Index", new { Filtre = ViewData["FiltreActuel"], sortBy = "nom", sortDir = ViewData["SortDir"]?.ToString() == "asc" ? "desc" : "asc" })"
 		   class="text-decoration-none @(ViewData["ActiveSort"]?.ToString() == "nom" ? "fw-bold" : "")">
 			Trier par nom
 			@if (ViewData["ActiveSort"]?.ToString() == "nom")
@@ -40,7 +40,7 @@
 			}
 		</a>
 
-		<a href="@Url.Action("Index", new { sortBy = "prenom", sortDir = ViewData["SortDir"]?.ToString() == "asc" ? "desc" : "asc" })"
+		<a href="@Url.Action("Index", new { Filtre = ViewData["FiltreActuel"], sortBy = "prenom", sortDir = ViewData["SortDir"]?.ToString() == "asc" ? "desc" : "asc" })"
 		   class="text-decoration-none @(ViewData["ActiveSort"]?.ToString() == "prenom" ? "fw-bold" : "")">
 			Trier par prénom
 			@if (ViewData["ActiveSort"]?.ToString() == "prenom")
@@ -49,7 +49,7 @@
 			}
 		</a>
 
-		<a href="@Url.Action("Index", new { sortBy = "age", sortDir = ViewData["SortDir"]?.ToString() == "asc" ? "desc" : "asc" })"
+		<a href="@Url.Action("Index", new {Filtre = ViewData["FiltreActuel"], sortBy = "age", sortDir = ViewData["SortDir"]?.ToString() == "asc" ? "desc" : "asc" })"
 		   class="text-decoration-none @(ViewData["ActiveSort"]?.ToString() == "age" ? "fw-bold" : "")">
 			Trier par âge
 			@if (ViewData["ActiveSort"]?.ToString() == "age")
@@ -60,7 +60,7 @@
 	</div>
 </div>
 
-<div id="patientListContainer" class="row mt-3" id="TableauPatients">
+<div id="patientListContainer" class="row mt-3">
 	@foreach (var p in Model.Patients)
 	{
 		<div class="col-md-4 mb-3">
@@ -88,7 +88,7 @@
 </div>
 
 <div class="d-flex justify-content-center">
-	@Html.PagedListPager(Model.Patients, page => Url.Action("Index", new { page }))
+	@Html.PagedListPager(Model.Patients, page => Url.Action("Index", new { page, Filtre = ViewData["FitlreActue"], SortBy = ViewData["ActiveSort"], sortDir = ViewData["SortDir"] }))
 </div>
 
 
@@ -104,33 +104,29 @@
 </script>
 
 <script>
-	const searchInput = document.getElementById('searchInput');
+	const RechercheEntree = document.getElementById('RechercheEntree');
 	let timeoutId;
 
-	searchInput.addEventListener('input', (e) => {
+	RechercheEntree.addEventListener('input', (e) => {
 		clearTimeout(timeoutId);
-		timeoutId = setTimeout(() => {
-			const query = e.target.value;
-			const newUrl = '@Url.Action("Index")' + '?Filtre=' + encodeURIComponent(query);
-
-			// Met à jour l'URL sans recharger la page
-			history.pushState(null, '', newUrl);
-
-			// Effectue une requête AJAX pour mettre à jour uniquement la liste des patients
-			fetch(newUrl, {
-				headers: { 'X-Requested-With': 'XMLHttpRequest' }
-			})
-			.then(response => response.text())
-			.then(html => {
-				// Crée un DOM temporaire pour extraire le contenu du conteneur
-				const tempDiv = document.createElement('div');
-				tempDiv.innerHTML = html;
-				const newContent = tempDiv.querySelector('#patientListContainer').innerHTML;
-
-				// Remplace uniquement le contenu du conteneur de la liste des patients
-				document.getElementById('patientListContainer').innerHTML = newContent;
-			});
-		}, 500);
+		timeoutId = setTimeout(MajPatient(e), 500);
 	});
 
+	function MajPatient(e) {
+		const requete = e.target.value;
+		const Url = '@Url.Action("Index")' + '?Filtre=' + encodeURIComponent(requete);
+
+		history.pushState(null, '', Url);
+
+		fetch(Url, {
+			headers: { 'X-Requested-With': 'XMLHttpRequest' }
+		})
+			.then(response => response.text())
+			.then(html => {
+				const tempDiv = document.createElement('div');
+				tempDiv.innerHTML = html;
+				const PatientsFiltres = tempDiv.querySelector('#patientListContainer').innerHTML;
+				document.getElementById('patientListContainer').innerHTML = PatientsFiltres;
+			});
+	}
 </script>

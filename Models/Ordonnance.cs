@@ -31,7 +31,6 @@ namespace MedManager.Models
 
         public Medecin Medecin { get; set; }
 
-        [DataType(DataType.Date)]
         public DateTime DateCreation { get; set; } = DateTime.Now;
 
     }

@@ -50,7 +50,6 @@ namespace MedManager.Controllers
 
 				var patients = medecin.Patients.AsQueryable();
 
-				// Filtre
 				if (!string.IsNullOrEmpty(Filtre))
 				{
 					patients = patients.Where(p =>
@@ -58,7 +57,6 @@ namespace MedManager.Controllers
 						(p.Prenom != null && p.Prenom.Contains(Filtre, StringComparison.OrdinalIgnoreCase)));
 				}
 
-				// Tri
 				ViewData["ActiveSort"] = sortBy;
 				ViewData["SortDir"] = sortDir;
 
@@ -70,7 +68,6 @@ namespace MedManager.Controllers
 					_ => patients.OrderBy(p => p.Nom) // Tri par défaut
 				};
 
-				// Pagination
 				int TaillePage = 9;
 				int NombrePage = (page ?? 1);
 				var ListePagineesPatients = patients.ToPagedList(NombrePage, TaillePage);

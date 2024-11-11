@@ -62,6 +62,7 @@ namespace MedManager.Controllers
 
 			ViewData["TriActuel"] = OrdreTri;
 			ViewData["FiltreActuel"] = Filtre;
+			ViewData["FiltreCateActuel"] = FiltreCate;
 			return View(medicaments);
 		}
 
