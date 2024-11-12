@@ -9,45 +9,95 @@
         <small class="text-muted float-end">Merged input group</small>
     </div>
     <div class="card-body">
-        <form>
+
+        <form asp-action="Index" asp-controller="Parametre" method="post">
             <div class="mb-6">
-                <label class="form-label" for="basic-icon-default-fullname">Full Name</label>
+                <label asp-for="NomUtilisateur" class="form-label" for="basic-icon-default-username"></label>
                 <div class="input-group input-group-merge">
-                    <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user"></i></span>
-                    <input type="text" class="form-control" id="basic-icon-default-fullname" placeholder="John Doe" aria-label="John Doe" aria-describedby="basic-icon-default-fullname2">
+                    <input asp-for="NomUtilisateur" type="text" class="form-control" id="basic-icon-default-username" placeholder="Nom d'utilisateur">
                 </div>
+                <span asp-validation-for="NomUtilisateur" class="text-danger"></span>
             </div>
+
             <div class="mb-6">
-                <label class="form-label" for="basic-icon-default-company">Company</label>
+                <label asp-for="Nom" class="form-label" for="basic-icon-default-fullname"></label>
                 <div class="input-group input-group-merge">
-                    <span id="basic-icon-default-company2" class="input-group-text"><i class="bx bx-buildings"></i></span>
-                    <input type="text" id="basic-icon-default-company" class="form-control" placeholder="ACME Inc." aria-label="ACME Inc." aria-describedby="basic-icon-default-company2">
+                    <input asp-for="Nom" type="text" class="form-control" id="basic-icon-default-fullname" placeholder="Nom">
                 </div>
+                <span asp-validation-for="Nom" class="text-danger"></span>
             </div>
+
             <div class="mb-6">
-                <label class="form-label" for="basic-icon-default-email">Email</label>
+                <label asp-for="Prenom" class="form-label" for="basic-icon-default-firstname"></label>
                 <div class="input-group input-group-merge">
-                    <span class="input-group-text"><i class="bx bx-envelope"></i></span>
-                    <input type="text" id="basic-icon-default-email" class="form-control" placeholder="john.doe" aria-label="john.doe" aria-describedby="basic-icon-default-email2">
-                    <span id="basic-icon-default-email2" class="input-group-text">example.com</span>
+                    <input asp-for="Prenom" type="text" class="form-control" id="basic-icon-default-firstname" placeholder="Prénom">
                 </div>
-                <div class="form-text"> You can use letters, numbers &amp; periods </div>
+                <span asp-validation-for="Prenom" class="text-danger"></span>
             </div>
+
             <div class="mb-6">
-                <label class="form-label" for="basic-icon-default-phone">Phone No</label>
+                <label asp-for="Email" class="form-label" for="basic-icon-default-email"></label>
                 <div class="input-group input-group-merge">
-                    <span id="basic-icon-default-phone2" class="input-group-text"><i class="bx bx-phone"></i></span>
-                    <input type="text" id="basic-icon-default-phone" class="form-control phone-mask" placeholder="658 799 8941" aria-label="658 799 8941" aria-describedby="basic-icon-default-phone2">
+                    <input asp-for="Email" type="text" class="form-control" id="basic-icon-default-email" placeholder="Email">
                 </div>
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
+
             <div class="mb-6">
-                <label class="form-label" for="basic-icon-default-message">Message</label>
+                <label asp-for="Adresse" class="form-label" for="basic-icon-default-address"></label>
                 <div class="input-group input-group-merge">
-                    <span id="basic-icon-default-message2" class="input-group-text"><i class="bx bx-comment"></i></span>
-                    <textarea id="basic-icon-default-message" class="form-control" placeholder="Hi, Do you have a moment to talk Joe?" aria-label="Hi, Do you have a moment to talk Joe?" aria-describedby="basic-icon-default-message2"></textarea>
+                    <input asp-for="Adresse" type="text" class="form-control" id="basic-icon-default-address" placeholder="Adresse">
                 </div>
+                <span asp-validation-for="Adresse" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Send</button>
+
+            <div class="mb-6">
+                <label asp-for="NumeroTel" class="form-label" for="basic-icon-default-phone"></label>
+                <div class="input-group input-group-merge">
+                    <input asp-for="NumeroTel" type="text" class="form-control" id="basic-icon-default-phone" placeholder="Numéro de téléphone">
+                </div>
+                <span asp-validation-for="NumeroTel" class="text-danger"></span>
+            </div>
+
+            <div class="mb-6">
+                <label asp-for="Specialite" class="form-label" for="basic-icon-default-specialty"></label>
+                <div class="input-group input-group-merge">
+                    <select asp-for="Specialite" class="form-control" id="basic-icon-default-specialty">
+                        <option value="">Sélectionnez une spécialité</option>
+                        @foreach (var spe in Enum.GetValues(typeof(Specialite)))
+                        {
+                            <option value="@spe">@spe</option>
+                        }
+                    </select>
+                </div>
+                <span asp-validation-for="Specialite" class="text-danger"></span>
+            </div>
+
+            <div class="mb-6">
+                <label asp-for="Faculte" class="form-label" for="basic-icon-default-faculty"></label>
+                <div class="input-group input-group-merge">
+                    <input asp-for="Faculte" type="text" class="form-control" id="basic-icon-default-faculty" placeholder="Faculté">
+                </div>
+                <span asp-validation-for="Faculte" class="text-danger"></span>
+            </div>
+
+            <div class="mb-6">
+                <label asp-for="Ville" class="form-label" for="basic-icon-default-city"></label>
+                <div class="input-group input-group-merge">
+                    <input asp-for="Ville" type="text" class="form-control" id="basic-icon-default-city" placeholder="Ville">
+                </div>
+                <span asp-validation-for="Ville" class="text-danger"></span>
+            </div>
+
+            <div class="mb-6">
+                <label asp-for="MotDePasse" class="form-label" for="basic-icon-default-password"></label>
+                <div class="input-group input-group-merge">
+                    <input asp-for="MotDePasse" type="password" class="form-control" id="basic-icon-default-password" placeholder="Mot de passe">
+                </div>
+                <span asp-validation-for="MotDePasse" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Modifier</button>
         </form>
     </div>
 </div>

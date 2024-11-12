@@ -1,7 +1,9 @@
 ﻿using MedManager.Data;
 using MedManager.Models;
+using MedManager.ViewModel.Compte;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace MedManager.Controllers
 {
@@ -17,10 +19,63 @@ namespace MedManager.Controllers
 			_logger = logger;
 		}
 
-		public IActionResult Index()
+		public async Task<IActionResult> Index()
 		{
-			var medecin = _userManager.GetUserAsync(User);
-			return View(medecin);
+			var user = await _userManager.GetUserAsync(User);
+
+			if (user == null)
+				return NotFound();
+
+			var medecin = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
+
+
+			var modele = new InscriptionViewModel
+			{
+				NomUtilisateur = medecin.UserName,
+				Prenom = medecin.Prenom,
+				Nom = medecin.Nom,
+				Adresse = medecin.Adresse,
+				Ville = medecin.Ville,
+				Faculte = medecin.Faculte,
+				NumeroTel = medecin.NumeroTel,
+				Email = medecin.Email,
+				MotDePasse = medecin.PasswordHash,
+			};
+			return View(modele);
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Index(InscriptionViewModel model)
+		{
+			if(!ModelState.IsValid)
+			{
+                return View(model);
+            }
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
+                return NotFound();
+
+            var medecin = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
+
+			if (medecin == null)
+				return NotFound();
+
+			medecin.Nom = model.Nom;
+			medecin.Prenom = model.Prenom;
+			medecin.Adresse = model.Adresse;
+			medecin.Ville = model.Ville;
+			medecin.Faculte = model.Faculte;
+			medecin.PasswordHash = model.MotDePasse;
+			medecin.NumeroTel = model.NumeroTel;
+			medecin.Email = model.Email;
+			medecin.UserName = model.NomUtilisateur;
+
+            _dbContext.Users.Update(medecin);
+            await _dbContext.SaveChangesAsync();
+
+
+            return View(model);
 		}
 	}
 }
