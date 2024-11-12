@@ -32,6 +32,9 @@ namespace MedManager.Controllers
 		{
 			try
 			{
+                //debug
+                var mm = ViewData["FiltreActuel"];
+
 				var user = await _userManager.GetUserAsync(User);
 				if (user == null)
 				{
@@ -58,7 +61,7 @@ namespace MedManager.Controllers
 				}
 
 				ViewData["ActiveSort"] = sortBy;
-				ViewData["SortDir"] = sortDir;
+				ViewData["SortDir"] = sortDir; 
 
 				patients = sortBy.ToLower() switch
 				{

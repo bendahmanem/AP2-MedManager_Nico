@@ -1,13 +1,12 @@
 ﻿@model TableauDeBordViewModel
 
 <div class="container mt-4">
-	<div class="d-flex justify-content-between align-items-center mb-4">
+	<div class="d-flex justify-content-between align-items-center text-center mb-4">
 		<h1>Tableau de Bord</h1>
 	</div>
 
 	<div id="dashboardContent">
 		<div class="row">
-			<!-- Répartition des âges -->
 			<div class="col-md-6 mb-4">
 				<div class="card">
 					<div class="card-body">
@@ -17,7 +16,6 @@
 				</div>
 			</div>
 
-			<!-- Médicaments les plus utilisés -->
 			<div class="col-md-6 mb-4">
 				<div class="card">
 					<div class="card-body">
@@ -29,7 +27,6 @@
 		</div>
 
 		<div class="row">
-			<!-- Allergies fréquentes -->
 			<div class="col-md-6 mb-4">
 				<div class="card">
 					<div class="card-body">
@@ -39,7 +36,6 @@
 				</div>
 			</div>
 
-			<!-- Antécédents fréquents -->
 			<div class="col-md-6 mb-4">
 				<div class="card">
 					<div class="card-body">
@@ -54,7 +50,6 @@
 
 @section Scripts {
 	<script>
-		// Configuration commune pour les couleurs
 		const colors = [
 			'rgba(54, 162, 235, 0.7)',
 			'rgba(255, 99, 132, 0.7)',
@@ -63,7 +58,6 @@
 			'rgba(153, 102, 255, 0.7)'
 		];
 
-		// Graphique répartition des âges
 		new Chart(document.getElementById('ageChart'), {
 			type: 'bar',
 			data: {
@@ -83,28 +77,25 @@
 			}
 		});
 
-		// Graphique médicaments
 		new Chart(document.getElementById('medicamentChart'), {
 			type: 'doughnut',
 			data: {
 				labels: @Json.Serialize(Model.MedicamentPlusUtilises.Select(x => x.Nom)),
 				datasets: [{
-					label: 'Nombre de prescriptions',
 					data: @Json.Serialize(Model.MedicamentPlusUtilises.Select(x => x.UtilisationCount)),
-					backgroundColor: colors[0]
+					backgroundColor: colors
 				}]
 			},
 			options: {
 				responsive: true,
-				scales: {
-					y: {
-						beginAtZero: true
+				plugins: {
+					legend: {
+						position: 'bottom'
 					}
 				}
 			}
 		});
 
-		// Graphique allergies
 		new Chart(document.getElementById('allergieChart'), {
 			type: 'doughnut',
 			data: {
@@ -124,26 +115,34 @@
 			}
 		});
 
-		// Graphique antécédents
-		new Chart(document.getElementById('antecedentChart'), {
-			type: 'doughnut',
-			data: {
-				labels: @Json.Serialize(Model.FrequenceAntecedents.Select(x => x.nom)),
-				datasets: [{
-					label: 'Nombre de patients',
-					data: @Json.Serialize(Model.FrequenceAntecedents.Select(x => x.compte)),
-					backgroundColor: colors[2]
-				}]
-			},
-			options: {
-				responsive: true,
-				scales: {
-					y: {
-						beginAtZero: true
-					}
-				}
-			}
-		});
+new Chart(document.getElementById('antecedentChart'), {
+    type: 'doughnut',
+    data: {
+        labels: @Json.Serialize(Model.FrequenceAntecedents.Select(x => x.nom)),
+        datasets: [{
+            label: 'Nombre de patients',
+            data: @Json.Serialize(Model.FrequenceAntecedents.Select(x => x.compte)),
+            backgroundColor: colors
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            },
+            datalabels: {
+                anchor: 'end',
+                align: 'top',
+                formatter: Math.round,
+                font: {
+                    weight: 'bold'
+                }
+            }
+        }
+    }
+});
+
 
 
 	</script>

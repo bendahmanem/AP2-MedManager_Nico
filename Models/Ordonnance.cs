@@ -25,9 +25,9 @@ namespace MedManager.Models
         public byte[]? Pdf { get; set; }
 
         public int? PatientId { get; set; }
-        public required string MedecinId { get; set; }
         
         public Patient? Patient { get; set; }
+        public required string MedecinId { get; set; }
 
         public Medecin Medecin { get; set; }
 

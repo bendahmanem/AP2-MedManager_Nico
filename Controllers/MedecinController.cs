@@ -7,9 +7,11 @@ using Microsoft.EntityFrameworkCore;
 using X.PagedList;
 using MedManager.ViewModel;
 using MedManager.ViewModel.MedecinVM;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MedManager.Controllers;
 
+[Authorize]
 public class MedecinController : Controller
 {
 	private readonly ILogger<Medecin> _logger;
@@ -34,13 +36,17 @@ public class MedecinController : Controller
 		var frequenceAllergies = await ObtenirAllergiesLesPlusFrequentes();
 		var frequenceAntecedents = await ObtenirAntecedentsLesPlusFrequentes();
 		var repartitionAge = await ObtenirRepartitionAge();
+		var CinqDerniersPatient = await ObtenirCinqDerniersPatients();
+        var CinqDernieresOrdo = await ObtenirCinqDerniersOrdonnances();
 
-		var model = new TableauDeBordViewModel
+        var model = new TableauDeBordViewModel
 		{
 			FrequenceAllergies = frequenceAllergies,
 			FrequenceAntecedents = frequenceAntecedents,
 			RepartitionAges = repartitionAge, 
-			MedicamentPlusUtilises = medocs
+			MedicamentPlusUtilises = medocs, 
+			CinqDerniersOrdo = CinqDernieresOrdo, 
+			CinqDerniersPatient = CinqDerniersPatient
         };
         return View(model);
     }
@@ -91,7 +97,7 @@ public class MedecinController : Controller
 		return new List<MedicamentUtilisationViewModel>();
 	}
 
-	private async Task<List<FrequenceAllergie>> ObtenirAllergiesLesPlusFrequentes()
+	private async Task<List<Frequence>> ObtenirAllergiesLesPlusFrequentes()
 	{
 		var id = await ObtenirIdMedecin();
 		if (id != null)
@@ -104,7 +110,7 @@ public class MedecinController : Controller
 			var allergies = patients
 				.SelectMany(p => p.Allergies)
 				.GroupBy(a => a.AllergieId)
-				.Select(g => new FrequenceAllergie
+				.Select(g => new Frequence
 				{
 					nom = g.First().Nom,
 					compte = g.Count()
@@ -114,10 +120,10 @@ public class MedecinController : Controller
 				.ToList();
 			return allergies;
 		}
-		return new List<FrequenceAllergie>();
+		return new List<Frequence>();
 	}
 
-    private async Task<List<FrequenceAntecedent>> ObtenirAntecedentsLesPlusFrequentes()
+    private async Task<List<Frequence>> ObtenirAntecedentsLesPlusFrequentes()
     {
         var id = await ObtenirIdMedecin();
         if (id != null)
@@ -130,7 +136,7 @@ public class MedecinController : Controller
             var antecedents = patients
                 .SelectMany(p => p.Antecedents)
                 .GroupBy(a => a.AntecedentId)
-                .Select(g => new FrequenceAntecedent
+                .Select(g => new Frequence
                 {
                     nom = g.First().Nom,
                     compte = g.Count()
@@ -140,7 +146,7 @@ public class MedecinController : Controller
                 .ToList();
 			return antecedents;
 		}
-        return new List<FrequenceAntecedent>();
+        return new List<Frequence>();
     }
 
     private async Task<List<RepartitionAge>> ObtenirRepartitionAge()

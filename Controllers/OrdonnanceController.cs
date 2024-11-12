@@ -135,6 +135,17 @@ namespace MedManager.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (model.DateDebut > model.DateFin)
+                {
+					ModelState.AddModelError("DateFin", "La date de fin doit être supérieure à la date de début.");
+					model.Medicaments = await _dbContext.Medicaments.ToListAsync();
+					model.patients = await _dbContext.Users
+													 .Include(u => u.Patients)
+													 .Where(u => u.Id == _userManager.GetUserId(User))
+													 .SelectMany(u => u.Patients)
+													 .ToListAsync();
+					return View("Action", model);
+				}
                 try
                 {
                     var MedecinId = _userManager.GetUserId(User);
@@ -147,6 +158,8 @@ namespace MedManager.Controllers
 
                     if (medecin == null)
                         return NotFound();
+                    var patient = await _dbContext.Patients.FirstOrDefaultAsync(p => p.PatientId == model.PatientId); 
+                                        
 
                     var ordonnance = new Ordonnance
                     {
@@ -154,6 +167,7 @@ namespace MedManager.Controllers
                         DateFin = model.DateFin,
                         InfoSupplementaire = model.InfoSupplementaire,
                         Medecin = medecin,
+                        Patient = patient,
                         PatientId = model.PatientId,
                         Medicaments = new List<Medicament>(),
                         MedecinId = MedecinId,
