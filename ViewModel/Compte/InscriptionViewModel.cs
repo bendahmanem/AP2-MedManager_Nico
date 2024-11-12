@@ -5,25 +5,25 @@ namespace MedManager.ViewModel.Compte
 {
     public class InscriptionViewModel
     {
-        [Required]
-        [Display(Name = "Nom d'utilisateur")]
+		[Required(ErrorMessage = "Le nom d'utilisateur est obligatoire")]
+		[Display(Name = "Nom d'utilisateur")]
         public required string NomUtilisateur { get; set; }
 
-        [Required]
-        [EmailAddress]
+		[Required(ErrorMessage = "L'email est obligatoire")]
+		[EmailAddress]
         [Display(Name = "Email")]
         public required string Email { get; set; }
 
-        [Required]
-        [Display(Name = "Nom")]
+		[Required(ErrorMessage = "Le nom est obligatoire")]
+		[Display(Name = "Nom")]
         public required string Nom { get; set; }
 
-        [Required]
-        [Display(Name = "Prénom")]
+		[Required(ErrorMessage = "Le prénom est obligatoire")]
+		[Display(Name = "Prénom")]
         public required string Prenom { get; set; }
 
-        [Required]
-        public required string Adresse { get; set; }
+		[Required(ErrorMessage = "L'adresse est obligatoire")]
+		public required string Adresse { get; set; }
 
         [Display(Name = "Numéro de téléphone")]
         [DataType(DataType.PhoneNumber)]
@@ -35,15 +35,15 @@ namespace MedManager.ViewModel.Compte
         public Specialite Specialite { get; set; }
 
         [Display(Name ="Faculté")]
-        [Required]
-        public required string Faculte { get; set; }
+		[Required(ErrorMessage = "La faculté est obligatoire")]
+		public required string Faculte { get; set; }
 
-        [Required]
-        [Display(Name = "Ville")]
+		[Required(ErrorMessage = "La ville est obligatoire")]
+		[Display(Name = "Ville")]
         public required string Ville { get; set; }
 
-        [Required]
-        [DataType(DataType.Password)]
+		[Required(ErrorMessage = "Le mot de passe est obligatoire")]
+		[DataType(DataType.Password)]
         [Display(Name = "Mot de passe")]
         public required string MotDePasse { get; set; }
     }

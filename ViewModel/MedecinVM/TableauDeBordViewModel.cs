@@ -10,5 +10,8 @@ namespace MedManager.ViewModel.MedecinVM
         public List<MedicamentUtilisationViewModel>? MedicamentPlusUtilises { get; set; }
         public List<Patient>? CinqDerniersPatient { get; set; }
         public List<Ordonnance>? CinqDerniersOrdo { get; set; }
-    }
+
+        public int TotalPatient { get; set; }
+        public int TotalOrdonnance { get; set; }
+	}
 }
