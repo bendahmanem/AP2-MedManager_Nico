@@ -108,7 +108,7 @@ public class MedecinController : Controller
 		{
 
 			var ordonnances = await _dbContext.Ordonnances
-							.Where(o => o.DateFin < DateTime.Now && o.MedecinId == id).ToListAsync();
+							.Where(o => o.DateFin >= DateTime.Now && o.DateDebut <= DateTime.Now && o.MedecinId == id).ToListAsync();
 			return ordonnances;
 		}
 
