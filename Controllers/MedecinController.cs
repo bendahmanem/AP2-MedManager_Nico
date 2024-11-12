@@ -30,29 +30,35 @@ public class MedecinController : Controller
 		return View();
 	}
 
-    public async Task<IActionResult> TableauBord()
-    {
-        var medocs = await ObtenirMedicamentLesPlusUtilises();
+	public async Task<IActionResult> TableauBord()
+	{
+		var medocs = await ObtenirMedicamentLesPlusUtilises();
 		var frequenceAllergies = await ObtenirAllergiesLesPlusFrequentes();
 		var frequenceAntecedents = await ObtenirAntecedentsLesPlusFrequentes();
 		var repartitionAge = await ObtenirRepartitionAge();
 		var CinqDerniersPatient = await ObtenirCinqDerniersPatients();
-        var CinqDernieresOrdo = await ObtenirCinqDerniersOrdonnances();
+		var CinqDernieresOrdo = await ObtenirCinqDerniersOrdonnances();
+		var TotalPatient = await ObtenirNombrePatient();
+		var TotalOrdo = await ObtenirNombreOrdonnance();
+		var OrdoEnCours = await ObtenirOrdonnanceEncours();
 
-        var model = new TableauDeBordViewModel
+		var model = new TableauDeBordViewModel
 		{
 			FrequenceAllergies = frequenceAllergies,
 			FrequenceAntecedents = frequenceAntecedents,
-			RepartitionAges = repartitionAge, 
-			MedicamentPlusUtilises = medocs, 
-			CinqDerniersOrdo = CinqDernieresOrdo, 
-			CinqDerniersPatient = CinqDerniersPatient
-        };
-        return View(model);
-    }
+			RepartitionAges = repartitionAge,
+			MedicamentPlusUtilises = medocs,
+			CinqDerniersOrdo = CinqDernieresOrdo,
+			CinqDerniersPatient = CinqDerniersPatient,
+			TotalOrdonnance = TotalOrdo,
+			TotalPatient = TotalPatient,
+			OrdonnanceEnCours = OrdoEnCours
+		};
+		return View(model);
+	}
 
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+	[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 	public IActionResult Error()
 	{
 		return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
@@ -68,6 +74,47 @@ public class MedecinController : Controller
 		}
 		return null;
 	}
+
+	private async Task<int> ObtenirNombrePatient()
+	{
+		var id = await ObtenirIdMedecin();
+		if (id != null)
+		{
+			var NombrePatients = await _dbContext.Patients
+									.Where(p => p.MedecinID == id)
+									.CountAsync();
+			return NombrePatients;
+		}
+		return 0;
+	}
+
+	private async Task<int> ObtenirNombreOrdonnance()
+	{
+		var id = await ObtenirIdMedecin();
+		if (id != null)
+		{
+			var NombreOrdo = await _dbContext.Ordonnances
+									.Where(o => o.MedecinId == id)
+									.CountAsync();
+			return NombreOrdo;
+		}
+		return 0;
+	}
+
+	private async Task<List<Ordonnance>> ObtenirOrdonnanceEncours()
+	{
+		var id = await ObtenirIdMedecin();
+		if (id != null)
+		{
+
+			var ordonnances = await _dbContext.Ordonnances
+							.Where(o => o.DateFin < DateTime.Now && o.MedecinId == id).ToListAsync();
+			return ordonnances;
+		}
+
+		return new List<Ordonnance>();
+	}
+
 
 	private async Task<List<MedicamentUtilisationViewModel>> ObtenirMedicamentLesPlusUtilises()
 	{
@@ -123,62 +170,62 @@ public class MedecinController : Controller
 		return new List<Frequence>();
 	}
 
-    private async Task<List<Frequence>> ObtenirAntecedentsLesPlusFrequentes()
-    {
-        var id = await ObtenirIdMedecin();
-        if (id != null)
-        {
-            var patients = await _dbContext.Patients
-                            .Include(p => p.Antecedents)
-                            .Where(p => p.MedecinID == id)
-                            .ToListAsync();
+	private async Task<List<Frequence>> ObtenirAntecedentsLesPlusFrequentes()
+	{
+		var id = await ObtenirIdMedecin();
+		if (id != null)
+		{
+			var patients = await _dbContext.Patients
+							.Include(p => p.Antecedents)
+							.Where(p => p.MedecinID == id)
+							.ToListAsync();
 
-            var antecedents = patients
-                .SelectMany(p => p.Antecedents)
-                .GroupBy(a => a.AntecedentId)
-                .Select(g => new Frequence
-                {
-                    nom = g.First().Nom,
-                    compte = g.Count()
-                })
-                .OrderByDescending(a => a.compte)
-                .Take(5)
-                .ToList();
+			var antecedents = patients
+				.SelectMany(p => p.Antecedents)
+				.GroupBy(a => a.AntecedentId)
+				.Select(g => new Frequence
+				{
+					nom = g.First().Nom,
+					compte = g.Count()
+				})
+				.OrderByDescending(a => a.compte)
+				.Take(5)
+				.ToList();
 			return antecedents;
 		}
-        return new List<Frequence>();
-    }
+		return new List<Frequence>();
+	}
 
-    private async Task<List<RepartitionAge>> ObtenirRepartitionAge()
-    {
-        var id = await ObtenirIdMedecin();
-        if (id != null)
-        {
-            var patients = await _dbContext.Patients
-                            .Include(p => p.Antecedents)
-                            .Where(p => p.MedecinID == id)
-                            .ToListAsync();
+	private async Task<List<RepartitionAge>> ObtenirRepartitionAge()
+	{
+		var id = await ObtenirIdMedecin();
+		if (id != null)
+		{
+			var patients = await _dbContext.Patients
+							.Include(p => p.Antecedents)
+							.Where(p => p.MedecinID == id)
+							.ToListAsync();
 
-            var repartition = patients
-                .GroupBy(p =>
-                    p.Age < 18 ? "Mineurs" :
-                    p.Age <= 40 ? "Jeunes Adultes" :
-                    p.Age <= 60 ? "Adultes" :
-                    "Seniors")
-                .Select(g => new RepartitionAge
-                {
-                    categorie = g.Key,
-                    compte = g.Count()
-                })
-                .ToList();
+			var repartition = patients
+				.GroupBy(p =>
+					p.Age < 18 ? "Mineurs" :
+					p.Age <= 40 ? "Jeunes Adultes" :
+					p.Age <= 60 ? "Adultes" :
+					"Seniors")
+				.Select(g => new RepartitionAge
+				{
+					categorie = g.Key,
+					compte = g.Count()
+				})
+				.ToList();
 
-            return repartition;
-        }
-        return new List<RepartitionAge>();
-    }
+			return repartition;
+		}
+		return new List<RepartitionAge>();
+	}
 
 
-    private async Task<List<Patient>> ObtenirCinqDerniersPatients()
+	private async Task<List<Patient>> ObtenirCinqDerniersPatients()
 	{
 		var id = await ObtenirIdMedecin();
 

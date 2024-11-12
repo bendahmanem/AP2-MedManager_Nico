@@ -68,7 +68,6 @@
 
     <p>Antécédents</p>
     <div class="form-group row">
-       @*  @Html.LabelFor(model => model.SelectedAntecedentIds, new { @class = "col-sm-2 col-form-label" }) *@
         <div class="col-sm-10">
             @Html.ListBoxFor(model => model.AntecedentIdSelectionnes,
                      new MultiSelectList(Model.Antecedents, "AntecedentId", "Nom"),
@@ -78,7 +77,6 @@
 
     <p>Allergies</p>
     <div class="form-group row">
-        @* @Html.LabelFor(model => model.SelectedAllergieIds, new { @class = "col-sm-2 col-form-label" }) *@
         <div class="col-sm-10">
             @Html.ListBoxFor(model => model.AllergieIdSelectionnes,
                      new MultiSelectList(Model.Allergies, "AllergieId", "Nom"),
@@ -106,7 +104,8 @@
         $(document).ready(function () {
             $('#ComboBoxMultiselectAllergies').multiselect({
                 enableFiltering: true,
-                includeSelectAllOption: true
+                includeSelectAllOption: true,
+                maxHeight: 400,
             });
         });
     </script>

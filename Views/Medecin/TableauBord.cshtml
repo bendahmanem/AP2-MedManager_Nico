@@ -1,12 +1,132 @@
 ﻿@model TableauDeBordViewModel
 
-<div class="container mt-4">
+
+<div class="col-12 container mt-4">
 	<div class="d-flex justify-content-between align-items-center text-center mb-4">
 		<h1>Tableau de Bord</h1>
 	</div>
 
-	<div id="dashboardContent">
+	<div id="dashboardContent" class ="col-12">
+		
+		<table class="table table-striped table-hover"> 
+			<thead>
+				<tr>
+					<th>Nom </th>
+					<th>Date de début </th>
+					<th>Date de fin</th>
+					<th>Date de création</th>
+					<th>Detail</th>
+					<th>Modifier</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var ordo in Model.OrdonnanceEnCours)
+				{
+					<tr>
+						<td>@ordo.Patient.NomComplet</td>
+						<td>@ordo.DateDebut</td>
+						<td>@ordo.DateFin</td>
+						<td>@ordo.DateFin</td>
+						<td>
+							<a asp-action="Detail" asp-controller="Ordonnance" asp-route-id="@ordo.OrdonnanceId">
+								<i class="bi bi-eye"></i>
+							</a>
+						</td>
+						<td>
+								<a asp-action="Editer" asp-controller="Ordonnance" asp-route-id="@ordo.OrdonnanceId">
+								<i class="bi bi-pen"></i>
+							</a>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+
+		<table class="table table-striped table-hover"> 
+			<thead>
+				<tr>
+					<th>Nom </th>
+					<th>Prenom</th>
+					<th>Date de naissance</th>
+					<th>Detail</th>
+					<th>Modifier</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var patient in Model.CinqDerniersPatient)
+				{
+					<tr>
+						<td>@patient.Nom</td>
+						<td>@patient.Prenom</td>
+						<td>@patient.DateNaissance</td>
+						<td>
+							<a asp-action="Detail" asp-controller="Patient" asp-route-id="@patient.PatientId">
+									<i style="color: #000000" class="bi bi-eye"></i>
+							</a>
+						</td>
+						<td>
+							<a asp-action="Editer" asp-controller="Patient" asp-route-id="@patient.PatientId">
+								<i style="color: #666666" class="bi bi-pen"></i>
+							</a>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+
+				<table class="table table-striped table-hover"> 
+			<thead>
+				<tr>
+					<th>Nom </th>
+					<th>Date de début</th>
+					<th>Date de fin</th>
+					<th>Date de création</th>
+					<th>Detail</th>
+					<th>Modifier</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var ordo in Model.CinqDerniersOrdo)
+				{
+					<tr>
+						<td>@ordo.Patient.NomComplet</td>
+						<td>@ordo.DateDebut</td>
+						<td>@ordo.DateFin</td>
+						<td>@ordo.DateCreation</td>
+						<td>
+							<a asp-action="Detail" asp-controller="Ordonnance" asp-route-id="@ordo.OrdonnanceId">
+								<i class="bi bi-eye"></i>
+							</a>
+						</td>
+						<td>
+								<a asp-action="Editer" asp-controller="Ordonnance" asp-route-id="@ordo.OrdonnanceId">
+								<i class="bi bi-pen"></i>
+							</a>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+		
 		<div class="row">
+			<div class="col-md-6 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Nombre total de patients</h5>
+						<p class="card-text">@Model.TotalPatient</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-6 mb-4">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Nombre total d'ordonnances</h5>
+						<p class="card-text">@Model.TotalOrdonnance</p>
+					</div>
+				</div>
+			</div>
+
 			<div class="col-md-6 mb-4">
 				<div class="card">
 					<div class="card-body">
@@ -15,7 +135,9 @@
 					</div>
 				</div>
 			</div>
+		</div>
 
+		<div class="row">
 			<div class="col-md-6 mb-4">
 				<div class="card">
 					<div class="card-body">
@@ -24,9 +146,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
 
-		<div class="row">
 			<div class="col-md-6 mb-4">
 				<div class="card">
 					<div class="card-body">
@@ -49,40 +169,79 @@
 </div>
 
 @section Scripts {
-	<script>
-		const colors = [
-			'rgba(54, 162, 235, 0.7)',
-			'rgba(255, 99, 132, 0.7)',
-			'rgba(75, 192, 192, 0.7)',
-			'rgba(255, 205, 86, 0.7)',
-			'rgba(153, 102, 255, 0.7)'
-		];
+			<script>
+				const colors = [
+					'rgba(54, 162, 235, 0.7)',
+					'rgba(255, 99, 132, 0.7)',
+					'rgba(75, 192, 192, 0.7)',
+					'rgba(255, 205, 86, 0.7)',
+					'rgba(153, 102, 255, 0.7)'
+				];
 
-		new Chart(document.getElementById('ageChart'), {
-			type: 'bar',
-			data: {
-				labels: @Json.Serialize(Model.RepartitionAges.Select(x => x.categorie)),
-				datasets: [{
-					data: @Json.Serialize(Model.RepartitionAges.Select(x => x.compte)),
-					backgroundColor: colors
-				}]
-			},
-			options: {
-				responsive: true,
-				plugins: {
-					legend: {
-						position: 'bottom'
+				new Chart(document.getElementById('ageChart'), {
+					type: 'bar',
+					data: {
+						labels: @Json.Serialize(Model.RepartitionAges.Select(x => x.categorie)),
+						datasets: [{
+							data: @Json.Serialize(Model.RepartitionAges.Select(x => x.compte)),
+							backgroundColor: colors
+						}]
+					},
+					options: {
+						responsive: true,
+						plugins: {
+							legend: {
+								position: 'bottom'
+							}
+						}
 					}
-				}
-			}
-		});
+				});
 
-		new Chart(document.getElementById('medicamentChart'), {
+				new Chart(document.getElementById('medicamentChart'), {
+					type: 'doughnut',
+					data: {
+						labels: @Json.Serialize(Model.MedicamentPlusUtilises.Select(x => x.Nom)),
+						datasets: [{
+							data: @Json.Serialize(Model.MedicamentPlusUtilises.Select(x => x.UtilisationCount)),
+							backgroundColor: colors
+						}]
+					},
+					options: {
+						responsive: true,
+						plugins: {
+							legend: {
+								position: 'bottom'
+							}
+						}
+					}
+				});
+
+				new Chart(document.getElementById('allergieChart'), {
+					type: 'doughnut',
+					data: {
+						labels: @Json.Serialize(Model.FrequenceAllergies.Select(x => x.nom)),
+						datasets: [{
+							data: @Json.Serialize(Model.FrequenceAllergies.Select(x => x.compte)),
+							backgroundColor: colors
+						}]
+					},
+					options: {
+						responsive: true,
+						plugins: {
+							legend: {
+								position: 'bottom'
+							}
+						}
+					}
+				});
+
+		new Chart(document.getElementById('antecedentChart'), {
 			type: 'doughnut',
 			data: {
-				labels: @Json.Serialize(Model.MedicamentPlusUtilises.Select(x => x.Nom)),
+				labels: @Json.Serialize(Model.FrequenceAntecedents.Select(x => x.nom)),
 				datasets: [{
-					data: @Json.Serialize(Model.MedicamentPlusUtilises.Select(x => x.UtilisationCount)),
+					label: 'Nombre de patients',
+					data: @Json.Serialize(Model.FrequenceAntecedents.Select(x => x.compte)),
 					backgroundColor: colors
 				}]
 			},
@@ -91,59 +250,20 @@
 				plugins: {
 					legend: {
 						position: 'bottom'
+					},
+					datalabels: {
+						anchor: 'end',
+						align: 'top',
+						formatter: Math.round,
+						font: {
+							weight: 'bold'
+						}
 					}
 				}
 			}
 		});
 
-		new Chart(document.getElementById('allergieChart'), {
-			type: 'doughnut',
-			data: {
-				labels: @Json.Serialize(Model.FrequenceAllergies.Select(x => x.nom)),
-				datasets: [{
-					data: @Json.Serialize(Model.FrequenceAllergies.Select(x => x.compte)),
-					backgroundColor: colors
-				}]
-			},
-			options: {
-				responsive: true,
-				plugins: {
-					legend: {
-						position: 'bottom'
-					}
-				}
-			}
-		});
-
-new Chart(document.getElementById('antecedentChart'), {
-    type: 'doughnut',
-    data: {
-        labels: @Json.Serialize(Model.FrequenceAntecedents.Select(x => x.nom)),
-        datasets: [{
-            label: 'Nombre de patients',
-            data: @Json.Serialize(Model.FrequenceAntecedents.Select(x => x.compte)),
-            backgroundColor: colors
-        }]
-    },
-    options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'bottom'
-            },
-            datalabels: {
-                anchor: 'end',
-                align: 'top',
-                formatter: Math.round,
-                font: {
-                    weight: 'bold'
-                }
-            }
-        }
-    }
-});
 
 
-
-	</script>
+			</script>
 }
