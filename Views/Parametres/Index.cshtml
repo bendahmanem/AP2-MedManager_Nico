@@ -5,8 +5,8 @@
 }
 <div class="card mb-6">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Basic with Icons</h5>
-        <small class="text-muted float-end">Merged input group</small>
+        <h5 class="mb-0">Modification de votre profil</h5>
+        <small class="text-muted float-end">Tous les champs sont obligatoires</small>
     </div>
     <div class="card-body">
 
@@ -20,19 +20,19 @@
             </div>
 
             <div class="mb-6">
-                <label asp-for="Nom" class="form-label" for="basic-icon-default-fullname"></label>
-                <div class="input-group input-group-merge">
-                    <input asp-for="Nom" type="text" class="form-control" id="basic-icon-default-fullname" placeholder="Nom">
-                </div>
-                <span asp-validation-for="Nom" class="text-danger"></span>
-            </div>
-
-            <div class="mb-6">
                 <label asp-for="Prenom" class="form-label" for="basic-icon-default-firstname"></label>
                 <div class="input-group input-group-merge">
                     <input asp-for="Prenom" type="text" class="form-control" id="basic-icon-default-firstname" placeholder="Prénom">
                 </div>
                 <span asp-validation-for="Prenom" class="text-danger"></span>
+            </div>
+
+            <div class="mb-6">
+                <label asp-for="Nom" class="form-label" for="basic-icon-default-fullname"></label>
+                <div class="input-group input-group-merge">
+                    <input asp-for="Nom" type="text" class="form-control" id="basic-icon-default-fullname" placeholder="Nom">
+                </div>
+                <span asp-validation-for="Nom" class="text-danger"></span>
             </div>
 
             <div class="mb-6">
@@ -52,6 +52,15 @@
             </div>
 
             <div class="mb-6">
+                <label asp-for="Ville" class="form-label" for="basic-icon-default-city"></label>
+                <div class="input-group input-group-merge">
+                    <input asp-for="Ville" type="text" class="form-control" id="basic-icon-default-city" placeholder="Ville">
+                </div>
+                <span asp-validation-for="Ville" class="text-danger"></span>
+            </div>
+
+
+            <div class="mb-6">
                 <label asp-for="NumeroTel" class="form-label" for="basic-icon-default-phone"></label>
                 <div class="input-group input-group-merge">
                     <input asp-for="NumeroTel" type="text" class="form-control" id="basic-icon-default-phone" placeholder="Numéro de téléphone">
@@ -59,6 +68,13 @@
                 <span asp-validation-for="NumeroTel" class="text-danger"></span>
             </div>
 
+            <div class="mb-6">
+                <label asp-for="Faculte" class="form-label" for="basic-icon-default-faculty"></label>
+                <div class="input-group input-group-merge">
+                    <input asp-for="Faculte" type="text" class="form-control" id="basic-icon-default-faculty" placeholder="Faculté">
+                </div>
+                <span asp-validation-for="Faculte" class="text-danger"></span>
+            </div>
             <div class="mb-6">
                 <label asp-for="Specialite" class="form-label" for="basic-icon-default-specialty"></label>
                 <div class="input-group input-group-merge">
@@ -71,22 +87,6 @@
                     </select>
                 </div>
                 <span asp-validation-for="Specialite" class="text-danger"></span>
-            </div>
-
-            <div class="mb-6">
-                <label asp-for="Faculte" class="form-label" for="basic-icon-default-faculty"></label>
-                <div class="input-group input-group-merge">
-                    <input asp-for="Faculte" type="text" class="form-control" id="basic-icon-default-faculty" placeholder="Faculté">
-                </div>
-                <span asp-validation-for="Faculte" class="text-danger"></span>
-            </div>
-
-            <div class="mb-6">
-                <label asp-for="Ville" class="form-label" for="basic-icon-default-city"></label>
-                <div class="input-group input-group-merge">
-                    <input asp-for="Ville" type="text" class="form-control" id="basic-icon-default-city" placeholder="Ville">
-                </div>
-                <span asp-validation-for="Ville" class="text-danger"></span>
             </div>
 
             <div class="mb-6">

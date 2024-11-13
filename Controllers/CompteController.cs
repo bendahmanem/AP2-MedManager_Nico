@@ -37,7 +37,7 @@ namespace MedManager.Controllers
 					return RedirectToAction("TableauBord", "Medecin");
 				}
 
-				ModelState.AddModelError(string.Empty, "Tentative de connexion invalide.");
+			ModelState.AddModelError("", "Tentative de connexion invalide.");
 			}
 
 			return View(modele);

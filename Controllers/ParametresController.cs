@@ -64,15 +64,19 @@ namespace MedManager.Controllers
 			medecin.Nom = model.Nom;
 			medecin.Prenom = model.Prenom;
 			medecin.Adresse = model.Adresse;
+			medecin.NormalizedEmail = model.Email;
+			medecin.NormalizedUserName = model.NomUtilisateur;
 			medecin.Ville = model.Ville;
 			medecin.Faculte = model.Faculte;
-			medecin.PasswordHash = model.MotDePasse;
 			medecin.NumeroTel = model.NumeroTel;
 			medecin.Email = model.Email;
 			medecin.UserName = model.NomUtilisateur;
 
-            _dbContext.Users.Update(medecin);
-            await _dbContext.SaveChangesAsync();
+			var passwordHasher = new PasswordHasher<Medecin>();
+			medecin.PasswordHash = passwordHasher.HashPassword(medecin, model.MotDePasse);
+
+			_dbContext.Update(medecin);
+			await _dbContext.SaveChangesAsync();
 
 
             return View(model);
