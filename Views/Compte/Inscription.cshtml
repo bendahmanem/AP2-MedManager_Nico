@@ -6,102 +6,103 @@
     bool hasErrors = ViewData.ModelState.ErrorCount > 0;
 }
 
-
-<div class="card mb-6">
+<div class="card shadow mb-2 mt-5">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="mb-0">Formulaire d'inscription</h5>
         <small class="text-muted float-end">Tous les champs sont obligatoires</small>
     </div>
     <div class="card-body">
-        <form asp-action="Inscription" asp-controller="Compte" method="post" novalidate>
-            <div class="mb-3">
-                <label asp-for="Nom" class="form-label"></label>
-                <div class="input-group input-group-merge">
-                    <input asp-for="Nom" class="form-control @(hasErrors && ViewData.ModelState["Nom"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Doe" required />
-                    <span asp-validation-for="Nom" class="invalid-feedback"></span>
+        <form asp-action="Inscription" asp-controller="Compte" method="post" novalidate class="container-sm">
+            <div class="row">
+                <div class="mb-3 col-md-6">
+                    <label asp-for="Nom" class="form-label"></label>
+                    <div class="input-group input-group-merge">
+                        <input asp-for="Nom" class="form-control @(hasErrors && ViewData.ModelState["Nom"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Doe" required />
+                        <span asp-validation-for="Nom" class="invalid-feedback"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3 col-md-6">
+                    <label asp-for="Prenom" class="form-label"></label>
+                    <div class="input-group input-group-merge">
+                        <input asp-for="Prenom" class="form-control @(hasErrors && ViewData.ModelState["Prenom"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Joe" required />
+                        <span asp-validation-for="Prenom" class="invalid-feedback"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3 col-md-6">
+                    <label asp-for="NomUtilisateur" class="form-label"></label>
+                    <div class="input-group input-group-merge">
+                        <input asp-for="NomUtilisateur" class="form-control @(hasErrors && ViewData.ModelState["NomUtilisateur"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="JohnDoe" required />
+                        <span asp-validation-for="NomUtilisateur" class="invalid-feedback"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3 col-md-6">
+                    <label asp-for="Email" class="form-label"></label>
+                    <div class="input-group input-group-merge">
+                        <input asp-for="Email" class="form-control @(hasErrors && ViewData.ModelState["Email"]?.Errors.Count > 0 ? "is-invalid" : "")" type="email" placeholder="johndoe@email.com" required />
+                        <span asp-validation-for="Email" class="invalid-feedback"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3 col-md-6">
+                    <label asp-for="Adresse" class="form-label"></label>
+                    <div class="input-group input-group-merge">
+                        <input asp-for="Adresse" class="form-control @(hasErrors && ViewData.ModelState["Adresse"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="15 rue de la république" required />
+                        <span asp-validation-for="Adresse" class="invalid-feedback"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3 col-md-6">
+                    <label asp-for="Ville" class="form-label"></label>
+                    <div class="input-group input-group-merge">
+                        <input asp-for="Ville" class="form-control @(hasErrors && ViewData.ModelState["Ville"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Lyon" required />
+                        <span asp-validation-for="Ville" class="invalid-feedback"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3 col-md-6">
+                    <label asp-for="NumeroTel" class="form-label"></label>
+                    <div class="input-group input-group-merge">
+                        <input asp-for="NumeroTel" class="form-control @(hasErrors && ViewData.ModelState["NumeroTel"]?.Errors.Count > 0 ? "is-invalid" : "")" type="tel" placeholder="+33 6 00 00 00 00" required />
+                        <span asp-validation-for="NumeroTel" class="invalid-feedback"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3 col-md-6">
+                    <label asp-for="Faculte" class="form-label"></label>
+                    <div class="input-group input-group-merge">
+                        <input asp-for="Faculte" class="form-control @(hasErrors && ViewData.ModelState["Faculte"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Faculté de médecine de Lyon" required />
+                        <span asp-validation-for="Faculte" class="invalid-feedback"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3 col-md-6">
+                    <label asp-for="Specialite" class="form-label"></label>
+                    <div class="input-group input-group-merge">
+                        <select asp-for="Specialite" class="form-control @(hasErrors && ViewData.ModelState["Specialite"]?.Errors.Count > 0 ? "is-invalid" : "")" required>
+                            <option value="">Sélectionnez la spécialité</option>
+                            @foreach (var specialite in Enum.GetValues(typeof(Specialite)))
+
+                            {
+                                <option value="@specialite">@specialite</option>
+                            }
+                        </select>
+                        <span asp-validation-for="Specialite" class="invalid-feedback"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3 col-md-6">
+                    <label asp-for="MotDePasse" class="form-label"></label>
+                    <div class="input-group input-group-merge">
+                        <input asp-for="MotDePasse" class="form-control @(hasErrors && ViewData.ModelState["MotDePasse"]?.Errors.Count > 0 ? "is-invalid" : "")" type="password" placeholder="Mot de passe" required />
+                        <span asp-validation-for="MotDePasse" class="invalid-feedback"></span>
+                    </div>
                 </div>
             </div>
 
-            <div class="mb-3">
-                <label asp-for="Prenom" class="form-label"></label>
-                <div class="input-group input-group-merge">
-                    <input asp-for="Prenom" class="form-control @(hasErrors && ViewData.ModelState["Prenom"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Joe" required />
-                    <span asp-validation-for="Prenom" class="invalid-feedback"></span>
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="NomUtilisateur" class="form-label"></label>
-                <div class="input-group input-group-merge">
-                    <input asp-for="NomUtilisateur" class="form-control @(hasErrors && ViewData.ModelState["NomUtilisateur"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="JohnDoe" required />
-                    <span asp-validation-for="NomUtilisateur" class="invalid-f
-eedback"></span>
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="Email" class="form-label"></label>
-                <div class="input-group input-group-merge">
-                    <input asp-for="Email" class="form-control @(hasErrors && ViewData.ModelState["Email"]?.Errors.Count > 0 ? "is-invalid" : "")" type="email" placeholder="johndoe@email.com" required />
-                    <span asp-validation-for="Email" class="invalid-feedback"></span>
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="Adresse" class="form-label"></label>
-                <div class="input-group input-group-merge">
-                    <input asp-for="Adresse" class="form-control @(hasErrors && ViewData.ModelState["Adresse"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="15 rue de la république" required />
-                    <span asp-validation-for="Adresse" class="invalid-feedback"></span>
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="Ville" class="form-label"></label>
-                <div class="input-group input-group-merge">
-                    <input asp-for="Ville" class="form-control @(hasErrors && ViewData.ModelState["Ville"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Lyon" required />
-                    <span asp-validation-for="Ville" class="invalid-feedback"></span>
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="NumeroTel" class="form-label"></label>
-                <div class="input-group input-group-merge">
-                    <input asp-for="NumeroTel" class="form-control @(hasErrors && ViewData.ModelState["NumeroTel"]?.Errors.Count > 0 ? "is-invalid" : "")" type="tel" placeholder="+33 6 00 00 00 00" required />
-                    <span asp-validation-for="NumeroTel" class="invalid-feedback"></span>
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="Faculte" class="form-label"></label>
-                <div class="input-group input-group-merge">
-                    <input asp-for="Faculte" class="form-control @(hasErrors && ViewData.ModelState["Faculte"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Faculté de médecine de Lyon" required />
-                    <span asp-validation-for="Faculte" class="invalid-feedback"></span>
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="Specialite" class="form-label"></label>
-                <div class="input-group input-group-merge">
-                    <select asp-for="Specialite" class="form-control @(hasErrors && ViewData.ModelState["Specialite"]?.Errors.Count > 0 ? "is-invalid" : "")" required>
-                        <option value="">Sélectionnez la spécialité</option>
-                        @foreach (var specialite in Enum.GetValues(typeof(Specialite)))
-                        {
-                            <option value="@specialite">@specialite</option>
-                        }
-                    </select>
-                    <span asp-validation-for="Specialite" class="invalid-feedback"></span>
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="MotDePasse" class="form-label"></label>
-                <div class="input-group input-group-merge">
-                    <input asp-for="MotDePasse" class="form-control @(hasErrors && ViewData.ModelState["MotDePasse"]?.Errors.Count > 0 ? "is-invalid" : "")" type="password" placeholder="Mot de passe" required />
-                    <span asp-validation-for="MotDePasse" class="invalid-feedback"></span>
-                </div>
-            </div>
-
-            <button type="submit" class="btn btn-primary">S'enregistrer</button>
+            <button type="submit" class="btn btn-primary justify-content-center d-flex">S'enregistrer</button>
         </form>
     </div>
 </div>

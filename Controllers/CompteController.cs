@@ -37,7 +37,7 @@ namespace MedManager.Controllers
 					return RedirectToAction("TableauBord", "Medecin");
 				}
 
-			ModelState.AddModelError("", "Tentative de connexion invalide.");
+				ModelState.AddModelError("", "Le nom d'utilisateur ou le mot de passe que vous avez saisi est incorrect. Veuillez réessayer.");
 			}
 
 			return View(modele);

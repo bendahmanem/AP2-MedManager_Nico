@@ -31,7 +31,7 @@ public class ApplicationDbContext : IdentityDbContext<Medecin>
             .HasMany(p => p.Antecedents)
             .WithMany(a => a.Patients);
 
-        modelBuilder.Entity<Allergie>()
+		modelBuilder.Entity<Allergie>()
             .HasMany(a => a.Medicaments)
             .WithMany(m => m.Allergies);
 
@@ -42,7 +42,8 @@ public class ApplicationDbContext : IdentityDbContext<Medecin>
         modelBuilder.Entity<Ordonnance>()
             .HasOne(o => o.Patient)
             .WithMany(p => p.Ordonnances)
-            .HasForeignKey(o => o.PatientId);
+            .HasForeignKey(o => o.PatientId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Medecin>()
             .HasMany(m => m.Patients)
