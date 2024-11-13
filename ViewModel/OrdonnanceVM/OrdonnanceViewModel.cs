@@ -30,11 +30,7 @@ namespace MedManager.ViewModel.OrdonnanceVM
 
         public byte[]? Pdf { get; set; }
 
-		[RequiredPatient(ErrorMessage = "Veuillez sélectionner un patient")]
-		[Display(Name ="Sélectionner un patient")]
-        public int? PatientId { get; set; }
-
-        public required List<Patient> patients { get; set; } = new List<Patient>();
+        public required int PatientId { get; set; }
 
     }
 }

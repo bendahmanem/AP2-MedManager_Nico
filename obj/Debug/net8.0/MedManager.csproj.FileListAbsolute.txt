@@ -256,3 +256,5 @@ C:\Users\ponsn\OneDrive\Bureau\AP2 - MedManager\MedManager\obj\Debug\net8.0\refi
 C:\Users\ponsn\OneDrive\Bureau\AP2 - MedManager\MedManager\obj\Debug\net8.0\MedManager.pdb
 C:\Users\ponsn\OneDrive\Bureau\AP2 - MedManager\MedManager\obj\Debug\net8.0\MedManager.genruntimeconfig.cache
 C:\Users\ponsn\OneDrive\Bureau\AP2 - MedManager\MedManager\obj\Debug\net8.0\ref\MedManager.dll
+C:\Users\ponsn\OneDrive\Bureau\AP2 - MedManager\MedManager\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\ponsn\OneDrive\Bureau\AP2 - MedManager\MedManager\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll

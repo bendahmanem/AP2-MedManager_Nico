@@ -1,0 +1,21 @@
+﻿@model SelectionPatientViewModel;
+@{
+	ViewData["Title"] = "SelectionPatient";
+}
+<form asp-action="SelectionPatient" method="post">
+	<div>
+		<label asp-for="PatientId"></label>
+		<select asp-for="PatientId" class="form-control">
+			<option value="">Sélectionnez le patient</option>
+			@foreach (var p in Model.Patients)
+			{
+				<option value="@p.PatientId">@p.NomComplet</option>
+			}
+		</select>
+		<span asp-validation-for="PatientId" class="text-danger"></span>
+	</div>
+	<button type="submit">
+		Créer une ordonnance 
+	</button>
+</form>
+
