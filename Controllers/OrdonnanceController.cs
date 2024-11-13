@@ -494,6 +494,39 @@ namespace MedManager.Controllers
 				return RedirectToAction("Error");
 			}
 		}
+
+		public async Task<IActionResult> Detail(int id)
+		{
+			try
+			{
+                var MedecinId = _userManager.GetUserId(User);
+                if (MedecinId == null)
+                {
+                    return RedirectToAction("Connexion", "Compte");
+                }
+
+				var ordo = _dbContext.Ordonnances
+								.Include(o => o.Medicaments)
+								.Include(o => o.Patient)
+								.FirstOrDefault(o => o.OrdonnanceId == id);
+				if (ordo == null)
+					return NotFound();
+
+				return View(ordo);
+			}
+            catch (DbException ex)
+            {
+                _logger.LogError(ex, "Erreur lors de la récupération de l'ordonnance avec ID {OrdonnanceId}.", id);
+                TempData["ErrorMessage"] = "Une erreur s'est produite lors de la récupération des informations de l'ordonnance. Veuillez réessayer.";
+                return RedirectToAction("Error");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Une erreur inattendue s'est produite lors de l'édition de l'ordonnance avec ID {OrdonnanceId}.", id);
+                TempData["ErrorMessage"] = "Une erreur inattendue s'est produite lors de l'édition de l'ordonnance. Veuillez réessayer.";
+                return RedirectToAction("Error");
+            }
+        }
 	}
 }
 

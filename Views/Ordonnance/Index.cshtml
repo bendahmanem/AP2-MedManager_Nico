@@ -41,15 +41,7 @@
 						<p class="card-text"> Date de début : @o.DateDebut.ToString("dd/MM/yyyy") </p>
 						<p class="card-text"> Date de fin : @o.DateFin.ToString("dd/MM/yyyy") </p>
 
-						<ul>
-							@foreach (var m in o.Medicaments)
-							{
-
-								<li>@m.Nom</li>
-
-							}
-						</ul>
-						<a asp-action="Detail" asp-controller="Patient" asp-route-id="@o.OrdonnanceId">
+						<a asp-action="Detail" asp-controller="Ordonnance" asp-route-id="@o.OrdonnanceId">
 							<i class="bi bi-eye"></i>
 						</a>
 						<a asp-action="Editer" asp-controller="Ordonnance" asp-route-id="@o.OrdonnanceId">

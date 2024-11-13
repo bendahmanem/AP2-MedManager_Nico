@@ -1,0 +1,62 @@
+﻿@model MedManager.Models.Ordonnance
+@{
+	ViewData["Title"] = "Détail de l'Ordonnance";
+}
+
+<div class="container d-flex justify-content-center mt-4 mb-4">
+	<div class="card shadow-lg w-75">
+		<div class="card-header text-center">
+			<h2>Détail de l'Ordonnance</h2>
+		</div>
+		<div class="card-body">
+			<h5 class="card-title">Informations de l'ordonnance</h5>
+
+			<div class="mb-3">
+				<strong>Date de début :</strong> @Model.DateDebut.ToString("dd/MM/yyyy")
+			</div>
+			<div class="mb-3">
+				<strong>Date de fin :</strong> @Model.DateFin.ToString("dd/MM/yyyy")
+			</div>
+			@if (!string.IsNullOrEmpty(Model.InfoSupplementaire))
+			{
+				<div class="mb-3">
+					<strong>Informations supplémentaires :</strong> @Model.InfoSupplementaire
+				</div>
+			}
+
+			<h5 class="card-title mt-4">Médicaments</h5>
+			<ul class="list-group list-group-flush mb-3">
+				@foreach (var medicament in Model.Medicaments)
+				{
+					<li class="list-group-item">
+						@medicament.Nom - Quantité : @medicament.Quantite, Posologie : @medicament.Posologie
+					</li>
+				}
+			</ul>
+
+			<h5 class="card-title mt-4">Informations du Patient</h5>
+			<div class="mb-3">
+				<strong>Nom du patient :</strong> @Model.Patient?.Nom
+			</div>
+
+
+			<div class="mb-3">
+				<strong>Prénom du patient :</strong> @Model.Patient?.Prenom
+			</div>
+
+
+			@if (Model.Pdf != null)
+			{
+				<div class="mt-4">
+					<a href="@Url.Action("DownloadPdf", "Ordonnances", new { id = Model.OrdonnanceId })" class="btn btn-primary">
+						Télécharger l'ordonnance en PDF
+					</a>
+				</div>
+			}
+		</div>
+		<div class="card-footer text-muted text-center">
+			Date de création : @Model.DateCreation.ToString("dd/MM/yyyy")
+		</div>
+	</div>
+</div>
+
