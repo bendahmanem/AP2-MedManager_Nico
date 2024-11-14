@@ -65,26 +65,31 @@
         <span asp-validation-for="Photo" class="text-danger"></span>
     </div>
 
-
-    <p>Antécédents</p>
-    <div class="form-group row">
-        <div class="col-sm-10">
-            @Html.ListBoxFor(model => model.AntecedentIdSelectionnes,
-                     new MultiSelectList(Model.Antecedents, "AntecedentId", "Nom"),
-                     new { @class = "form-control", @id = "ComboBoxMultiselectAntecedents" })
-        </div>
+<p>Antécents</p>
+<div class="form-group row">
+    <div class="col-sm-10">
+        <select id="ComboBoxMultiselectAntecedents" name="AntecedentIdSelectionnes" multiple class="tom-select">
+            @foreach (var antecedent in Model.Antecedents)
+            {
+                <option value="@antecedent.AntecedentId">@antecedent.Nom</option>
+            }
+        </select>
     </div>
+</div>
 
     <p>Allergies</p>
     <div class="form-group row">
         <div class="col-sm-10">
-            @Html.ListBoxFor(model => model.AllergieIdSelectionnes,
-                     new MultiSelectList(Model.Allergies, "AllergieId", "Nom"),
-                     new { @class = "form-control", @id = "ComboBoxMultiselectAllergies" })
+            <select id="ComboBoxMultiselectAllergies" name="AllergieIdSelectionnes" multiple class="tom-select">
+                @foreach (var allergie in Model.Allergies)
+                {
+                    <option value="@allergie.AllergieId">@allergie.Nom</option>
+                }
+            </select>
         </div>
     </div>
 
-    <button type="submit" class="btn btn-primary">Enregistrer le nouveau patient</button>
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
 </form>
 <div>
     <a asp-action="Index">Retour à la liste</a>
@@ -92,21 +97,23 @@
 
 @section Scripts {
     <script>
-        $(document).ready(function () {
-            $('#ComboBoxMultiselectAntecedents').multiselect({
-                enableFiltering: true,
-                includeSelectAllOption: true
-            });
+        // Initialisation de TomSelect pour les deux sélecteurs
+        new TomSelect('#ComboBoxMultiselectAntecedents', {
+            plugins: ['remove_button'],      // Pour permettre la suppression d'éléments sélectionnés
+            maxOptions: null,                // Affiche toutes les options sans limitation
+            create: false,                   // Désactive la création de nouvelles options par l'utilisateur
+            maxItems: null,                  // Permet plusieurs sélections (multi-sélection)
+            sortField: { field: "text", direction: "asc" },  // Tri alphabétique
+            placeholder: "Sélectionner un ou plusieurs antécédents...",
         });
-    </script>
 
-    <script>
-        $(document).ready(function () {
-            $('#ComboBoxMultiselectAllergies').multiselect({
-                enableFiltering: true,
-                includeSelectAllOption: true,
-                maxHeight: 400,
-            });
+        new TomSelect('#ComboBoxMultiselectAllergies', {
+            plugins: ['remove_button'],
+            maxOptions: null,
+            create: false,
+            maxItems: null,
+            sortField: { field: "text", direction: "asc" },
+            placeholder: "Sélectionner une ou plusieurs allergies...",
         });
     </script>
 }

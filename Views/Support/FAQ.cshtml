@@ -1,91 +1,69 @@
 ﻿@{
-	ViewData["Title"] = "FAQ";
+    ViewData["Title"] = "FAQ";
 }
 
 <div class="container">
-	<h2>FAQ - Application de Gestion des Ordonnances</h2>
-	<div class="accordion" id="accordionPanelsStayOpenExample">
-		<div class="accordion-item">
-			<h2 class="accordion-header" id="panelsStayOpen-headingOne">
-				<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-					Accordion Item #1
-				</button>
-			</h2>
-			<div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
-				<div class="accordion-body">
-					<strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-				</div>
-			</div>
-		</div>
-		<div class="accordion-item">
-			<h2 class="accordion-header" id="panelsStayOpen-headingTwo">
-				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-					Accordion Item #2
-				</button>
-			</h2>
-			<div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
-				<div class="accordion-body">
-					<strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-				</div>
-			</div>
-		</div>
-		<div class="accordion-item">
-			<h2 class="accordion-header" id="panelsStayOpen-headingThree">
-				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
-					Accordion Item #3
-				</button>
-			</h2>
-			<div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingThree">
-				<div class="accordion-body">
-					<strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-				</div>
-			</div>
-		</div>
-	</div>
-
-
-<section class="contact" id="contact">
-	<div class="container">
-		<div class="card shadow-sm mt-5">
-			<div class="card-header text-center text-dark text-white">
-				<h2>Nous contacter</h2>
-			</div>
-			<div class="card-body">
-				<form action="https://api.web3forms.com/submit" method="POST">
-					<input type="hidden" name="access_key" value="9500b774-9f66-4a1f-90ad-53ef9b523d4a">
-
-					<div class="form-row">
-						<div class="form-group col-md-6">
-							<label for="nom">Nom et prénom</label>
-							<input name="nom" type="text" class="form-control" placeholder="Nom et prénom" required>
-						</div>
-						<div class="form-group col-md-6">
-							<label for="mail">Adresse mail</label>
-							<input name="mail" type="email" class="form-control" placeholder="Adresse mail" required>
-						</div>
-					</div>
-
-					<div class="form-row">
-						<div class="form-group col-md-6">
-							<label for="tel">Numéro de téléphone</label>
-							<input name="tel" type="tel" class="form-control" placeholder="Numéro de téléphone">
-						</div>
-						<div class="form-group col-md-6">
-							<label for="objet">Objet du message</label>
-							<input name="objet" type="text" class="form-control" placeholder="Objet du message">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="message">Votre message</label>
-						<textarea name="message" cols="30" rows="5" class="form-control" placeholder="Votre message" required></textarea>
-					</div>
-
-					<div class="text-center">
-						<button type="submit" class="btn btn-primary">Envoyer</button>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-</section>
+    <h2>FAQ - Med Manager</h2>
+    <div class="accordion" id="accordionPanelsStayOpenExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                    Comment créer une nouvelle ordonnance ?
+                </button>
+            </h2>
+            <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                <div class="accordion-body">
+                    Pour créer une ordonnance, allez dans la section "Ordonnances" de l'application, puis cliquez sur "Nouvelle ordonnance". Sélectionnez un patient puis remplissez les informations nécessaires, les dates de début et fin, les médicaments. Une fois terminé, cliquez sur "Enregistrer" pour sauvegarder l'ordonnance.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                    Comment sont gérées la confidentialité et la sécurité des données ?
+                </button>
+            </h2>
+            <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
+                <div class="accordion-body">
+                    La confidentialité des données des patients est notre priorité. Toutes les données sont chiffrées et stockées sur des serveurs sécurisés. Seuls les médecins et le personnel autorisé ont accès aux informations sensibles. De plus, notre application respecte les lois en vigueur sur la protection des données, telles que le RGPD.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+                    Comment réinitialiser mon mot de passe ?
+                </button>
+            </h2>
+            <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingThree">
+                <div class="accordion-body">
+                    Si vous avez oublié votre mot de passe, veuillez contacter via la section "Contact". Un membre de l'équipe vous aidera à réinitialiser votre mot de passe en toute sécurité.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingFour">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseFour" aria-expanded="false" aria-controls="panelsStayOpen-collapseFour">
+                    Comment ajouter un nouveau patient dans l'application ?
+                </button>
+            </h2>
+            <div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingFour">
+                <div class="accordion-body">
+                    Pour ajouter un nouveau patient, accédez à la section "Mes patients" et cliquez sur "Nouveau patient". Remplissez les informations requises, telles que le nom, la date de naissance, les antécédents médicaux et les allergies. Cliquez ensuite sur "Enregistrer" pour ajouter le patient à la base de données.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingFive">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseFive" aria-expanded="false" aria-controls="panelsStayOpen-collapseFive">
+                    Comment puis-je consulter l'historique des ordonnances d'un patient ?
+                </button>
+            </h2>
+            <div id="panelsStayOpen-collapseFive" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingFive">
+                <div class="accordion-body">
+                    Pour consulter l'historique des ordonnances d'un patient, accédez à la fiche du patient en question dans la section "Mes patients". Vous y trouverez une liste de toutes les ordonnances passées, avec les détails de chaque médicament prescrit et les dates de traitement.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
