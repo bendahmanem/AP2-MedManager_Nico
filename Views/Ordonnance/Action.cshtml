@@ -6,17 +6,10 @@
 <form asp-action="@(Model.OrdonnanceId == null ? "Ajouter" : "Editer")" method="post">
     <input type="hidden" asp-for="OrdonnanceId" />
     <input type="hidden" asp-for="PatientId" />
-@*     <div>
-        <label asp-for="PatientId"></label>
-        <select asp-for="PatientId" class="form-control">
-            <option value="">Sélectionnez le patient</option>
-            @foreach (var p in Model.patients)
-            {
-                <option value="@p.PatientId">@p.NomComplet</option>
-            }
-        </select>
-        <span asp-validation-for="PatientId" class="text-danger"></span>
-    </div> *@
+
+    <div> 
+        @Model.NomComplet
+    </div>
 
 
     <div class="form-group">

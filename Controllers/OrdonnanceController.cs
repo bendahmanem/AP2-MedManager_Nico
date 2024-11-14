@@ -10,6 +10,7 @@ using System.CodeDom;
 using System.Data.Common;
 using System.Reflection.Metadata.Ecma335;
 using X.PagedList;
+using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
 
 namespace MedManager.Controllers
 {
@@ -152,7 +153,7 @@ namespace MedManager.Controllers
 				var patient = _dbContext.Patients.FirstOrDefault(p => p.PatientId == modele.PatientId);
 				if (patient != null)
 				{
-					return RedirectToAction("Ajouter", new { id = patient.PatientId});
+					return RedirectToAction("Ajouter", new { id = patient.PatientId });
 				}
 			}
 			modele.Patients = medecin.Patients;
@@ -171,13 +172,14 @@ namespace MedManager.Controllers
 				}
 
 				var patient = await _dbContext.Patients
-								.Include(p => p.Allergies)
-								.Include(p => p.Antecedents)
-								.FirstOrDefaultAsync(p => p.PatientId == id);
-									
+				.Include(p => p.Allergies)
+				.Include(p => p.Antecedents)
+				.FirstOrDefaultAsync(p => p.PatientId == id);
+
 
 				if (patient == null)
-					return NotFound();
+					throw new InvalidOperationException("Le patient avec l'identifiant spécifié n'existe pas.");
+
 
 				var AllergiesPatient = patient.Allergies.Select(p => p.AllergieId).ToList();
 				var AntecedentPatient = patient.Antecedents.Select(p => p.AntecedentId).ToList();
@@ -185,13 +187,20 @@ namespace MedManager.Controllers
 					.Where(m => !m.Allergies.Any(a => AllergiesPatient.Contains(a.AllergieId)) && !m.Antecedents.Any(a => AntecedentPatient.Contains(a.AntecedentId)))
 					.ToListAsync();
 
-				var viewModel = new OrdonnanceViewModel
+				//var ListeMedicamentsOrdo = RecupererMedicamentsCompatibles(id);
+
+				//var patient = await _dbContext.Patients.FindAsync(id);
+				//if (patient == null)
+				//	return NotFound();
+
+				var model = new OrdonnanceViewModel
 				{
 					Medicaments = ListeMedicament,
 					MedicamentIdSelectionnes = new List<int>(),
 					PatientId = id,
+					NomComplet = patient.NomComplet,
 				};
-				return View("Action", viewModel);
+				return View("Action", model);
 			}
 			catch (DbException ex)
 			{
@@ -215,7 +224,17 @@ namespace MedManager.Controllers
 				if (model.DateDebut > model.DateFin)
 				{
 					ModelState.AddModelError("DateFin", "La date de fin doit être supérieure à la date de début.");
-					model.Medicaments = await _dbContext.Medicaments.ToListAsync();
+					//var patient = await _dbContext.Patients
+					//	.Include(p => p.Allergies)
+					//	.Include(p => p.Antecedents)
+					//	.FirstOrDefaultAsync(p => p.PatientId == model.PatientId);
+
+					//var AllergiesPatient = patient.Allergies.Select(p => p.AllergieId).ToList();
+					//var AntecedentPatient = patient.Antecedents.Select(p => p.AntecedentId).ToList();
+					//var ListeMedicament = await _dbContext.Medicaments
+					//	.Where(m => !m.Allergies.Any(a => AllergiesPatient.Contains(a.AllergieId)) && !m.Antecedents.Any(a => AntecedentPatient.Contains(a.AntecedentId)))
+					//	.ToListAsync();
+					//model.Medicaments = ListeMedicament;
 					return View("Action", model);
 				}
 				try
@@ -230,7 +249,7 @@ namespace MedManager.Controllers
 
 					if (medecin == null)
 						return NotFound();
-					var patient = await _dbContext.Patients.FirstOrDefaultAsync(p => p.PatientId == model.PatientId);
+					 var Patient = await _dbContext.Patients.FirstOrDefaultAsync(p => p.PatientId == model.PatientId);
 
 
 					var ordonnance = new Ordonnance
@@ -239,7 +258,7 @@ namespace MedManager.Controllers
 						DateFin = model.DateFin,
 						InfoSupplementaire = model.InfoSupplementaire,
 						Medecin = medecin,
-						Patient = patient,
+						Patient = Patient,
 						PatientId = model.PatientId,
 						Medicaments = new List<Medicament>(),
 						MedecinId = MedecinId,
@@ -274,7 +293,19 @@ namespace MedManager.Controllers
 					return RedirectToAction("Index", "Ordonnance");
 				}
 			}
-			//model.Medicaments = await _dbContext.Medicaments.ToListAsync();
+
+			var patient = await _dbContext.Patients
+				.Include(p => p.Allergies)
+				.Include(p => p.Antecedents)
+				.FirstOrDefaultAsync(p => p.PatientId == model.PatientId);
+
+			var AllergiesPatient = patient.Allergies.Select(p => p.AllergieId).ToList();
+			var AntecedentPatient = patient.Antecedents.Select(p => p.AntecedentId).ToList();
+			var ListeMedicament = await _dbContext.Medicaments
+				.Where(m => !m.Allergies.Any(a => AllergiesPatient.Contains(a.AllergieId)) && !m.Antecedents.Any(a => AntecedentPatient.Contains(a.AntecedentId)))
+				.ToListAsync();
+			model.Medicaments = ListeMedicament;
+
 
 			return View("Action", model);
 		}
@@ -310,15 +341,12 @@ namespace MedManager.Controllers
 				.Include(p => p.Antecedents)
 				.FirstOrDefaultAsync(p => p.PatientId == ordonnance.PatientId);
 
-
-				if (patient == null)
-					return NotFound();
-
 				var AllergiesPatient = patient.Allergies.Select(p => p.AllergieId).ToList();
 				var AntecedentPatient = patient.Antecedents.Select(p => p.AntecedentId).ToList();
 				var ListeMedicament = await _dbContext.Medicaments
 					.Where(m => !m.Allergies.Any(a => AllergiesPatient.Contains(a.AllergieId)) && !m.Antecedents.Any(a => AntecedentPatient.Contains(a.AntecedentId)))
 					.ToListAsync();
+				
 
 				var model = new OrdonnanceViewModel
 				{
@@ -328,7 +356,8 @@ namespace MedManager.Controllers
 					InfoSupplementaire = ordonnance.InfoSupplementaire,
 					MedicamentIdSelectionnes = MedicamentsSelectionnes,
 					Medicaments = ListeMedicament,
-					PatientId = ordonnance.Patient.PatientId
+					PatientId = ordonnance.Patient.PatientId,
+					NomComplet = ordonnance.Patient.NomComplet
 				};
 
 				return View("Action", model);
@@ -397,6 +426,17 @@ namespace MedManager.Controllers
 				}
 				else
 				{
+					var patient = await _dbContext.Patients
+						.Include(p => p.Allergies)
+						.Include(p => p.Antecedents)
+						.FirstOrDefaultAsync(p => p.PatientId == model.PatientId);
+
+					var AllergiesPatient = patient.Allergies.Select(p => p.AllergieId).ToList();
+					var AntecedentPatient = patient.Antecedents.Select(p => p.AntecedentId).ToList();
+					var ListeMedicament = await _dbContext.Medicaments
+						.Where(m => !m.Allergies.Any(a => AllergiesPatient.Contains(a.AllergieId)) && !m.Antecedents.Any(a => AntecedentPatient.Contains(a.AntecedentId)))
+						.ToListAsync();
+					model.Medicaments = ListeMedicament;
 					return View("Action", model);
 				}
 			}
@@ -499,11 +539,11 @@ namespace MedManager.Controllers
 		{
 			try
 			{
-                var MedecinId = _userManager.GetUserId(User);
-                if (MedecinId == null)
-                {
-                    return RedirectToAction("Connexion", "Compte");
-                }
+				var MedecinId = _userManager.GetUserId(User);
+				if (MedecinId == null)
+				{
+					return RedirectToAction("Connexion", "Compte");
+				}
 
 				var ordo = _dbContext.Ordonnances
 								.Include(o => o.Medicaments)
@@ -514,19 +554,40 @@ namespace MedManager.Controllers
 
 				return View(ordo);
 			}
-            catch (DbException ex)
-            {
-                _logger.LogError(ex, "Erreur lors de la récupération de l'ordonnance avec ID {OrdonnanceId}.", id);
-                TempData["ErrorMessage"] = "Une erreur s'est produite lors de la récupération des informations de l'ordonnance. Veuillez réessayer.";
-                return RedirectToAction("Error");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Une erreur inattendue s'est produite lors de l'édition de l'ordonnance avec ID {OrdonnanceId}.", id);
-                TempData["ErrorMessage"] = "Une erreur inattendue s'est produite lors de l'édition de l'ordonnance. Veuillez réessayer.";
-                return RedirectToAction("Error");
-            }
-        }
+			catch (DbException ex)
+			{
+				_logger.LogError(ex, "Erreur lors de la récupération de l'ordonnance avec ID {OrdonnanceId}.", id);
+				TempData["ErrorMessage"] = "Une erreur s'est produite lors de la récupération des informations de l'ordonnance. Veuillez réessayer.";
+				return RedirectToAction("Error");
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "Une erreur inattendue s'est produite lors de l'édition de l'ordonnance avec ID {OrdonnanceId}.", id);
+				TempData["ErrorMessage"] = "Une erreur inattendue s'est produite lors de l'édition de l'ordonnance. Veuillez réessayer.";
+				return RedirectToAction("Error");
+			}
+		}
+
+		//private async Task<List<Medicament>> RecupererMedicamentsCompatibles(int id)
+		//{
+		//	var patient = await _dbContext.Patients
+		//					.Include(p => p.Allergies)
+		//					.Include(p => p.Antecedents)
+		//					.FirstOrDefaultAsync(p => p.PatientId == id);
+
+
+		//	//if (patient == null)
+		//	//	throw new InvalidOperationException("Le patient avec l'identifiant spécifié n'existe pas.");
+
+
+		//	var AllergiesPatient = patient.Allergies.Select(p => p.AllergieId).ToList();
+		//	var AntecedentPatient = patient.Antecedents.Select(p => p.AntecedentId).ToList();
+		//	var ListeMedicament = await _dbContext.Medicaments
+		//		.Where(m => !m.Allergies.Any(a => AllergiesPatient.Contains(a.AllergieId)) && !m.Antecedents.Any(a => AntecedentPatient.Contains(a.AntecedentId)))
+		//		.ToListAsync();
+
+		//	return ListeMedicament;
+		//}
 	}
 }
 
