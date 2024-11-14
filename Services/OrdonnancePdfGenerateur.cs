@@ -79,7 +79,7 @@ public class OrdonnancePdfGenerateur
 			document.Add(new Paragraph("\n"));
 			document.Add(new Paragraph("\n"));
 
-			document.Add(new Paragraph($"{medecin.Ville}, le {DateTime.Now:dd/MM/yyyy}")
+			document.Add(new Paragraph($"À {medecin.Ville}, le {DateTime.Now:dd/MM/yyyy}")
 				.SetFontSize(10)
 				.SetTextAlignment(TextAlignment.RIGHT));
 

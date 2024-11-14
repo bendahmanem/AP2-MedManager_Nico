@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "X6gCJbEXpUWuoeJYxfUcNsSBUtCBqX6uo7Wg12O3fng=",
+  "Hash": "KI5+JXBZClTfVoXYHtNtSB6m2/HVvbOy8QHMahJE+t0=",
   "Source": "MedManager",
   "BasePath": "_content/MedManager",
   "Mode": "Default",
@@ -2409,6 +2409,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\pdfs\\Ordonnance_Hache  Marie_5.pdf"
+    },
+    {
+      "Identity": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\pdfs\\Ordonnance_Hache Marie_2.pdf",
+      "SourceId": "MedManager",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\",
+      "BasePath": "_content/MedManager",
+      "RelativePath": "pdfs/Ordonnance_Hache Marie_2.pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\pdfs\\Ordonnance_Hache Marie_2.pdf"
     },
     {
       "Identity": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\pdfs\\Ordonnance_Marcel Pagnol_1.pdf",
