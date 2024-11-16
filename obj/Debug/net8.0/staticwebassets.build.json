@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "KI5+JXBZClTfVoXYHtNtSB6m2/HVvbOy8QHMahJE+t0=",
+  "Hash": "DMuawlaF6DvIHDwJkgWzna35yslCGtSTAZ67wAAfTog=",
   "Source": "MedManager",
   "BasePath": "_content/MedManager",
   "Mode": "Default",
@@ -2504,6 +2504,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\pdfs\\Ordonnance_Pons Nico_1.pdf"
+    },
+    {
+      "Identity": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\pdfs\\Ordonnance_Tom Select_10.pdf",
+      "SourceId": "MedManager",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\",
+      "BasePath": "_content/MedManager",
+      "RelativePath": "pdfs/Ordonnance_Tom Select_10.pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\pdfs\\Ordonnance_Tom Select_10.pdf"
     }
   ]
 }

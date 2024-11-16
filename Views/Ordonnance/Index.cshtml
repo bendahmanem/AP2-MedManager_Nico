@@ -47,9 +47,32 @@
 						<a asp-action="Editer" asp-controller="Ordonnance" asp-route-id="@o.OrdonnanceId">
 							<i class="bi bi-pencil"></i>
 						</a>
-						<a asp-action="Supprimer" asp-controller="Ordonnance" asp-route-id="@o.OrdonnanceId" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette ordonnance ?');">
+						<a href="#" data-bs-toggle="modal" data-bs-target="#Modal-@o.OrdonnanceId">
 							<i class="bi bi-trash"></i>
 						</a>
+
+						<div class="modal fade" id="Modal-@o.OrdonnanceId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-dialog-centered">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h1 class="modal-title fs-5" id="exampleModalLabel">Suppression ordonnance</h1>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+										Confirmez-vous la suppression du patient : <strong>@o.Patient.Ordonnances</strong> ?
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+										<a asp-action="Supprimer"
+										   asp-controller="Ordonnance"
+										   asp-route-id="@o.OrdonnanceId"
+										   class="btn btn-danger">
+											Confirmer
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
 						<a asp-action="GenererPdf" asp-controller="Ordonnance" asp-route-ordonnanceId="@o.OrdonnanceId" asp-route-patientId="@o.PatientId">
 							<i class="bi bi-filetype-pdf"></i>
 						</a>

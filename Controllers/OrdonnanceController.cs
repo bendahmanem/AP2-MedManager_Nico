@@ -495,11 +495,11 @@ namespace MedManager.Controllers
 					return RedirectToAction("Connexion", "Compte");
 				}
 
-				var patient = await _dbContext.Patients.FirstOrDefaultAsync(p => p.PatientId == patientId);
-				var medecin = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == MedecinId);
 				var ordonnance = await _dbContext.Ordonnances
 					.Include(o => o.Medicaments)
 					.FirstOrDefaultAsync(o => o.OrdonnanceId == ordonnanceId);
+				var patient = await _dbContext.Patients.FirstOrDefaultAsync(p => p.PatientId == patientId);
+				var medecin = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == MedecinId);
 
 				if (patient != null && medecin != null && ordonnance != null)
 				{
