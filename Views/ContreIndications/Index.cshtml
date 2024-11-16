@@ -87,15 +87,6 @@
 
 
 <h1>Antécédents</h1>
-@* <form asp-action="Index" method="get" class="mt-3">
-	<div class=" col-4 input-group mb-3">
-		<input type="text" name="filtreAntecedents" class="form-control" placeholder="Rechercher par antécédents" value="@ViewData["FiltreActuelAntecedent"]" />
-		<input type="hidden" name="filtreAllergies" value="@ViewData["FiltreActuelAllergie"]" />
-		<input type="hidden" name="OrdreTriAllergie" value="@ViewData["TriActuelAllergie"]" />
-		<input type="hidden" name="OrdreTriAntecedent" value="@ViewData["TriActuelAntecedent"]" />
-		<button class="btn btn-outline-primary" type="submit">Rechercher</button>
-	</div>
-</form> *@
 <input type="text" class="col-4 form-control" id="RechercheEntreeAntecedent" placeholder="Rechercher..."
 	   value="@ViewData["FiltreActuel"]" />
 

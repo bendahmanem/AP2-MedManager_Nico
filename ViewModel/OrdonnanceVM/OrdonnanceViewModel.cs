@@ -32,7 +32,7 @@ namespace MedManager.ViewModel.OrdonnanceVM
 
         public required int PatientId { get; set; }
 
-        public required string NomComplet { get; set; }
+        public string? NomComplet { get; set; }
 
     }
 }

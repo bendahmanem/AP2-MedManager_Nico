@@ -26,15 +26,14 @@
 
 
     <div class="form-group row">
-        <label asp-for="MedicamentIdSelectionnes" class="col-sm-2 col-form-label"></label>
         <div class="col-sm-10">
-            <select asp-for="MedicamentIdSelectionnes" multiple="multiple" class="form-control" id="Medicaments_CB">
-                @foreach (var medicament in Model.Medicaments)
-                {
-                    <option value="@medicament.MedicamentId">@medicament.Nom</option>
-                }
+            <select id="ComboBoxMultiselectMedicaments"
+                    name="MedicamentIdSelectionnes"
+                    multiple
+                    class="tom-select"
+                    asp-for="MedicamentIdSelectionnes"
+                    asp-items="@(new SelectList(Model.Medicaments, "MedicamentId", "Nom", Model.MedicamentIdSelectionnes))">
             </select>
-            <span asp-validation-for="MedicamentIdSelectionnes" class="text-danger"></span>
         </div>
     </div>
 
@@ -55,14 +54,15 @@
 
 @section Scripts {
     <script>
-        $(document).ready(function () {
-            $('#Medicaments_CB').multiselect({
-                enableFiltering: true,
-                includeSelectAllOption: true
-            });
+        new TomSelect('#ComboBoxMultiselectMedicaments', {
+            plugins: ['remove_button'],
+            maxOptions: null,
+            create: false,
+            maxItems: null,
+            sortField: { field: "text", direction: "asc" },
+            placeholder: "Sélectionner un ou plusieurs médicaments...",
         });
     </script>
-
     <script>
         const dateDebut = document.getElementById("dateDebut");
         const dateFin = document.getElementById("dateFin");

@@ -1,131 +1,128 @@
 ﻿   @model PatientViewModel
 
 @{
-    ViewData["Title"] = $"Modifier le patient : {Model.Nom} {Model.Prenom}";
+	ViewData["Title"] = $"Modifier le patient : {Model.Nom} {Model.Prenom}";
 }
 
 
 <form asp-action="Editer" asp-controller="Patient" method="post">
-    <div class="form-group">
-        <label asp-for="Nom"></label>
-        <input asp-for="Nom" class="form-control" />
-        <span asp-validation-for="Nom" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Prenom"></label>
-        <input asp-for="Prenom" class="form-control" />
-        <span asp-validation-for="Prenom" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="NuméroSécuritéSociale"></label>
-        <input asp-for="NuméroSécuritéSociale" class="form-control" />
-        <span asp-validation-for="NuméroSécuritéSociale" class="text-danger"></span>
-    </div>
+	<div class="form-group">
+		<label asp-for="Nom"></label>
+		<input asp-for="Nom" class="form-control" />
+		<span asp-validation-for="Nom" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="Prenom"></label>
+		<input asp-for="Prenom" class="form-control" />
+		<span asp-validation-for="Prenom" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="NuméroSécuritéSociale"></label>
+		<input asp-for="NuméroSécuritéSociale" class="form-control" />
+		<span asp-validation-for="NuméroSécuritéSociale" class="text-danger"></span>
+	</div>
 
-    <div>
-        <label asp-for="Sexe"></label>
-        <select asp-for="Sexe" class="form-control">
-            <option value="">Sélectionnez le sexe</option>
-            @foreach (var sexe in Enum.GetValues(typeof(Sexe)))
-            {
-                <option value="@sexe">@sexe</option>
-            }
-        </select>
-        <span asp-validation-for="Sexe" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Taille"></label>
-        <input asp-for="Taille" class="form-control" />
-        <span asp-validation-for="Taille" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Poids"></label>
-        <input asp-for="Poids" class="form-control" />
-        <span asp-validation-for="Poids" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="DateNaissance"></label>
-        <input asp-for="DateNaissance" class="form-control" type="date" max="@DateTime.Now.ToString("yyyy-MM-dd")" min="1900-01-01" />
-        <span asp-validation-for="DateNaissance" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Adresse"></label>
-        <input asp-for="Adresse" class="form-control" />
-        <span asp-validation-for="Adresse" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Ville"></label>
-        <input asp-for="Ville" class="form-control" />
-        <span asp-validation-for="Ville" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Photo" class="control-label"></label>
-        <input asp-for="Photo" type="file" class="form-control" id="photoInput" accept=".jpg,.jpeg,.png" />
-        <span asp-validation-for="Photo" class="text-danger"></span>
-        @if (Model.Photo != null && Model.Photo.Length > 0)
-        {
-            <img src="data:image;base64,@(Convert.ToBase64String(Model.Photo))" alt="Patient Photo" style="max-width: 200px; max-height: 200px;" />
-            <input type="hidden" asp-for="PhotoBase64" value="@(Convert.ToBase64String(Model.Photo))" />
-        }
-    </div>
+	<div>
+		<label asp-for="Sexe"></label>
+		<select asp-for="Sexe" class="form-control">
+			<option value="">Sélectionnez le sexe</option>
+			@foreach (var sexe in Enum.GetValues(typeof(Sexe)))
+			{
+				<option value="@sexe">@sexe</option>
+			}
+		</select>
+		<span asp-validation-for="Sexe" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="Taille"></label>
+		<input asp-for="Taille" class="form-control" />
+		<span asp-validation-for="Taille" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="Poids"></label>
+		<input asp-for="Poids" class="form-control" />
+		<span asp-validation-for="Poids" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="DateNaissance"></label>
+		<input asp-for="DateNaissance" class="form-control" type="date" max="@DateTime.Now.ToString("yyyy-MM-dd")" min="1900-01-01" />
+		<span asp-validation-for="DateNaissance" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="Adresse"></label>
+		<input asp-for="Adresse" class="form-control" />
+		<span asp-validation-for="Adresse" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="Ville"></label>
+		<input asp-for="Ville" class="form-control" />
+		<span asp-validation-for="Ville" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="Photo" class="control-label"></label>
+		<input asp-for="Photo" type="file" class="form-control" id="photoInput" accept=".jpg,.jpeg,.png" />
+		<span asp-validation-for="Photo" class="text-danger"></span>
+		@if (Model.Photo != null && Model.Photo.Length > 0)
+
+		{
+			<img src="data:image;base64,@(Convert.ToBase64String(Model.Photo))" alt="Patient Photo" style="max-width: 200px; max-height: 200px;" />
+			<input type="hidden" asp-for="PhotoBase64" value="@(Convert.ToBase64String(Model.Photo))" />
+		}
+	</div>
 
 
-    <p>Antécédents</p>
-    <div class="form-group row">
-        @*  @Html.LabelFor(model => model.SelectedAntecedentIds, new { @class = "col-sm-2 col-form-label" }) *@
-        <div class="col-sm-10">
-            @Html.ListBoxFor(model => model.AntecedentIdSelectionnes,
-                     new MultiSelectList(Model.Antecedents, "AntecedentId", "Nom"),
-                     new { @class = "form-control", @id = "ComboBoxMultiselectAntecedents" })
-        </div>
-    </div>
+	<p>Antécédents</p>
+	<div class="form-group row">
+		<div class="col-sm-10">
+			<select id="ComboBoxMultiselectAntecedents"
+					name="AntecedentIdSelectionnes"
+					multiple
+					class="tom-select"
+					asp-for="AntecedentIdSelectionnes"
+					asp-items="@(new SelectList(Model.Antecedents, "AntecedentId", "Nom", Model.AntecedentIdSelectionnes))">
+			</select>
+		</div>
+	</div>
 
-    <p>Allergies</p>
-    <div class="form-group row">
-        @* @Html.LabelFor(model => model.SelectedAllergieIds, new { @class = "col-sm-2 col-form-label" }) *@
-        <div class="col-sm-10">
-            @Html.ListBoxFor(model => model.AllergieIdSelectionnes,
-                     new MultiSelectList(Model.Allergies, "AllergieId", "Nom"),
-                     new { @class = "form-control", @id = "ComboBoxMultiselectAllergies" })
-        </div>
-    </div>
 
-    <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+	<p>Allergies</p>
+	<div class="form-group row">
+		<div class="col-sm-10">
+			<select id="ComboBoxMultiselectAllergies"
+					name="AllergieIdSelectionnes"
+					multiple
+					class="tom-select"
+					asp-for="AllergieIdSelectionnes"
+					asp-items="@(new SelectList(Model.Allergies, "AllergieId", "Nom", Model.AllergieIdSelectionnes))">
+			</select>
+		</div>
+	</div>
+
+	<button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
 </form>
 <div>
-    <a asp-action="Index">Retour à la liste</a>
+	<a asp-action="Index">Retour à la liste</a>
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-    <script>
-        $(document).ready(function () {
-            $('#ComboBoxMultiselectAntecedents').multiselect({
-                enableFiltering: true,
-                includeSelectAllOption: true
-            });
-        });
-    </script>
+	<script>
+		new TomSelect('#ComboBoxMultiselectAntecedents', {
+			plugins: ['remove_button'],
+			maxOptions: null,
+			create: false,
+			maxItems: null,
+			sortField: { field: "text", direction: "asc" },
+			placeholder: "Sélectionner un ou plusieurs antécédents...",
+		});
 
-    <script>
-        $(document).ready(function () {
-            $('#ComboBoxMultiselectAllergies').multiselect({
-                enableFiltering: true,
-                includeSelectAllOption: true
-            });
-        });
-    </script>
-@*     <script>
-        document.getElementById('photoInput').addEventListener('change', function () {
-            var fileName = this.value.split('\\').pop();
-            console.log("fileName", fileName);
-            if (fileName) {
-                this.nextElementSibling.innerHTML = fileName;
-            } else {
-                this.nextElementSibling.innerHTML = 'Aucun fichier sélectionné';
-            }
-        });
-    </script> *@
+		new TomSelect('#ComboBoxMultiselectAllergies', {
+			plugins: ['remove_button'],
+			maxOptions: null,
+			create: false,
+			maxItems: null,
+			sortField: { field: "text", direction: "asc" },
+			placeholder: "Sélectionner une ou plusieurs allergies...",
+		});
+	</script>
 }
+
