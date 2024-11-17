@@ -3,21 +3,19 @@
 	ViewData["Title"] = "Mes ordonnances";
 }
 
-@if (TempData["MessageSucces"] != null)
-
-{
-	<div id="tempMessage" class="alert alert-success">
-		@TempData["MessageSucces"]
-	</div>
-}
-
-@if (TempData["MessageErreur"] != null)
-
-{
-	<div id="tempMessage" class="alert alert-danger">
-		@TempData["MessageErreur"]
-	</div>
-}
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+	@if (TempData["SuccessMessage"] != null)
+	{
+		<div class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true">
+			<div class="d-flex">
+				<div class="toast-body">
+					@TempData["SuccessMessage"]
+				</div>
+				<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+		</div>
+	}
+</div>
 
 <div class="text-center">
 	<div>
@@ -59,7 +57,7 @@
 										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 									</div>
 									<div class="modal-body">
-										Confirmez-vous la suppression du patient : <strong>@o.Patient.Ordonnances</strong> ?
+										Confirmez-vous la suppression de l'ordonnance du patient : <strong>@o.Patient.NomComplet</strong> ?
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
@@ -89,12 +87,13 @@
 </div>
 
 <script>
-	window.addEventListener('DOMContentLoaded', (event) => {
-		const tempMessage = document.getElementById("tempMessage");
-		if (tempMessage) {
-			setTimeout(() => {
-				tempMessage.style.display = "none";
-			}, 3000);
-		}
+	const Message = TempData["SuccessMessage"];
+	console.log("Je suis dans le scritp", Message)
+	document.addEventListener('DOMContentLoaded', function () {
+		var toastElements = document.querySelectorAll('.toast');
+		toastElements.forEach(function (toastElement) {
+			var toast = new bootstrap.Toast(toastElement);
+			toast.show();
+		});
 	});
 </script>

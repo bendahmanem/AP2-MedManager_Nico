@@ -191,13 +191,15 @@ namespace MedManager.Controllers
                     TempData["SuccessMessage"] = "Le patient a été ajouté avec succès.";
                     return RedirectToAction("Index", "Patient");
                 }
-
-				var modele = new PatientViewModel
-				{
-					Allergies = await _dbContext.Allergies.ToListAsync(),
-					Antecedents = await _dbContext.Antecedents.ToListAsync(),
-				};
-				return View(modele);
+                else
+                {
+					var modele = new PatientViewModel
+					{
+						Allergies = await _dbContext.Allergies.ToListAsync(),
+						Antecedents = await _dbContext.Antecedents.ToListAsync(),
+					};
+					return View(modele);
+				}
 			}
             catch (DbUpdateException ex)
             {
@@ -224,20 +226,19 @@ namespace MedManager.Controllers
                 {
                     _dbContext.Patients.Remove(patientToDelete);
                     await _dbContext.SaveChangesAsync();
-                    return RedirectToAction("Index", "Patient");
+					TempData["SuccessMessage"] = "Le patient a été supprimé avec succès.";
+					return RedirectToAction("Index", "Patient");
                 }
                 return NotFound();
             }
             catch (DbUpdateException ex)
             {
                 _logger.LogError(ex, "Une erreur s'est produite lors de la suppression du patient.");
-                TempData["ErrorMessage"] = "Une erreur s'est produite lors de la suppression du patient. Veuillez réessayer.";
                 return RedirectToAction("Index", "Patient");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Une erreur inattendue est survenue lors de la suppression du patient.");
-                TempData["ErrorMessage"] = "Une erreur inattendue est survenue. Veuillez réessayer.";
                 return RedirectToAction("Index", "Patient");
             }
         }
@@ -278,13 +279,11 @@ namespace MedManager.Controllers
             catch (DbUpdateException ex)
             {
                 _logger.LogError(ex, "Une erreur s'est produite lors de la récupération des informations du patient.");
-                TempData["ErrorMessage"] = "Une erreur s'est produite lors de la récupération des informations du patient. Veuillez réessayer.";
                 return RedirectToAction("Index", "Patient");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Une erreur inattendue est survenue lors de la récupération des informations du patient.");
-                TempData["ErrorMessage"] = "Une erreur inattendue est survenue. Veuillez réessayer.";
                 return RedirectToAction("Index", "Patient");
             }
         }
@@ -355,18 +354,17 @@ namespace MedManager.Controllers
 
                 _dbContext.Entry(patient).State = EntityState.Modified;
                 await _dbContext.SaveChangesAsync();
-                return RedirectToAction("Index");
+				TempData["SuccessMessage"] = "Le patient a été modifié avec succès.";
+				return RedirectToAction("Index");
             }
             catch (DbUpdateException ex)
             {
                 _logger.LogError(ex, "Une erreur s'est produite lors de la mise à jour des informations du patient.");
-                TempData["ErrorMessage"] = "Une erreur s'est produite lors de la mise à jour des informations du patient. Veuillez réessayer.";
                 return View(viewModel);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Une erreur inattendue est survenue lors de la mise à jour des informations du patient.");
-                TempData["ErrorMessage"] = "Une erreur inattendue est survenue. Veuillez réessayer.";
                 return View(viewModel);
             }
         }
@@ -395,13 +393,11 @@ namespace MedManager.Controllers
             catch (DbException ex)
             {
                 _logger.LogError(ex, "Une erreur s'est produite lors de la récupération des détails du patient.");
-                TempData["ErrorMessage"] = "Une erreur s'est produite lors de la récupération des détails. Veuillez réessayer.";
                 return RedirectToAction("Index", "Patient");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Une erreur inattendue est survenue lors de la récupération des détails du patient.");
-                TempData["ErrorMessage"] = "Une erreur inattendue est survenue. Veuillez réessayer.";
                 return RedirectToAction("Index", "Patient");
             }
         }

@@ -1,46 +1,89 @@
 ﻿
 <section class="contact" id="contact">
-    <div class="container">
-        <div class="card shadow-sm mt-5">
-            <div class="card-header text-center text-dark text-white">
-                <h2>Nous contacter</h2>
-            </div>
-            <div class="card-body">
-                <form action="https://api.web3forms.com/submit" method="POST">
-                    <input type="hidden" name="access_key" value="9500b774-9f66-4a1f-90ad-53ef9b523d4a">
+	<div class="container">
+		<div class="card shadow-sm mt-5">
+			<div class="card-header text-center text-dark text-white">
+				<h2>Nous contacter</h2>
+			</div>
+			<div class="card-body">
+				<form action="https://api.web3forms.com/submit" method="POST" id="form">
+					<input type="hidden" name="access_key" value="9500b774-9f66-4a1f-90ad-53ef9b523d4a">
 
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="nom">Nom et prénom</label>
-                            <input name="nom" type="text" class="form-control" placeholder="Nom et prénom" required>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="mail">Adresse mail</label>
-                            <input name="mail" type="email" class="form-control" placeholder="Adresse mail" required>
-                        </div>
-                    </div>
+					<div class="form-row">
+						<div class="form-group col-md-6">
+							<label for="nom">Nom et prénom</label>
+							<input name="nom" type="text" class="form-control" placeholder="Nom et prénom" required>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="mail">Adresse mail</label>
+							<input name="mail" type="email" class="form-control" placeholder="Adresse mail" required>
+						</div>
+					</div>
 
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="tel">Numéro de téléphone</label>
-                            <input name="tel" type="tel" class="form-control" placeholder="Numéro de téléphone">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="objet">Objet du message</label>
-                            <input name="objet" type="text" class="form-control" placeholder="Objet du message">
-                        </div>
-                    </div>
+					<div class="form-row">
+						<div class="form-group col-md-6">
+							<label for="tel">Numéro de téléphone</label>
+							<input name="tel" type="tel" class="form-control" placeholder="Numéro de téléphone">
+						</div>
+						<div class="form-group col-md-6">
+							<label for="objet">Objet du message</label>
+							<input name="objet" type="text" class="form-control" placeholder="Objet du message">
+						</div>
+					</div>
 
-                    <div class="form-group">
-                        <label for="message">Votre message</label>
-                        <textarea name="message" cols="30" rows="5" class="form-control" placeholder="Votre message" required></textarea>
-                    </div>
+					<div class="form-group">
+						<label for="message">Votre message</label>
+						<textarea name="message" cols="30" rows="5" class="form-control" placeholder="Votre message" required></textarea>
+					</div>
 
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Envoyer</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+					<div class="text-center">
+						<button type="submit" class="btn btn-primary">Envoyer</button>
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class ="text-center" id="result"></div>
 </section>
+
+<script>
+	const form = document.getElementById('form');
+	const result = document.getElementById('result');
+
+	form.addEventListener('submit', function (e) {
+		e.preventDefault();
+		const formData = new FormData(form);
+		const object = Object.fromEntries(formData);
+		const json = JSON.stringify(object);
+		result.innerHTML = "Please wait..."
+
+		fetch('https://api.web3forms.com/submit', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Accept': 'application/json'
+			},
+			body: json
+		})
+			.then(async (response) => {
+				let json = await response.json();
+				if (response.status == 200) {
+					result.innerHTML = "Merci, votre formulaire a bien été envoyé.";
+				} else {
+					console.log(response);
+					result.innerHTML = json.message;
+				}
+			})
+			.catch(error => {
+				console.log(error);
+				result.innerHTML = "Oups, quelque chose s'est mal passée";
+			})
+			.then(function () {
+				form.reset();
+				setTimeout(() => {
+					result.style.display = "none";
+				}, 3000);
+			});
+	});
+</script>

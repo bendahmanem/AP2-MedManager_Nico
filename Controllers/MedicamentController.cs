@@ -95,9 +95,10 @@ namespace MedManager.Controllers
 					medicament.Categorie = model.Categorie;
 					_dbContext.Entry(medicament).State = EntityState.Modified;
 					await _dbContext.SaveChangesAsync();
+					TempData["SuccessMessage"] = "Le médicament a été modifié avec succès.";	
 					return RedirectToAction("Index", "Medicament");
 				}
-                return View(model);
+				return View(model);
             }
 			catch (DbException ex)
 			{
@@ -122,8 +123,8 @@ namespace MedManager.Controllers
 
                 _dbContext.Remove(medicament);
                 await _dbContext.SaveChangesAsync();
-
-                return RedirectToAction("Index", "Medicament");
+				TempData["SuccessMessage"] = "Le médicament a été supprimé avec succès.";
+				return RedirectToAction("Index", "Medicament");
 			}
 			catch (DbException ex)
 			{
@@ -151,9 +152,10 @@ namespace MedManager.Controllers
 				{
 					await _dbContext.Medicaments.AddAsync(model);
 					await _dbContext.SaveChangesAsync();
+					TempData["SuccessMessage"] = "Le médicament a été ajouté avec succès.";	
 					return RedirectToAction("Index", "Medicament");
 				}
-                return View(model);
+				return View(model);
 
             }
 			catch (DbException ex)

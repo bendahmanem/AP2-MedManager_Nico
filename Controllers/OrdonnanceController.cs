@@ -278,6 +278,7 @@ namespace MedManager.Controllers
 					await _dbContext.Ordonnances.AddAsync(ordonnance);
 					await _dbContext.SaveChangesAsync();
 					TempData["SuccessMessage"] = "L'ordonnance a été ajoutée avec succès.";
+				
 					return RedirectToAction("Index", "Ordonnance");
 				}
 				catch (DbUpdateException ex)

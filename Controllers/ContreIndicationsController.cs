@@ -107,6 +107,8 @@ namespace MedManager.Controllers
                         }
 
                         await _dbContext.Allergies.AddAsync(allergie);
+						TempData["SuccessMessage"] = "L'allergie a été ajoutée avec succès.";
+						
                     }
                     else if (model.Type == "Antecedent")
                     {
@@ -124,10 +126,11 @@ namespace MedManager.Controllers
                             }
                         }
                         await _dbContext.Antecedents.AddAsync(antecedent);
+						TempData["SuccessMessage"] = "L'antécédent a été ajouté avec succès.";
                     }
                     await _dbContext.SaveChangesAsync();
-                    TempData["MessageSucces"] = $"L'{model.Type.ToLower()} a été ajoutée avec succès.";
-                    return RedirectToAction("Index");
+	
+					return RedirectToAction("Index");
                 }
 
 				List<Medicament> medicaments = await _dbContext.Medicaments.ToListAsync();
@@ -234,6 +237,7 @@ namespace MedManager.Controllers
                         }
                         _dbContext.Entry(allergie).State = EntityState.Modified;
                         await _dbContext.SaveChangesAsync();
+						TempData["SuccessMessage"] = "L'allergie a été modifiée avec succès.";
                     }
                     else if (model.Type == "Antecedent")
                     {
@@ -256,9 +260,10 @@ namespace MedManager.Controllers
                         }
                         _dbContext.Entry(antecedent).State = EntityState.Modified;
                         await _dbContext.SaveChangesAsync();
+						TempData["SuccessMessage"] = "L'antécédent a été modifié avec succès.";
                     }
-                    TempData["MessageSucces"] = $"L'{model.Type.ToLower()} a été modifié avec succès.";
-                    return RedirectToAction("Index");
+         
+					return RedirectToAction("Index");
                 }
                 return View("Action", model);
             }
@@ -285,7 +290,8 @@ namespace MedManager.Controllers
                         return NotFound();
 
                     _dbContext.Allergies.Remove(allergie);
-                }
+					TempData["SuccessMessage"] = "L'allergie a été supprimée avec succès.";
+				}
                 else if (type == "Antecedent")
                 {
                     var antecedent = await _dbContext.Antecedents.FindAsync(id);
@@ -293,9 +299,10 @@ namespace MedManager.Controllers
                         return NotFound();
 
                     _dbContext.Antecedents.Remove(antecedent);
-                }
+					TempData["SuccessMessage"] = "L'antécédent a été supprimé avec succès.";
+				}
                 await _dbContext.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+				return RedirectToAction(nameof(Index));
             }
             catch (DbException ex)
             {
