@@ -282,7 +282,7 @@
         new Chart(document.getElementById('ageChart'), {
             type: 'bar',
             data: {
-                labels: @Json.Serialize(Model.RepartitionAges.Select(x => x.categorie)),
+                labels: @Json.Serialize(Model.RepartitionAges.OrderBy(x => x.categorie).Select(x => x.categorie)),
                 datasets: [{
                     data: @Json.Serialize(Model.RepartitionAges.Select(x => x.compte)),
                     backgroundColor: colors
