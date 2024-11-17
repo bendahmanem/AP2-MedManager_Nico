@@ -150,7 +150,25 @@ namespace MedManager.Controllers
 
 			if (ModelState.IsValid)
 			{
-				var patient = _dbContext.Patients.FirstOrDefault(p => p.PatientId == modele.PatientId);
+				var patient = _dbContext.Patients
+					.Include(p => p.Allergies)
+					.Include(p => p.Antecedents)
+					.FirstOrDefault(p => p.PatientId == modele.PatientId);
+				var AllergiesPatient = patient.Allergies.Select(p => p.AllergieId).ToList();
+				var AntecedentPatient = patient.Antecedents.Select(p => p.AntecedentId).ToList();
+				var ListeMedicament = await _dbContext.Medicaments
+					.Where(m => !m.Allergies.Any(a => AllergiesPatient.Contains(a.AllergieId)) && !m.Antecedents.Any(a => AntecedentPatient.Contains(a.AntecedentId)))
+					.ToListAsync();
+
+				if (ListeMedicament.Count == 0)
+				{
+					ModelState.AddModelError("", "Aucun médicament compatible n'a été trouvé pour ce patient. Veuillez vérifier ses antécédents et ses allergies.");
+					var model = new SelectionPatientViewModel
+					{
+						Patients = medecin.Patients
+					};
+					return View(model);
+				}
 				if (patient != null)
 				{
 					return RedirectToAction("Ajouter", new { id = patient.PatientId });
@@ -186,6 +204,12 @@ namespace MedManager.Controllers
 				var ListeMedicament = await _dbContext.Medicaments
 					.Where(m => !m.Allergies.Any(a => AllergiesPatient.Contains(a.AllergieId)) && !m.Antecedents.Any(a => AntecedentPatient.Contains(a.AntecedentId)))
 					.ToListAsync();
+
+				if (!ListeMedicament.Any())
+				{
+					TempData["ErrorMessage"] = "Aucun médicament compatible n'est disponible pour ce patient. Veuillez vérifier ses antécédents et allergies.";
+					return RedirectToAction("Index", "Patient");
+				}
 
 				//var ListeMedicamentsOrdo = RecupererMedicamentsCompatibles(id);
 

@@ -6,6 +6,8 @@ namespace MedManager.ViewModel.OrdonnanceVM
 	{
 		public required List<Patient>? Patients { get; set; }
 		[Required(ErrorMessage = "Veuillez sélectionner un patient.")]
+
+		[Display(Name ="Patients")]
 		public int? PatientId { get; set; }
 	}
 }

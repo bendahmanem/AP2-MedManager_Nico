@@ -12,6 +12,7 @@
 				<option value="@p.PatientId">@p.NomComplet</option>
 			}
 		</select>
+		<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 		<span asp-validation-for="PatientId" class="text-danger"></span>
 	</div>
 	<button type="submit">
