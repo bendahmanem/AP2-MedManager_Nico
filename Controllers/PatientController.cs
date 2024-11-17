@@ -162,6 +162,12 @@ namespace MedManager.Controllers
                         await photo.CopyToAsync(memoryStream);
                         patient.Photo = memoryStream.ToArray();
                     }
+                    else 
+                    {
+
+						var defaultPhotoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "PhotoDefaut-200.png");
+						patient.Photo = await System.IO.File.ReadAllBytesAsync(defaultPhotoPath);
+					}
 
 
                     if (model.AllergieIdSelectionnes != null)
@@ -268,7 +274,7 @@ namespace MedManager.Controllers
                     Adresse = patient.Adresse,
                     Ville = patient.Ville,
                     Sexe = patient.Sexe,
-                    //Photo = patient.Photo,
+                    Photo = patient.Photo,
                     Allergies = await _dbContext.Allergies.ToListAsync(),
                     Antecedents = await _dbContext.Antecedents.ToListAsync(),
                     AllergieIdSelectionnes = patient.Allergies.Select(a => a.AllergieId).ToList(),
@@ -311,7 +317,6 @@ namespace MedManager.Controllers
                     return NotFound();
                 }
 
-                // Mettre à jour les champs du patient
                 patient.Nom = viewModel.Nom;
                 patient.Prenom = viewModel.Prenom;
                 patient.NumeroSecuriteSocial = viewModel.NuméroSécuritéSociale;
@@ -322,7 +327,6 @@ namespace MedManager.Controllers
                 patient.Ville = viewModel.Ville;
                 patient.Sexe = viewModel.Sexe;
 
-                // Si un nouveau fichier photo est téléchargé, mettez à jour la photo
                 if (photo != null && photo.Length > 0)
                 {
                     using (var memoryStream = new MemoryStream())
@@ -331,11 +335,7 @@ namespace MedManager.Controllers
                         patient.Photo = memoryStream.ToArray();
                     }
                 }
-                else if (!string.IsNullOrEmpty(viewModel.PhotoBase64))
-                {
-                    // Si aucune nouvelle photo n'est téléchargée, conserver la photo existante
-                    patient.Photo = Convert.FromBase64String(viewModel.PhotoBase64);
-                }
+     
 
                 patient.Allergies.Clear();
                 if (viewModel.AllergieIdSelectionnes != null)

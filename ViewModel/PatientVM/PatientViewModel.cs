@@ -43,8 +43,8 @@ namespace MedManager.ViewModel.PatientVM
         [StringLength(50, ErrorMessage = "La ville ne peut pas dépasser 50 caractères.")]
         public string? Ville { get; set; }
 
-        //[MaxLength(1048576, ErrorMessage = "La taille de la photo ne doit pas dépasser 1 Mo.")]
-        ////public byte[]? Photo { get; set; }
+        [MaxLength(1048576, ErrorMessage = "La taille de la photo ne doit pas dépasser 1 Mo.")]
+        public byte[]? Photo { get; set; }
 
         public string? PhotoBase64 { get; set; }
 

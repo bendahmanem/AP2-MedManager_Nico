@@ -143,7 +143,7 @@
 }
 
 
-<form asp-action="Ajouter" asp-controller="Patient" method="post" enctype="multipart/form-data">
+<form asp-action="Editer" asp-controller="Patient" method="post" enctype="multipart/form-data">
 
 	<div class="form-group">
 		<label asp-for="Nom"></label>
@@ -200,7 +200,11 @@
 	<div class="form-group">
 		<label for="Photo">Photo</label>
 		<input type="file" name="Photo" class="form-control" accept=".jpg,.jpeg,.png" />
-		@* <span asp-validation-for="" class="text-danger"></span> *@
+		 <span asp-validation-for="Photo" class="text-danger"></span> 
+				@if (Model.Photo != null && Model.Photo.Length > 0)
+		{
+		<img src="data:image;base64,@(Convert.ToBase64String(Model.Photo))" alt="Patient Photo" style="max-width: 200px; max-height: 200px;" />
+		} 
 	</div>
 
 	<p>Antécents</p>

@@ -5,6 +5,14 @@
       "PackagePath": "staticwebassets\\MedManager.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\Images\\PhotoDefaut-200.png",
+      "PackagePath": "staticwebassets\\Images\\PhotoDefaut-200.png"
+    },
+    {
+      "Id": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\Images\\PhotoDefaut-300.png",
+      "PackagePath": "staticwebassets\\Images\\PhotoDefaut-300.png"
+    },
+    {
       "Id": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\css\\bootstrap-multiselect.css",
       "PackagePath": "staticwebassets\\css\\bootstrap-multiselect.css"
     },

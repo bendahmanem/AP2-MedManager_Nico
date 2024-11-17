@@ -1,12 +1,14 @@
 ﻿using MedManager.Data;
 using MedManager.Models;
 using MedManager.ViewModel.Compte;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace MedManager.Controllers
 {
+	[Authorize]
 	public class ParametresController : Controller
 	{
 		private readonly ApplicationDbContext _dbContext;
