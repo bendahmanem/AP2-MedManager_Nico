@@ -1,5 +1,6 @@
 using MedManager.Data;
 using MedManager.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,9 +30,11 @@ builder.Services.AddIdentity<Medecin, IdentityRole>(options =>
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-	options.LoginPath = "/Compte/Connexion";
-	options.AccessDeniedPath = "/Compte/Connexion";
+    options.LoginPath = "/Compte/Connexion";
+    options.AccessDeniedPath = "/Compte/Connexion";
+    
 });
+
 
 
 var app = builder.Build();
