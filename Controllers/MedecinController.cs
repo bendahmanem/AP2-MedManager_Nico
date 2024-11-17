@@ -208,10 +208,11 @@ public class MedecinController : Controller
 
 			var repartition = patients
 				.GroupBy(p =>
-					p.Age < 18 ? "Mineurs" :
-					p.Age <= 40 ? "Jeunes Adultes" :
-					p.Age <= 60 ? "Adultes" :
-					"Seniors")
+					p.Age < 20 ? "0-20 ans" :
+					p.Age <= 40 ? "20-40 ans" :
+					p.Age <= 60 ? "40-60 ans" :
+					p.Age <= 80 ? "60-80 ans" :
+					"80 ans et plus")
 				.Select(g => new RepartitionAge
 				{
 					categorie = g.Key,

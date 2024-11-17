@@ -237,6 +237,7 @@
 
 @section Scripts {
     <script>
+        Chart.register(ChartDataLabels);
         // Palette de couleurs pastel
         const colors = [
             'rgba(149, 128, 247, 0.7)', // Violet pastel
@@ -261,15 +262,17 @@
                     }
                 },
                 datalabels: {
+                   
                     formatter: (value, ctx) => {
                         let sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                      
                         let percentage = (value * 100 / sum).toFixed(1) + "%";
+                       
                         return percentage;
                     },
                     color: '#333',
                     font: {
-                        weight: 'bold',
-                        size: 11
+                        size: 9
                     }
                 }
             }
@@ -292,7 +295,7 @@
                     datalabels: {
                         formatter: (value) => value,
                         anchor: 'end',
-                        align: 'top'
+                        align: 'bottom'
                     }
                 }
             }
