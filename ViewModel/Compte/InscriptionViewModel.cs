@@ -43,7 +43,7 @@ namespace MedManager.ViewModel.Compte
         public required string Ville { get; set; }
 
 		[Required(ErrorMessage = "Le mot de passe est obligatoire")]
-		[DataType(DataType.Password)]
+        [DataType(DataType.Password)]
         [Display(Name = "Mot de passe")]
         public required string MotDePasse { get; set; }
     }

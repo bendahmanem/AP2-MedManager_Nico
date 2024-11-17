@@ -1,4 +1,4 @@
-﻿   @model PatientViewModel
+﻿@*    @model PatientViewModel
 
 @{
 	ViewData["Title"] = $"Modifier le patient : {Model.Nom} {Model.Prenom}";
@@ -59,10 +59,16 @@
 		<span asp-validation-for="Ville" class="text-danger"></span>
 	</div>
 	<div class="form-group">
-		<label for="Photo">Photo</label>
-		<input type="file" name="Photo" class="form-control" accept=".jpg,.jpeg,.png" />
-		<span asp-validation-for="Photo" class="text-danger"></span>
-	</div>
+		<label for="photo">Photo</label>
+		<input type="file" name="photo" class="form-control" accept=".jpg,.jpeg,.png" />
+@* 		<span asp-validation-for="Photo" class="text-danger"></span>
+		@if (Model.Photo != null)
+
+		{
+			<img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Photo)" alt="Photo" width="100" height="100" />
+			<button type="button" class="btn btn-danger">Supprimer</button>
+		} *@
+	@* </div> *@
 @* 	<div class="form-group">
 		<label asp-for="Photo" class="control-label"></label>
 		<input asp-for="Photo" type="file" class="form-control" accept=".jpg,.jpeg,.png" />
@@ -74,7 +80,7 @@
 	@* </div> *@ 
 
 
-	<p>Antécédents</p>
+@* 	<p>Antécédents</p>
 	<div class="form-group row">
 		<div class="col-sm-10">
 			<select id="ComboBoxMultiselectAntecedents"
@@ -128,4 +134,128 @@
 		});
 	</script>
 }
+ *@ 
+
+    @model PatientViewModel
+
+@{
+	ViewData["Title"] = "Ajouter un patient";
+}
+
+
+<form asp-action="Ajouter" asp-controller="Patient" method="post" enctype="multipart/form-data">
+
+	<div class="form-group">
+		<label asp-for="Nom"></label>
+		<input asp-for="Nom" class="form-control" />
+		<span asp-validation-for="Nom" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="Prenom"></label>
+		<input asp-for="Prenom" class="form-control" />
+		<span asp-validation-for="Prenom" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="NuméroSécuritéSociale"></label>
+		<input asp-for="NuméroSécuritéSociale" class="form-control" />
+		<span asp-validation-for="NuméroSécuritéSociale" class="text-danger"></span>
+	</div>
+
+	<div>
+		<label asp-for="Sexe"></label>
+		<select asp-for="Sexe" class="form-control">
+			<option value="">Sélectionnez le sexe</option>
+			@foreach (var sexe in Enum.GetValues(typeof(Sexe)))
+			{
+				<option value="@sexe">@sexe</option>
+			}
+		</select>
+		<span asp-validation-for="Sexe" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="Taille"></label>
+		<input asp-for="Taille" class="form-control" />
+		<span asp-validation-for="Taille" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="Poids"></label>
+		<input asp-for="Poids" class="form-control" />
+		<span asp-validation-for="Poids" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="DateNaissance"></label>
+		<input asp-for="DateNaissance" class="form-control" type="date" max="@DateTime.Now.ToString("yyyy-MM-dd")" min="1900-01-01" />
+		<span asp-validation-for="DateNaissance" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="Adresse"></label>
+		<input asp-for="Adresse" class="form-control" />
+		<span asp-validation-for="Adresse" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="Ville"></label>
+		<input asp-for="Ville" class="form-control" />
+		<span asp-validation-for="Ville" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label for="Photo">Photo</label>
+		<input type="file" name="Photo" class="form-control" accept=".jpg,.jpeg,.png" />
+		@* <span asp-validation-for="" class="text-danger"></span> *@
+	</div>
+
+	<p>Antécents</p>
+	<div class="form-group row">
+		<div class="col-sm-10">
+			<select id="ComboBoxMultiselectAntecedents"
+					name="AntecedentIdSelectionnes"
+					multiple
+					class="tom-select"
+					asp-for="AntecedentIdSelectionnes"
+					asp-items="@(new SelectList(Model.Antecedents, "AntecedentId", "Nom", Model.AntecedentIdSelectionnes))">
+			</select>
+		</div>
+	</div>
+
+	<p>Allergies</p>
+	<div class="form-group row">
+		<div class="col-sm-10">
+			<select id="ComboBoxMultiselectAllergies"
+					name="AllergieIdSelectionnes"
+					multiple
+					class="tom-select"
+					asp-for="AllergieIdSelectionnes"
+					asp-items="@(new SelectList(Model.Allergies, "AllergieId", "Nom", Model.AllergieIdSelectionnes))">
+			</select>
+		</div>
+	</div>
+
+	<button type="submit" class="btn btn-primary">Enregistrer</button>
+</form>
+<div>
+	<a asp-action="Index">Retour à la liste</a>
+</div>
+
+@section Scripts {
+	<script>
+		new TomSelect('#ComboBoxMultiselectAntecedents', {
+			   plugins: ['remove_button'],
+			   maxOptions: null,
+			   create: false,
+			   maxItems: null,
+			   sortField: { field: "text", direction: "asc" },
+			   placeholder: "Sélectionner un ou plusieurs antécédents...",
+		});
+
+		new TomSelect('#ComboBoxMultiselectAllergies', {
+			   plugins: ['remove_button'],
+			   maxOptions: null,
+			   create: false,
+			   maxItems: null,
+			   sortField: { field: "text", direction: "asc" },
+			   placeholder: "Sélectionner une ou plusieurs allergies...",
+		});
+	</script>
+}
+
+
 

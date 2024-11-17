@@ -12,73 +12,73 @@
 
         <form asp-action="Index" asp-controller="Parametres" method="post">
             <div class="mb-6">
-                <label asp-for="NomUtilisateur" class="form-label" for="basic-icon-default-username"></label>
+                <label asp-for="NomUtilisateur" class="form-label" ></label>
                 <div class="input-group input-group-merge">
-                    <input asp-for="NomUtilisateur" type="text" class="form-control" id="basic-icon-default-username" placeholder="Nom d'utilisateur">
+                    <input asp-for="NomUtilisateur" type="text" class="form-control" placeholder="Nom d'utilisateur">
                 </div>
                 <span asp-validation-for="NomUtilisateur" class="text-danger"></span>
             </div>
 
             <div class="mb-6">
-                <label asp-for="Prenom" class="form-label" for="basic-icon-default-firstname"></label>
+                <label asp-for="Prenom" class="form-label" ></label>
                 <div class="input-group input-group-merge">
-                    <input asp-for="Prenom" type="text" class="form-control" id="basic-icon-default-firstname" placeholder="Prénom">
+                    <input asp-for="Prenom" type="text" class="form-control"  placeholder="Prénom">
                 </div>
                 <span asp-validation-for="Prenom" class="text-danger"></span>
             </div>
 
             <div class="mb-6">
-                <label asp-for="Nom" class="form-label" for="basic-icon-default-fullname"></label>
+                <label asp-for="Nom" class="form-label" ></label>
                 <div class="input-group input-group-merge">
-                    <input asp-for="Nom" type="text" class="form-control" id="basic-icon-default-fullname" placeholder="Nom">
+                    <input asp-for="Nom" type="text" class="form-control"  placeholder="Nom">
                 </div>
                 <span asp-validation-for="Nom" class="text-danger"></span>
             </div>
 
             <div class="mb-6">
-                <label asp-for="Email" class="form-label" for="basic-icon-default-email"></label>
+                <label asp-for="Email" class="form-label" ></label>
                 <div class="input-group input-group-merge">
-                    <input asp-for="Email" type="text" class="form-control" id="basic-icon-default-email" placeholder="Email">
+                    <input asp-for="Email" type="text" class="form-control"  placeholder="Email">
                 </div>
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
 
             <div class="mb-6">
-                <label asp-for="Adresse" class="form-label" for="basic-icon-default-address"></label>
+                <label asp-for="Adresse" class="form-label" ></label>
                 <div class="input-group input-group-merge">
-                    <input asp-for="Adresse" type="text" class="form-control" id="basic-icon-default-address" placeholder="Adresse">
+                    <input asp-for="Adresse" type="text" class="form-control"  placeholder="Adresse">
                 </div>
                 <span asp-validation-for="Adresse" class="text-danger"></span>
             </div>
 
             <div class="mb-6">
-                <label asp-for="Ville" class="form-label" for="basic-icon-default-city"></label>
+                <label asp-for="Ville" class="form-label" ></label>
                 <div class="input-group input-group-merge">
-                    <input asp-for="Ville" type="text" class="form-control" id="basic-icon-default-city" placeholder="Ville">
+                    <input asp-for="Ville" type="text" class="form-control"  placeholder="Ville">
                 </div>
                 <span asp-validation-for="Ville" class="text-danger"></span>
             </div>
 
 
             <div class="mb-6">
-                <label asp-for="NumeroTel" class="form-label" for="basic-icon-default-phone"></label>
+                <label asp-for="NumeroTel" class="form-label" ></label>
                 <div class="input-group input-group-merge">
-                    <input asp-for="NumeroTel" type="text" class="form-control" id="basic-icon-default-phone" placeholder="Numéro de téléphone">
+                    <input asp-for="NumeroTel" type="text" class="form-control" placeholder="Numéro de téléphone">
                 </div>
                 <span asp-validation-for="NumeroTel" class="text-danger"></span>
             </div>
 
             <div class="mb-6">
-                <label asp-for="Faculte" class="form-label" for="basic-icon-default-faculty"></label>
+                <label asp-for="Faculte" class="form-label"></label>
                 <div class="input-group input-group-merge">
-                    <input asp-for="Faculte" type="text" class="form-control" id="basic-icon-default-faculty" placeholder="Faculté">
+                    <input asp-for="Faculte" type="text" class="form-control"  placeholder="Faculté">
                 </div>
                 <span asp-validation-for="Faculte" class="text-danger"></span>
             </div>
             <div class="mb-6">
-                <label asp-for="Specialite" class="form-label" for="basic-icon-default-specialty"></label>
+                <label asp-for="Specialite" class="form-label" ></label>
                 <div class="input-group input-group-merge">
-                    <select asp-for="Specialite" class="form-control" id="basic-icon-default-specialty">
+                    <select asp-for="Specialite" class="form-control" >
                         <option value="">Sélectionnez une spécialité</option>
                         @foreach (var spe in Enum.GetValues(typeof(Specialite)))
                         {
@@ -90,9 +90,9 @@
             </div>
 
             <div class="mb-6">
-                <label asp-for="MotDePasse" class="form-label" for="basic-icon-default-password"></label>
+                <label asp-for="MotDePasse" class="form-label"></label>
                 <div class="input-group input-group-merge">
-                    <input asp-for="MotDePasse" type="password" class="form-control" id="basic-icon-default-password" placeholder="Mot de passe">
+                    <input asp-for="MotDePasse" type="password" class="form-control" placeholder="Mot de passe">
                 </div>
                 <span asp-validation-for="MotDePasse" class="text-danger"></span>
             </div>

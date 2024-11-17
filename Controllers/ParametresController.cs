@@ -74,6 +74,7 @@ namespace MedManager.Controllers
 
 			var passwordHasher = new PasswordHasher<Medecin>();
 			medecin.PasswordHash = passwordHasher.HashPassword(medecin, model.MotDePasse);
+			
 
 			_dbContext.Update(medecin);
 			await _dbContext.SaveChangesAsync();

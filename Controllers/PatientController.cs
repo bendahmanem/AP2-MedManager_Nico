@@ -268,14 +268,14 @@ namespace MedManager.Controllers
                     Adresse = patient.Adresse,
                     Ville = patient.Ville,
                     Sexe = patient.Sexe,
-                    Photo = patient.Photo,
+                    //Photo = patient.Photo,
                     Allergies = await _dbContext.Allergies.ToListAsync(),
                     Antecedents = await _dbContext.Antecedents.ToListAsync(),
                     AllergieIdSelectionnes = patient.Allergies.Select(a => a.AllergieId).ToList(),
                     AntecedentIdSelectionnes = patient.Antecedents.Select(a => a.AntecedentId).ToList()
                 };
-                return View(viewModel);
-            }
+				return View(viewModel);
+			}
             catch (DbUpdateException ex)
             {
                 _logger.LogError(ex, "Une erreur s'est produite lors de la récupération des informations du patient.");
