@@ -248,17 +248,17 @@ namespace MedManager.Controllers
 				if (model.DateDebut > model.DateFin)
 				{
 					ModelState.AddModelError("DateFin", "La date de fin doit être supérieure à la date de début.");
-					//var patient = await _dbContext.Patients
-					//	.Include(p => p.Allergies)
-					//	.Include(p => p.Antecedents)
-					//	.FirstOrDefaultAsync(p => p.PatientId == model.PatientId);
+					var Patient = await _dbContext.Patients
+						.Include(p => p.Allergies)
+						.Include(p => p.Antecedents)
+						.FirstOrDefaultAsync(p => p.PatientId == model.PatientId);
 
-					//var AllergiesPatient = patient.Allergies.Select(p => p.AllergieId).ToList();
-					//var AntecedentPatient = patient.Antecedents.Select(p => p.AntecedentId).ToList();
-					//var ListeMedicament = await _dbContext.Medicaments
-					//	.Where(m => !m.Allergies.Any(a => AllergiesPatient.Contains(a.AllergieId)) && !m.Antecedents.Any(a => AntecedentPatient.Contains(a.AntecedentId)))
-					//	.ToListAsync();
-					//model.Medicaments = ListeMedicament;
+					var allergiesPatient = Patient.Allergies.Select(p => p.AllergieId).ToList();
+					var antecedentPatient = Patient.Antecedents.Select(p => p.AntecedentId).ToList();
+					var listeMedicaments = await _dbContext.Medicaments
+						.Where(m => !m.Allergies.Any(a => allergiesPatient.Contains(a.AllergieId)) && !m.Antecedents.Any(a => antecedentPatient.Contains(a.AntecedentId)))
+						.ToListAsync();
+					model.Medicaments = listeMedicaments;
 					return View("Action", model);
 				}
 				try
@@ -302,7 +302,6 @@ namespace MedManager.Controllers
 					await _dbContext.Ordonnances.AddAsync(ordonnance);
 					await _dbContext.SaveChangesAsync();
 					TempData["SuccessMessage"] = "L'ordonnance a été ajoutée avec succès.";
-				
 					return RedirectToAction("Index", "Ordonnance");
 				}
 				catch (DbUpdateException ex)
@@ -330,7 +329,6 @@ namespace MedManager.Controllers
 				.Where(m => !m.Allergies.Any(a => AllergiesPatient.Contains(a.AllergieId)) && !m.Antecedents.Any(a => AntecedentPatient.Contains(a.AntecedentId)))
 				.ToListAsync();
 			model.Medicaments = ListeMedicament;
-
 
 			return View("Action", model);
 		}

@@ -35,6 +35,7 @@
                     asp-items="@(new SelectList(Model.Medicaments, "MedicamentId", "Nom", Model.MedicamentIdSelectionnes))">
             </select>
         </div>
+        <span asp-validation-for="MedicamentIdSelectionnes" class="text-danger"></span>
     </div>
 
     <div class="form-group">
@@ -61,14 +62,6 @@
             maxItems: null,
             sortField: { field: "text", direction: "asc" },
             placeholder: "Sélectionner un ou plusieurs médicaments...",
-        });
-    </script>
-    <script>
-        const dateDebut = document.getElementById("dateDebut");
-        const dateFin = document.getElementById("dateFin");
-
-        dateDebut.addEventListener("change", function () {
-            dateFin.min = dateDebut.value;
         });
     </script>
 }
