@@ -87,9 +87,9 @@
     <!-- Tables Row -->
     <div class="row g-3 mb-4">
         <div class="col-12">
-            <div class="card border-0 shadow-sm">
+            <div class="card border-0 shadow-sm text-center">
                 <div class="card-body">
-                    <h6 class="card-title mb-3">Ordonnances en cours</h6>
+                    <h6 class="card-title mb-3 ">Ordonnances en cours</h6>
                     <div class="table-responsive">
                         <table class="table table-sm">
                             <thead>
@@ -211,41 +211,47 @@
 
 <style>
     .bg-soft-purple {
-        background-color: rgba(149, 128, 247, 0.1);
+        background-color: rgba(71, 120, 186, 0.4); 
     }
 
     .text-purple {
-        color: rgba(149, 128, 247, 1);
+        color: rgba(71, 120, 186, 1); 
     }
 
     .bg-soft-green {
-        background-color: rgba(106, 201, 119, 0.1);
+        background-color: rgba(87, 182, 174, 0.4); 
     }
 
     .text-green {
-        color: rgba(106, 201, 119, 1);
+        color: rgba(87, 182, 174, 1); 
     }
 
+   
     .table {
         font-size: 0.875rem;
     }
 
         .table th {
             font-weight: 600;
+            color: rgba(71, 120, 186, 0.9);
         }
+
 </style>
 
 @section Scripts {
     <script>
         Chart.register(ChartDataLabels);
-        // Palette de couleurs pastel
+
+
         const colors = [
-            'rgba(149, 128, 247, 0.7)', // Violet pastel
-            'rgba(106, 201, 119, 0.7)', // Vert pastel
-            'rgba(238, 184, 255, 0.7)', // Violet clair
-            'rgba(152, 229, 161, 0.7)', // Vert clair
-            'rgba(176, 159, 255, 0.7)'  // Violet moyen
+            'rgba(71, 120, 186, 0.75)',  
+            'rgba(87, 182, 174, 0.75)',  
+            'rgba(121, 161, 197, 0.75)', 
+            'rgba(129, 199, 190, 0.75)', 
+            'rgba(162, 184, 203, 0.75)'  
         ];
+
+    
 
         const commonOptions = {
             responsive: true,
@@ -262,17 +268,11 @@
                     }
                 },
                 datalabels: {
-                   
-                    formatter: (value, ctx) => {
-                        let sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
-                      
-                        let percentage = (value * 100 / sum).toFixed(1) + "%";
-                       
-                        return percentage;
-                    },
+                    formatter: (value) => value, 
                     color: '#333',
                     font: {
-                        size: 9
+                        size: 11,
+                        weight: 'bold'
                     }
                 }
             }
