@@ -1,45 +1,53 @@
-﻿   @model Medicament
+﻿@model Medicament
 
 @{
-    ViewData["Title"] = "Ajouter un medicament";
+    ViewData["Title"] = "Ajouter un médicament";
 }
 
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h2>Ajouter un Médicament</h2>
+        </div>
+        <div class="card-body">
+            <form asp-action="Ajouter" asp-controller="Medicament" method="post">
+                <div class="form-group mb-3">
+                    <label asp-for="Nom" class="form-label"></label>
+                    <input asp-for="Nom" class="form-control" />
+                    <span asp-validation-for="Nom" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Quantite" class="form-label"></label>
+                    <input asp-for="Quantite" class="form-control" />
+                    <span asp-validation-for="Quantite" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Posologie" class="form-label"></label>
+                    <input asp-for="Posologie" class="form-control" />
+                    <span asp-validation-for="Posologie" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Composition" class="form-label"></label>
+                    <input asp-for="Composition" class="form-control" />
+                    <span asp-validation-for="Composition" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Categorie" class="form-label"></label>
+                    <select asp-for="Categorie" class="form-control">
+                        <option value="">Sélectionnez la catégorie</option>
+                        @foreach (var categorie in Enum.GetValues(typeof(CategorieEnum)))
 
-<form asp-action="Ajouter" asp-controller="Medicament" method="post">
-    <div class="form-group">
-        <label asp-for="Nom"></label>
-        <input asp-for="Nom" class="form-control" />
-        <span asp-validation-for="Nom" class="text-danger"></span>
+                        {
+                            <option value="@categorie">@categorie</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Categorie" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Enregistrer le médicament</button>
+            </form>
+        </div>
+        <div class="card-footer text-end">
+            <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+        </div>
     </div>
-    <div class="form-group">
-        <label asp-for="Quantite"></label>
-        <input asp-for="Quantite" class="form-control" />
-        <span asp-validation-for="Quantite" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Posologie"></label>
-        <input asp-for="Posologie" class="form-control" />
-        <span asp-validation-for="Posologie" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Composition"></label>
-        <input asp-for="Composition" class="form-control"/>
-        <span asp-validation-for="Composition" class="text-danger"></span>
-    </div>
-
-    <div>
-        <label asp-for="Categorie"></label>
-        <select asp-for="Categorie" class="form-control">
-            <option value="">Sélectionnez la catégorie</option>
-            @foreach (var categorie in Enum.GetValues(typeof(CategorieEnum)))
-            {
-                <option value="@categorie">@categorie</option>
-            }
-        </select>
-        <span asp-validation-for="Categorie" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Enregistrer le medicament</button>
-</form>
-
+</div>

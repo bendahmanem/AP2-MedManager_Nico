@@ -1,37 +1,47 @@
 ﻿@model ContreIndicationViewModel
 
-<form asp-action="@(Model.Id == null ? "Ajouter" : "Modifier")" method="post">
-    <input type="hidden" asp-for="Id" />
-    <input type="hidden" asp-for="Type" />
-    <div>
-        <label asp-for="Nom"></label>
-        <input asp-for="Nom"  />
-        <span  asp-validation-for="Nom" class="text-danger"></span>
-       
-    </div>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">@(Model.Id == null ? "Ajouter" : "Modifier") une contre-indication</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="@(Model.Id == null ? "Ajouter" : "Modifier")" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="Type" />
 
-    <div class="form-group row">
-        <div class="col-sm-10">
-            <select id="ComboBoxMultiselectMedicaments"
-                    name="IdMedicamentsSelectionnes"
-                    multiple
-                    class="tom-select"
-                    asp-for="IdMedicamentsSelectionnes"
-                    asp-items="@(new SelectList(Model.Medicaments, "MedicamentId", "Nom", Model.IdMedicamentsSelectionnes))">
-            </select>
+                        <!-- Champ Nom -->
+                        <div class="mb-3">
+                            <label asp-for="Nom" class="form-label"></label>
+                            <input asp-for="Nom" class="form-control" />
+                            <span asp-validation-for="Nom" class="text-danger"></span>
+                        </div>
+
+                        <!-- Champ Sélection des Médicaments -->
+                        <div class="mb-3">
+                            <label for="ComboBoxMultiselectMedicaments" class="form-label">Médicaments</label>
+                            <select id="ComboBoxMultiselectMedicaments"
+                                    name="IdMedicamentsSelectionnes"
+                                    multiple
+                                    class="form-select tom-select"
+                                    asp-for="IdMedicamentsSelectionnes"
+                                    asp-items="@(new SelectList(Model.Medicaments, "MedicamentId", "Nom", Model.IdMedicamentsSelectionnes))">
+                            </select>
+                        </div>
+
+                        <!-- Bouton Soumettre -->
+                        <button type="submit" class="btn btn-primary">
+                            @(Model.Id == null ? "Ajouter" : "Modifier")
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary ms-2">Retour à la liste</a>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-
-    
-    <button type="submit">
-        @(Model.Id == null ? "Ajouter" : "Modifier")
-    </button>
-</form>
-
-<div>
-    <a asp-action="Index">Retour à la liste</a>
 </div>
-
 
 @section Scripts {
     <script>

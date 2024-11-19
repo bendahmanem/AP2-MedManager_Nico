@@ -3,23 +3,33 @@
     ViewData["Title"] = "Détail de l'" + (@Model.Type == "Allergie" ? "allergie" : "antécédent");
 }
 <div class="container mt-4">
-    <div class="row mb-4">
-        <div class="col-md-12">
-
-
-            <h2>Informations Générales</h2>
-            <hr />
-            <p><strong>Nom :</strong> @Model.Nom</p>
-            <p>
-                <strong>Médicaments :</strong>
-                @foreach (var ant in @Model.Medicaments)
-                {
-                    <span>@ant.Nom</span>
-                }
-            </p>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Informations Générales</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Nom :</strong> @Model.Nom</p>
+                    <p>
+                        <strong>Médicaments :</strong>
+                        @if (Model.Medicaments.Any())
+                        {
+                            @foreach (var med in @Model.Medicaments)
+                            {
+                                <span class="badge bg-secondary me-1">@med.Nom</span>
+                            }
+                        }
+                        else
+                        {
+                            <span>Aucun médicament associé</span>
+                        }
+                    </p>
+                </div>
+                <div class="card-footer text-end">
+                    <a asp-action="Index" class="btn btn-secondary btn-sm">Retour à la liste</a>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-<div>
-    <a asp-action="Index">Retour à la liste</a>
 </div>
