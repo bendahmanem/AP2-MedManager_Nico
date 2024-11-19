@@ -1,65 +1,72 @@
 ﻿@model MedManager.Models.Ordonnance
 @{
-	ViewData["Title"] = "Détail de l'Ordonnance";
+    ViewData["Title"] = "Détail de l'Ordonnance";
 }
 
 <div class="container d-flex justify-content-center mt-4 mb-4">
-	<div class="card shadow-lg w-75">
-		<div class="card-header text-center">
-			<h2>Détail de l'Ordonnance</h2>
-		</div>
-		<div class="card-body">
-			<h5 class="card-title">Informations de l'ordonnance</h5>
+    <div class="card shadow-lg w-75">
+        <div class="card-header text-center">
+            <h2>Détail de l'Ordonnance</h2>
+        </div>
+        <div class="card-body">
+            <!-- Informations de l'ordonnance -->
+            <h5 class="card-title text-center">Informations de l'ordonnance</h5>
+            <br />
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <strong>Nom du patient :</strong> @Model.Patient?.Nom
+                </div>
+                <div class="col-md-6">
+                    <strong>Prénom du patient :</strong> @Model.Patient?.Prenom
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <strong>Date de début :</strong> @Model.DateDebut.ToString("dd/MM/yyyy")
+                </div>
+                <div class="col-md-6">
+                    <strong>Date de fin :</strong> @Model.DateFin.ToString("dd/MM/yyyy")
+                </div>
+            </div>
+            @if (!string.IsNullOrEmpty(Model.InfoSupplementaire))
+            {
+                <div class="mb-3">
+                    <strong>Informations supplémentaires :</strong> @Model.InfoSupplementaire
+                </div>
+            }
 
-			<div class="mb-3">
-				<strong>Date de début :</strong> @Model.DateDebut.ToString("dd/MM/yyyy")
-			</div>
-			<div class="mb-3">
-				<strong>Date de fin :</strong> @Model.DateFin.ToString("dd/MM/yyyy")
-			</div>
-			@if (!string.IsNullOrEmpty(Model.InfoSupplementaire))
-			{
-				<div class="mb-3">
-					<strong>Informations supplémentaires :</strong> @Model.InfoSupplementaire
-				</div>
-			}
+            <!-- Séparation fine entre les sections -->
+            <hr class="my-4">
 
-			<h5 class="card-title mt-4">Médicaments</h5>
-			<ul class="list-group list-group-flush mb-3">
-				@foreach (var medicament in Model.Medicaments)
-				{
-					<li class="list-group-item">
-						@medicament.Nom - Quantité : @medicament.Quantite, Posologie : @medicament.Posologie
-					</li>
-				}
-			</ul>
+            <!-- Médicaments -->
+            <h5 class="card-title text-center mt-4">Médicaments</h5>
+            <ul class="list-group list-group-flush mb-3">
+                @foreach (var medicament in Model.Medicaments)
 
-			<h5 class="card-title mt-4">Informations du Patient</h5>
-			<div class="mb-3">
-				<strong>Nom du patient :</strong> @Model.Patient?.Nom
-			</div>
+                {
+                    <li class="list-group-item">
+                        @medicament.Nom - Quantité : @medicament.Quantite, Posologie : @medicament.Posologie
+                    </li>
+                }
+            </ul>
 
-
-			<div class="mb-3">
-				<strong>Prénom du patient :</strong> @Model.Patient?.Prenom
-			</div>
-
-
-			@if (Model.Pdf != null)
-			{
-				<div class="mt-4">
-					<a href="@Url.Action("DownloadPdf", "Ordonnances", new { id = Model.OrdonnanceId })" class="btn btn-primary">
-						Télécharger l'ordonnance en PDF
-					</a>
-				</div>
-			}
-		</div>
-		<div class="card-footer text-muted text-center">
-			Date de création : @Model.DateCreation.ToString("dd/MM/yyyy")
-		</div>
-	</div>
+            <!-- Téléchargement PDF -->
+            @if (Model.Pdf != null)
+            {
+                <div class="mt-4">
+                    <a href="@Url.Action("DownloadPdf", "Ordonnances", new { id = Model.OrdonnanceId })" class="btn btn-primary">
+                        Télécharger l'ordonnance en PDF
+                    </a>
+                </div>
+            }
+        </div>
+        <div class="card-footer text-muted text-center">
+            Date de création : @Model.DateCreation.ToString("dd/MM/yyyy")
+        </div>
+    </div>
 </div>
-<div>
-	<a asp-action="Index">Retour à la liste</a>
-</div>
 
+<div class="mt-4 text-center">
+    
+    <a asp-action="Index" class="btn btn-outline-secondary">Retour à la liste</a>
+</div>

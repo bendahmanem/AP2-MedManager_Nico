@@ -1,67 +1,85 @@
 ﻿@model OrdonnanceViewModel
 @{
-    ViewData["Title"] = Model.OrdonnanceId == null ? "Créer ordonnance" : "Modifier ordonnance";
+	ViewData["Title"] = Model.OrdonnanceId == null ? "Créer ordonnance" : "Modifier ordonnance";
 }
 
-<form asp-action="@(Model.OrdonnanceId == null ? "Ajouter" : "Editer")" method="post">
-    <input type="hidden" asp-for="OrdonnanceId" />
-    <input type="hidden" asp-for="PatientId" />
+<div class="container d-flex justify-content-center mt-4 mb-4">
+	<div class="card shadow-lg w-75">
+		<div class="card-header text-center">
+			<h2>@(Model.OrdonnanceId == null ? "Créer une rdonnance" : "Modifier l'ordonnance")</h2>
+		</div>
+		<div class="card-body">
+			<form asp-action="@(Model.OrdonnanceId == null ? "Ajouter" : "Editer")" method="post">
+				<input type="hidden" asp-for="OrdonnanceId" />
+				<input type="hidden" asp-for="PatientId" />
 
-    <div> 
-        @Model.NomComplet
-    </div>
+				<!-- Nom du patient -->
+				<div class="mb-3 text-center">
+					<label class="form-label"><strong>Patient  :</strong> @Model.NomComplet</label>
+				</div>
 
+				<!-- Date de début -->
+				<div class="form-group mb-3">
+					<label asp-for="DateDebut" class="form-label"></label>
+					<input asp-for="DateDebut" class="form-control" type="date" min="@DateTime.Now.ToString("yyyy-MM-dd")" value="@DateTime.Now.ToString("yyyy-MM-dd")" id="dateDebut" />
+					<span asp-validation-for="DateDebut" class="text-danger"></span>
+				</div>
 
-    <div class="form-group">
-        <label asp-for="DateDebut"></label>
-        <input asp-for="DateDebut" class="form-control" type="date" min="@DateTime.Now.ToString("yyyy-MM-dd")" value="@DateTime.Now.ToString("yyyy-MM-dd")" id="dateDebut" />
-        <span asp-validation-for="DateDebut" class="text-danger"></span>
-    </div>
+				<!-- Date de fin -->
+				<div class="form-group mb-3">
+					<label asp-for="DateFin" class="form-label"></label>
+					<input asp-for="DateFin" class="form-control" type="date" id="dateFin" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+					<span asp-validation-for="DateFin" class="text-danger"></span>
+				</div>
 
-    <div class="form-group">
-        <label asp-for="DateFin"></label>
-        <input asp-for="DateFin" class="form-control" type="date" id="dateFin" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
-        <span asp-validation-for="DateFin" class="text-danger"></span>
-    </div>
+				<!-- Sélection des médicaments -->
+				<div class="form-group row mb-3">
+					<div class="col-sm-12">
+						<label class="form-label" for="ComboBoxMultiselectMedicaments">Médicaments</label>
+						<select id="ComboBoxMultiselectMedicaments"
+								name="MedicamentIdSelectionnes"
+								multiple
+								class="tom-select"
+								asp-for="MedicamentIdSelectionnes"
+								asp-items="@(new SelectList(Model.Medicaments, "MedicamentId", "Nom", Model.MedicamentIdSelectionnes))">
+						</select>
+						<span asp-validation-for="MedicamentIdSelectionnes" class="text-danger"></span>
+					</div>
+				</div>
 
+				<!-- Informations supplémentaires -->
+				<div class="form-group mb-3">
+					<label asp-for="InfoSupplementaire" class="form-label"></label>
+					<textarea asp-for="InfoSupplementaire" class="form-control" placeholder="Ajoutez des informations supplémentaires"></textarea>
+					<span asp-validation-for="InfoSupplementaire" class="text-danger"></span>
+				</div>
 
-    <div class="form-group row">
-        <div class="col-sm-10">
-            <select id="ComboBoxMultiselectMedicaments"
-                    name="MedicamentIdSelectionnes"
-                    multiple
-                    class="tom-select"
-                    asp-for="MedicamentIdSelectionnes"
-                    asp-items="@(new SelectList(Model.Medicaments, "MedicamentId", "Nom", Model.MedicamentIdSelectionnes))">
-            </select>
-        </div>
-        <span asp-validation-for="MedicamentIdSelectionnes" class="text-danger"></span>
-    </div>
+				<!-- Bouton de soumission -->
+				<div class="d-flex justify-content-center mt-4">
+					<button type="submit" class="btn btn-primary">
+						@(Model.OrdonnanceId == null ? "Ajouter" : "Modifier")
+					</button>
+				</div>
+			</form>
+		</div>
 
-    <div class="form-group">
-        <label asp-for="InfoSupplementaire"></label>
-        <textarea asp-for="InfoSupplementaire" class="form-control"></textarea>
-        <span asp-validation-for="InfoSupplementaire" class="text-danger"></span>
-    </div>
-
-    <button type="submit">
-        @(Model.OrdonnanceId == null ? "Ajouter" : "Modifier")
-    </button>
-</form>
-
-<div>
-    <a asp-action="Index">Retour à la liste</a>
+	<div class="mt-4">
+		<a asp-action="Index" class="btn btn-outline-secondary">
+			<i class="bi bi-arrow-left"></i> Retour à la liste
+		</a>
+	</div>
+	</div>
 </div>
 
 @section Scripts {
-    <script>
-        new TomSelect('#ComboBoxMultiselectMedicaments', {
-            plugins: ['remove_button'],
-            maxOptions: null,
-            create: false,
-            maxItems: null,
-            sortField: { field: "text", direction: "asc" },
-            placeholder: "Sélectionner un ou plusieurs médicaments...",
-        });
-    </script>
+	<script>
+		new TomSelect('#ComboBoxMultiselectMedicaments', {
+			plugins: ['remove_button'],
+			maxOptions: null,
+			create: false,
+			maxItems: null,
+			sortField: { field: "text", direction: "asc" },
+			placeholder: "Sélectionner un ou plusieurs médicaments...",
+		});
+	</script>
 }

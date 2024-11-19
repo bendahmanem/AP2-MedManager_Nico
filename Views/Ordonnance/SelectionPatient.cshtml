@@ -1,24 +1,58 @@
-﻿@model SelectionPatientViewModel;
+﻿@model SelectionPatientViewModel
 @{
-	ViewData["Title"] = "SelectionPatient";
+    ViewData["Title"] = "Sélection du Patient";
 }
-<form asp-action="SelectionPatient" method="post">
-	<div>
-		<label asp-for="PatientId"></label>
-		<select asp-for="PatientId" class="form-control">
-			<option value="">Sélectionnez le patient</option>
-			@foreach (var p in Model.Patients)
-			{
-				<option value="@p.PatientId">@p.NomComplet</option>
-			}
-		</select>
-		<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-		<span asp-validation-for="PatientId" class="text-danger"></span>
-	</div>
-	<button type="submit">
-		Créer une ordonnance 
-	</button>
-</form>
-<div>
-	<a asp-action="Index">Retour à la liste</a>
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Sélectionner un Patient</h2>
+
+    <!-- Grille pour centrer la carte -->
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- Formulaire pour la sélection du patient -->
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h4>Choisissez un patient pour créer une ordonnance</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="SelectionPatient" method="post">
+                        <div class="form-group mb-3">
+                            <label asp-for="PatientId" class="form-label">Sélectionnez le patient :</label>
+                            <select asp-for="PatientId" class="form-control">
+                                <option value="">Sélectionnez le patient</option>
+                                @foreach (var p in Model.Patients)
+
+                                {
+                                    <option value="@p.PatientId">@p.NomComplet</option>
+                                }
+                            </select>
+                            <span asp-validation-for="PatientId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block">
+                                Créer une ordonnance
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Affichage des erreurs de validation -->
+                    <div asp-validation-summary="ModelOnly" class="text-danger mt-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lien vers la liste des patients -->
+    <div class="mt-4 text-center">
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Retour à la liste
+        </a>
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        // Optionnel: Script pour améliorer l'ergonomie du formulaire si nécessaire
+    </script>
+}

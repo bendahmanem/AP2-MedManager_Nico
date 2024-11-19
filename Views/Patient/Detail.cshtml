@@ -4,10 +4,12 @@
 }
 
 <div class="container mt-4">
-    <div class="row mb-4">
-        <div class="col-md-12">
-            <h2>Informations Générales</h2>
-            <hr />
+    <!-- Carte des informations générales -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header text-center">
+            <h4>Informations Générales</h4>
+        </div>
+        <div class="card-body">
             <p><strong>Nom :</strong> @Model.Nom</p>
             <p><strong>Prénom :</strong> @Model.Prenom</p>
             <p><strong>Âge :</strong> @(Model.Age) ans</p>
@@ -17,85 +19,93 @@
         </div>
     </div>
 
-   
-    <div class="row mb-4">
-        <div class="col-md-12">
-            <h2>Historique Médical</h2>
-            <div class="btn-group mb-3" role="group" aria-label="Navigation historique médical">
-                <button type="button" class="btn btn-primary" onclick="showSection('ordonnances')">Ordonnances</button>
-                <button type="button" class="btn btn-primary" onclick="showSection('allergies')">Allergies</button>
-                <button type="button" class="btn btn-primary" onclick="showSection('antecedents')">Antécédents</button>
-            </div>
-
-            <div id="ordonnances" class="medical-section">
-                <h3>Ordonnances</h3>
-                @if (Model.Ordonnances.Any())
-                {
-                    <div class="card-deck">
-                        @foreach (var ordonnance in Model.Ordonnances)
-                        {
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <h5 class="card-title">Ordonnance du @ordonnance.DateDebut.ToShortDateString()</h5>
-                                    <p class="card-text">Médicaments : @string.Join(", ", ordonnance.Medicaments.Select(m => m.Nom))</p>
-                                    <p class="card-text">Info supplémentaire : @ordonnance.InfoSupplementaire</p>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                }
-                else
-                {
-                    <p>Aucune ordonnance trouvée pour ce patient.</p>
-                }
-            </div>
-
-            <div id="allergies" class="medical-section" style="display: none;">
-                <h3>Allergies</h3>
-                @if (Model.Allergies.Any())
-                {
-                    <div class="card-deck">
-                        @foreach (var allergie in Model.Allergies)
-                        {
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <h5 class="card-title">Allergie : @allergie.Nom</h5>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                }
-                else
-                {
-                    <p>Aucune allergie trouvée pour ce patient.</p>
-                }
-            </div>
-
-            <div id="antecedents" class="medical-section" style="display: none;">
-                <h3>Antécédents</h3>
-                @if (Model.Antecedents.Any())
-                {
-                    <div class="card-deck">
-                        @foreach (var antecedent in Model.Antecedents)
-                        {
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <h5 class="card-title">Antécédent : @antecedent.Nom</h5>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                }
-                else
-                {
-                    <p>Aucun antécédent trouvé pour ce patient.</p>
-                }
-            </div>
+    <!-- Navigation des sections médicales -->
+    <div class="text-center mb-3">
+        <div class="btn-group" role="group" aria-label="Navigation historique médical">
+            <button type="button" class="btn btn-outline-primary" onclick="showSection('ordonnances')">Ordonnances</button>
+            <button type="button" class="btn btn-outline-primary" onclick="showSection('allergies')">Allergies</button>
+            <button type="button" class="btn btn-outline-primary" onclick="showSection('antecedents')">Antécédents</button>
         </div>
     </div>
-</div>
-<div>
-    <a asp-action="Index">Retour à la liste</a>
+
+    <!-- Sections médicales -->
+    <div id="ordonnances" class="medical-section">
+        <h4 class="mb-3 text-center">Ordonnances</h4>
+        @if (Model.Ordonnances.Any())
+        {
+            <div class="row">
+                @foreach (var ordonnance in Model.Ordonnances)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">Ordonnance du @ordonnance.DateDebut.ToShortDateString()</h5>
+                                <p><strong>Médicaments :</strong> @string.Join(", ", ordonnance.Medicaments.Select(m => m.Nom))</p>
+                                <p><strong>Info supplémentaire :</strong> @ordonnance.InfoSupplementaire</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="text-center">Aucune ordonnance trouvée pour ce patient.</p>
+        }
+    </div>
+
+    <div id="allergies" class="medical-section" style="display: none;">
+        <h4 class="mb-3 text-center">Allergies</h4>
+        @if (Model.Allergies.Any())
+        {
+            <div class="row">
+                @foreach (var allergie in Model.Allergies)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">Allergie : @allergie.Nom</h5>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="text-center">Aucune allergie trouvée pour ce patient.</p>
+        }
+    </div>
+
+    <div id="antecedents" class="medical-section" style="display: none;">
+        <h4 class="mb-3 text-center">Antécédents</h4>
+        @if (Model.Antecedents.Any())
+        {
+            <div class="row">
+                @foreach (var antecedent in Model.Antecedents)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">Antécédent : @antecedent.Nom</h5>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="text-center">Aucun antécédent trouvé pour ce patient.</p>
+        }
+    </div>
+
+    <!-- Bouton retour -->
+    <div class="mt-4">
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Retour à la liste
+        </a>
+    </div>
 </div>
 
 @section Scripts {
@@ -109,3 +119,4 @@
         }
     </script>
 }
+
