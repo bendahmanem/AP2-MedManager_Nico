@@ -20,6 +20,7 @@ namespace MedManager.ViewModel.PatientVM
 
         [Range(1, 300, ErrorMessage = "Le poids doit être compris entre 1kg et 300kg")]
         [Required(ErrorMessage = "La taille est obligatoire")]
+        [RegularExpression(@"^\d+(\.\d{1,2})?$", ErrorMessage = "Le poids doit être un nombre valide.")]
         public float? Poids { get; set; }
 
         [Required(ErrorMessage = "Le sexe est obligatoire")]

@@ -31,7 +31,7 @@ namespace MedManager.Controllers
 			var medecin = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
 
 
-			var modele = new InscriptionViewModel
+			var modele = new CompteViewModel
 			{
 				NomUtilisateur = medecin.UserName,
 				Prenom = medecin.Prenom,
@@ -47,7 +47,7 @@ namespace MedManager.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Index(InscriptionViewModel model)
+		public async Task<IActionResult> Index(CompteViewModel model)
 		{
 			if(!ModelState.IsValid)
 			{

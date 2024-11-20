@@ -56,7 +56,7 @@ namespace MedManager.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Inscription(InscriptionViewModel modele)
+		public async Task<IActionResult> Inscription(CompteViewModel modele)
 		{
 			if (ModelState.IsValid)
 			{

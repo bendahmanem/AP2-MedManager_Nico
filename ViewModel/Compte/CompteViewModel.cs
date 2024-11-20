@@ -3,14 +3,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MedManager.ViewModel.Compte
 {
-    public class InscriptionViewModel
+    public class CompteViewModel
     {
 		[Required(ErrorMessage = "Le nom d'utilisateur est obligatoire")]
 		[Display(Name = "Nom d'utilisateur")]
         public required string NomUtilisateur { get; set; }
 
 		[Required(ErrorMessage = "L'email est obligatoire")]
-		[EmailAddress]
+		[EmailAddress(ErrorMessage ="Veuillez entrer une adresse e-mail valide.")]
         [Display(Name = "Email")]
         public required string Email { get; set; }
 
@@ -28,6 +28,8 @@ namespace MedManager.ViewModel.Compte
         [Display(Name = "Numéro de téléphone")]
         [DataType(DataType.PhoneNumber)]
         [Required(ErrorMessage = "Le numéro de téléphone est obligatoire")]
+        [RegularExpression(@"^\+?(\d{1,3})[-. ]?\(?(0|[1-9][0-9]*)\)?[-. ]?\d{1,4}[-. ]?\d{1,4}[-. ]?\d{1,9}$",
+             ErrorMessage = "Veuillez entrer un numéro de téléphone valide.")]
         public string? NumeroTel { get; set; }
 
         [Display(Name = "Spécialité")]
