@@ -29,12 +29,160 @@
 </div>
 
 
-
-
-
 <h1 style="text-align:center">
 	Liste des patients
 </h1>
+
+
+<div class="row mb-4 align-items-center">
+	<div class="col-md-3">
+		<a asp-action="Ajouter" asp-controller="Patient" class="btn btn-primary">
+			<i class="bi bi-plus-circle me-2"></i>Ajouter un patient
+		</a>
+	</div>
+	<div class="col-md-9">
+		<div class="d-flex justify-content-end align-items-center">
+			<div class="input-group me-3" style="max-width: 300px;">
+				<input type="text" class="form-control" id="RechercheEntree"
+					   placeholder="Rechercher par nom ou prénom..."
+					   value="@ViewData["FiltreActuel"]" />
+				<span class="input-group-text"><i class="bi bi-search"></i></span>
+			</div>
+
+			<div class="btn-group" role="group">
+				<a href="@Url.Action("Index", new { Filtre = ViewData["FiltreActuel"], sortBy = "nom", sortDir = ViewData["SortDir"]?.ToString() == "asc" ? "desc" : "asc" })"
+				   class="btn btn-outline-primary @(ViewData["ActiveSort"]?.ToString() == "nom" ? "active" : "")">
+					Nom @(ViewData["ActiveSort"]?.ToString() == "nom" ? (ViewData["SortDir"]?.ToString() == "asc" ? "▲" : "▼") : "")
+				</a>
+				<a href="@Url.Action("Index", new { Filtre = ViewData["FiltreActuel"], sortBy = "prenom", sortDir = ViewData["SortDir"]?.ToString() == "asc" ? "desc" : "asc" })"
+				   class="btn btn-outline-primary @(ViewData["ActiveSort"]?.ToString() == "prenom" ? "active" : "")">
+					Prénom @(ViewData["ActiveSort"]?.ToString() == "prenom" ? (ViewData["SortDir"]?.ToString() == "asc" ? "▲" : "▼") : "")
+				</a>
+				<a href="@Url.Action("Index", new {Filtre = ViewData["FiltreActuel"], sortBy = "age", sortDir = ViewData["SortDir"]?.ToString() == "asc" ? "desc" : "asc" })"
+				   class="btn btn-outline-primary @(ViewData["ActiveSort"]?.ToString() == "age" ? "active" : "")">
+					Âge @(ViewData["ActiveSort"]?.ToString() == "age" ? (ViewData["SortDir"]?.ToString() == "asc" ? "▲" : "▼") : "")
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="patientListContainer" class="row g-4">
+	@foreach (var p in Model.Patients)
+	{
+		<div class="col-md-4">
+			<div class="card h-100 shadow-sm">
+				<div class="d-flex justify-content-center align-items-center mt-3 mb-3" style="height: 200px">
+					<img src="@Url.Action("ObtenirPhoto", "Patient", new { id = p.PatientId })"
+						 class="card-img-top object-fit-cover rounded-circle border table-bordered"
+						 style="height: 200px; width: 200px;" />
+				</div>
+
+				
+				<hr class="mx-3 my-0" style="border: 1px solid #000000;" />
+
+				
+				<div class="card-body text-center" style="background-color: aliceblue;">
+					<h5 class="card-title">@p.NomComplet</h5>
+					<p class="card-text text-muted">Âge : @p.Age ans</p>
+
+					<div class="d-flex justify-content-center mt-3">
+						<a asp-action="Detail" asp-controller="Patient" asp-route-id="@p.PatientId"
+						   class="btn btn-sm btn-outline-secondary m-1"
+						   data-bs-toggle="tooltip" data-bs-placement="bottom" title="Détails du patient">
+							<i class="bi bi-eye"></i>
+						</a>
+						<a asp-action="Editer" asp-controller="Patient" asp-route-id="@p.PatientId"
+						   class="btn btn-sm btn-outline-secondary m-1"
+						   data-bs-toggle="tooltip" data-bs-placement="bottom" title="Modifier le patient"> 
+							<i class="bi bi-pencil"></i>
+						</a>
+						<a asp-action="Ajouter" asp-controller="Ordonnance" asp-route-id="@p.PatientId"
+						   class="btn btn-sm btn-outline-secondary m-1"
+						   data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nouvelle ordonnance">
+							<i class="bi bi-file-earmark-text"></i>
+						</a>
+						<a href="#" class="btn btn-sm btn-outline-secondary m-1"
+							data-bs-toggle="modal"
+							data-bs-target="#Modal-@p.PatientId"
+							data-bs-title="Supprimer le patient">
+							<i class="bi bi-trash"></i>
+						</a>
+						<div class="modal fade" id="Modal-@p.PatientId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-dialog-centered">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h1 class="modal-title fs-5" id="exampleModalLabel">Suppression patient</h1>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+										Confirmez-vous la suppression du patient : <strong>@p.NomComplet</strong> ?
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+										<a asp-action="Supprimer"
+										   asp-controller="Patient"
+										   asp-route-id="@p.PatientId"
+										   class="btn btn-danger">
+											Confirmer
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+</div>
+
+
+<div class="d-flex justify-content-center mt-4">
+	@Html.PagedListPager(Model.Patients, page => Url.Action("Index", new { page, Filtre = ViewData["FitlreActue"], SortBy = ViewData["ActiveSort"], sortDir = ViewData["SortDir"] }), new PagedListRenderOptions())
+</div>
+
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var toastElements = document.querySelectorAll('.toast');
+        toastElements.forEach(function (toastElement) {
+            var toast = new bootstrap.Toast(toastElement);
+            toast.show();
+        });
+    });
+</script>
+
+<script>
+	const RechercheEntree = document.getElementById('RechercheEntree');
+	let timeoutId;
+
+	RechercheEntree.addEventListener('input', (e) => {
+		clearTimeout(timeoutId);
+		timeoutId = setTimeout(MajPatient(e), 500);
+	});
+
+	function MajPatient(e) {
+		const requete = e.target.value;
+		const Url = '@Url.Action("Index")' + '?Filtre=' + encodeURIComponent(requete);
+
+		history.pushState(null, '', Url);
+
+		fetch(Url, {
+			headers: { 'X-Requested-With': 'XMLHttpRequest' }
+		})
+			.then(response => response.text())
+			.then(html => {
+				const tempDiv = document.createElement('div');
+				tempDiv.innerHTML = html;
+				const PatientsFiltres = tempDiv.querySelector('#patientListContainer').innerHTML;
+				document.getElementById('patientListContainer').innerHTML = PatientsFiltres;
+			});
+	}
+</script>
+
+
 
 @* <div>
 	<div>
@@ -130,127 +278,3 @@
 <div class="d-flex justify-content-center">
 	@Html.PagedListPager(Model.Patients, page => Url.Action("Index", new { page, Filtre = ViewData["FitlreActue"], SortBy = ViewData["ActiveSort"], sortDir = ViewData["SortDir"] }))
 </div> *@
-
-<div class="row mb-4 align-items-center">
-	<div class="col-md-3">
-		<a asp-action="Ajouter" asp-controller="Patient" class="btn btn-primary">
-			<i class="bi bi-plus-circle me-2"></i>Créer un patient
-		</a>
-	</div>
-	<div class="col-md-9">
-		<div class="d-flex justify-content-end align-items-center">
-			<div class="input-group me-3" style="max-width: 300px;">
-				<input type="text" class="form-control" id="RechercheEntree"
-					   placeholder="Rechercher par nom ou prénom..."
-					   value="@ViewData["FiltreActuel"]" />
-				<span class="input-group-text"><i class="bi bi-search"></i></span>
-			</div>
-
-			<div class="btn-group" role="group">
-				<a href="@Url.Action("Index", new { Filtre = ViewData["FiltreActuel"], sortBy = "nom", sortDir = ViewData["SortDir"]?.ToString() == "asc" ? "desc" : "asc" })"
-				   class="btn btn-outline-primary @(ViewData["ActiveSort"]?.ToString() == "nom" ? "active" : "")">
-					Nom @(ViewData["ActiveSort"]?.ToString() == "nom" ? (ViewData["SortDir"]?.ToString() == "asc" ? "▲" : "▼") : "")
-				</a>
-				<a href="@Url.Action("Index", new { Filtre = ViewData["FiltreActuel"], sortBy = "prenom", sortDir = ViewData["SortDir"]?.ToString() == "asc" ? "desc" : "asc" })"
-				   class="btn btn-outline-primary @(ViewData["ActiveSort"]?.ToString() == "prenom" ? "active" : "")">
-					Prénom @(ViewData["ActiveSort"]?.ToString() == "prenom" ? (ViewData["SortDir"]?.ToString() == "asc" ? "▲" : "▼") : "")
-				</a>
-				<a href="@Url.Action("Index", new {Filtre = ViewData["FiltreActuel"], sortBy = "age", sortDir = ViewData["SortDir"]?.ToString() == "asc" ? "desc" : "asc" })"
-				   class="btn btn-outline-primary @(ViewData["ActiveSort"]?.ToString() == "age" ? "active" : "")">
-					Âge @(ViewData["ActiveSort"]?.ToString() == "age" ? (ViewData["SortDir"]?.ToString() == "asc" ? "▲" : "▼") : "")
-				</a>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div id="patientListContainer" class="row g-4">
-	@foreach (var p in Model.Patients)
-	{
-		<div class="col-md-4">
-			<div class="card h-100 shadow-sm">
-				<div class="d-flex justify-content-center align-items-center mt-3 mb-3" style="height: 200px">
-					<img src="@Url.Action("ObtenirPhoto", "Patient", new { id = p.PatientId })"
-						 class="card-img-top object-fit-cover rounded-circle border table-bordered"
-						 style="height: 200px; width: 200px;" />
-				</div>
-
-				
-				<hr class="mx-3 my-0" style="border: 1px solid #000000;" />
-
-				
-				<div class="card-body text-center" style="background-color: aliceblue;">
-					<h5 class="card-title">@p.NomComplet</h5>
-					<p class="card-text text-muted">Âge : @p.Age ans</p>
-
-					<div class="d-flex justify-content-center mt-3">
-						<a asp-action="Detail" asp-controller="Patient" asp-route-id="@p.PatientId"
-						   class="btn btn-sm btn-outline-secondary m-1"
-						   data-bs-toggle="tooltip" title="Détails du patient">
-							<i class="bi bi-eye"></i>
-						</a>
-						<a asp-action="Editer" asp-controller="Patient" asp-route-id="@p.PatientId"
-						   class="btn btn-sm btn-outline-secondary m-1"
-						   data-bs-toggle="tooltip" title="Modifier le patient">
-							<i class="bi bi-pencil"></i>
-						</a>
-						<a asp-action="Ajouter" asp-controller="Ordonnance" asp-route-id="@p.PatientId"
-						   class="btn btn-sm btn-outline-secondary m-1"
-						   data-bs-toggle="tooltip" title="Nouvelle ordonnance">
-							<i class="bi bi-file-earmark-text"></i>
-						</a>
-						<a href="#" data-bs-toggle="modal" data-bs-target="#Modal-@p.PatientId"
-						   class="btn btn-sm btn-outline-secondary m-1"
-						   data-bs-toggle="tooltip" title="Supprimer le patient">
-							<i class="bi bi-trash"></i>
-						</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	}
-</div>
-
-
-<div class="d-flex justify-content-center mt-4">
-	@Html.PagedListPager(Model.Patients, page => Url.Action("Index", new { page, Filtre = ViewData["FitlreActue"], SortBy = ViewData["ActiveSort"], sortDir = ViewData["SortDir"] }), new PagedListRenderOptions())
-</div>
-
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var toastElements = document.querySelectorAll('.toast');
-        toastElements.forEach(function (toastElement) {
-            var toast = new bootstrap.Toast(toastElement);
-            toast.show();
-        });
-    });
-</script>
-
-<script>
-	const RechercheEntree = document.getElementById('RechercheEntree');
-	let timeoutId;
-
-	RechercheEntree.addEventListener('input', (e) => {
-		clearTimeout(timeoutId);
-		timeoutId = setTimeout(MajPatient(e), 500);
-	});
-
-	function MajPatient(e) {
-		const requete = e.target.value;
-		const Url = '@Url.Action("Index")' + '?Filtre=' + encodeURIComponent(requete);
-
-		history.pushState(null, '', Url);
-
-		fetch(Url, {
-			headers: { 'X-Requested-With': 'XMLHttpRequest' }
-		})
-			.then(response => response.text())
-			.then(html => {
-				const tempDiv = document.createElement('div');
-				tempDiv.innerHTML = html;
-				const PatientsFiltres = tempDiv.querySelector('#patientListContainer').innerHTML;
-				document.getElementById('patientListContainer').innerHTML = PatientsFiltres;
-			});
-	}
-</script>

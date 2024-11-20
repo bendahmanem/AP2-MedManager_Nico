@@ -1,124 +1,157 @@
 ﻿@model List<Medicament>
 
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="toast align-items-center border-0 bg-success text-white" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body">
-                    <i class="bi bi-check-circle me-2"></i>@TempData["SuccessMessage"]
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-        </div>
-    }
+	@if (TempData["SuccessMessage"] != null)
+
+
+
+	{
+		<div class="toast align-items-center border-0 bg-success text-white" role="alert" aria-live="assertive" aria-atomic="true">
+			<div class="d-flex">
+				<div class="toast-body">
+					<i class="bi bi-check-circle me-2"></i>@TempData["SuccessMessage"]
+				</div>
+				<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+		</div>
+	}
 </div>
 
 <h1 class="mb-4">Médicaments</h1>
 
+
 <form asp-action="Index" method="get" class="mt-3">
-    <div class="col-12 input-group mb-3">
-        <input type="hidden" name="Filtre" value="@ViewData["FiltreActuel"]" />
-        <input type="hidden" name="OrdreTri" value="@ViewData["TriActuel"]" />
+	<div class="row align-items-center mb-3">
+		<div class="col-auto">
+			<a asp-action="Ajouter" class="btn btn-outline-primary">
+				<i class="bi bi-plus-circle"></i> Ajouter un médicament
+			</a>
+		</div>
 
-        <input type="text" class="col-4 form-control" id="RechercheEntree" placeholder="Rechercher..."
-               value="@ViewData["FiltreActuel"]" />
-        <div class="col-3">
-            <select class="form-control" name="FiltreCate">
-                <option value="">Sélectionnez la catégorie</option>
-                @foreach (var cate in Enum.GetValues(typeof(CategorieEnum)))
+		<div class="col-auto">
+			<input type="text" class="form-control" id="RechercheEntree" placeholder="Rechercher..."
+				   value="@ViewData["FiltreActuel"]" />
+		</div>
 
-                {
-                    <option value="@cate">@cate</option>
-                }
-            </select>
-        </div>
-        <button class="btn btn-outline-primary" type="submit">Rechercher</button>
-    </div>
+		<div class="col-auto position-relative">
+			<select class="form-control" name="FiltreCate">
+				<option value="">Sélectionnez la catégorie</option>
+				@foreach (var cate in Enum.GetValues(typeof(CategorieEnum)))
+				{
+					<option value="@cate">@cate</option>
+				}
+			</select>
+		</div>
+
+		<div class="col-auto">
+			<button class="btn btn-outline-primary" type="submit">Rechercher</button>
+		</div>
+	</div>
+
+	<input type="hidden" name="Filtre" value="@ViewData["FiltreActuel"]" />
+	<input type="hidden" name="OrdreTri" value="@ViewData["TriActuel"]" />
 </form>
-
 <table class="table table-bordered table-hover align-middle text-center">
-    <thead class="table-primary">
-        <tr>
-            <th>
-                <a id="triNom" href="#" class="text-dark text-decoration-none">
-                    Nom
-                    @if (ViewData["TriActuel"]?.ToString() == "nom_desc")
-                    {
-                        <i class="bi bi-arrow-down-short"></i>
-                    }
-                    else if (ViewData["TriActuel"]?.ToString() == "nom_asc")
-                    {
-                        <i class="bi bi-arrow-up-short"></i>
-                    }
-                </a>
-            </th>
-            <th>Quantité</th>
-            <th>Posologie</th>
-            <th>Composition</th>
-            <th>
-                <a id="triCategorie" href="#" class="text-dark text-decoration-none">
-                    Catégorie
-                    @if (ViewData["TriActuel"]?.ToString() == "categorie_desc")
-                    {
-                        <i class="bi bi-arrow-down-short"></i>
-                    }
-                    else if (ViewData["TriActuel"]?.ToString() == "categorie_asc")
-                    {
-                        <i class="bi bi-arrow-up-short"></i>
-                    }
-                </a>
-            </th>
-            <th class="text-center">Actions</th>
-        </tr>
-    </thead>
-    <tbody id="MedicamentListContainer">
-        @foreach (var m in Model)
-        {
-            <tr>
-                <td>@m.Nom</td>
-                <td>@m.Quantite</td>
-                <td>@m.Posologie</td>
-                <td>@m.Composition</td>
-                <td>@m.Categorie</td>
-                <td class="text-center">
-                    <a asp-action="Detail" asp-controller="Medicament" asp-route-id="@m.MedicamentId" class="btn btn-outline-secondary btn-sm me-2">
-                        <i class="bi bi-eye"></i>
-                    </a>
-                    <a asp-action="Modifier" asp-controller="Medicament" asp-route-id="@m.MedicamentId" class="btn btn-outline-secondary btn-sm me-2">
-                        <i class="bi bi-pencil"></i>
-                    </a>
-                    <a href="#" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#Modal-@m.MedicamentId">
-                        <i class="bi bi-trash"></i>
-                    </a>
-                    <!-- Modal de confirmation -->
-                    <div class="modal fade" id="Modal-@m.MedicamentId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Confirmation de suppression</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Voulez-vous vraiment supprimer le médicament <strong>@m.Nom</strong> ?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                                    <a asp-action="Supprimer" asp-controller="Medicament" asp-route-id="@m.MedicamentId" class="btn btn-danger">
-                                        Confirmer
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        }
-    </tbody>
+	<thead class="table-primary">
+		<tr>
+			<th>
+				<a id="triNom" href="#" class="text-dark text-decoration-none">
+					Nom
+					@if (ViewData["TriActuel"]?.ToString() == "nom_desc")
+
+
+
+					{
+						<i class="bi bi-arrow-down-short"></i>
+					}
+
+
+
+					else if (ViewData["TriActuel"]?.ToString() == "nom_asc")
+
+
+
+					{
+						<i class="bi bi-arrow-up-short"></i>
+					}
+				</a>
+			</th>
+			<th>Quantité</th>
+			<th>Posologie</th>
+			<th>Composition</th>
+			<th>
+				<a id="triCategorie" href="#" class="text-dark text-decoration-none">
+					Catégorie
+					@if (ViewData["TriActuel"]?.ToString() == "categorie_desc")
+
+
+
+					{
+						<i class="bi bi-arrow-down-short"></i>
+					}
+
+
+
+					else if (ViewData["TriActuel"]?.ToString() == "categorie_asc")
+
+
+
+					{
+						<i class="bi bi-arrow-up-short"></i>
+					}
+				</a>
+			</th>
+			<th class="text-center">Actions</th>
+		</tr>
+	</thead>
+	<tbody id="MedicamentListContainer">
+		@foreach (var m in Model)
+
+
+
+		{
+			<tr>
+				<td>@m.Nom</td>
+				<td>@m.Quantite</td>
+				<td>@m.Posologie</td>
+				<td>@m.Composition</td>
+				<td>@m.Categorie</td>
+				<td class="text-center">
+					<a asp-action="Detail" asp-controller="Medicament" asp-route-id="@m.MedicamentId"
+					   class="btn btn-outline-secondary btn-sm me-2"
+					   data-bs-toggle="tooltip" data-bs-placement="bottom" title="Détails du médicament">
+						<i class="bi bi-eye"></i>
+					</a>
+					<a asp-action="Modifier" asp-controller="Medicament" asp-route-id="@m.MedicamentId"
+					   class="btn btn-outline-secondary btn-sm me-2"
+					   data-bs-toggle="tooltip" data-bs-placement="bottom" title="Modifier le médicament">
+						<i class="bi bi-pencil"></i>
+					</a>
+					<a href="#" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#Modal-@m.MedicamentId">
+						<i class="bi bi-trash"></i>
+					</a>
+					<div class="modal fade" id="Modal-@m.MedicamentId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-centered">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title">Confirmation de suppression</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									Voulez-vous vraiment supprimer le médicament <strong>@m.Nom</strong> ?
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+									<a asp-action="Supprimer" asp-controller="Medicament" asp-route-id="@m.MedicamentId" class="btn btn-danger">
+										Confirmer
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>
 
-<div class="d-flex justify-content-between align-items-center">
-    <a asp-action="Ajouter" class="btn btn-success">
-        <i class="bi bi-plus-circle"></i> Ajouter un médicament
-    </a>
-</div>
