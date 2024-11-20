@@ -89,7 +89,17 @@
     </div>
 
     <div class="d-flex justify-content-center">
-        @Html.PagedListPager(Model.Ordonnances, page => Url.Action("Index", new { page }))
+        @Html.PagedListPager(
+                 Model.Ordonnances,
+                 page => Url.Action("Index", new { page }),
+                 new PagedListRenderOptions
+        {
+            UlElementClasses = new[] { "pagination", "justify-content-center" }, // Classes pour le conteneur <ul>
+            LiElementClasses = new[] { "page-item" }, // Classes pour les éléments <li>
+            PageClasses = new[] { "page-link" }, // Classes pour les liens de pagination
+            ActiveLiElementClass = "active" // Classe pour la page active
+        }
+                 )
     </div>
 </div>
 

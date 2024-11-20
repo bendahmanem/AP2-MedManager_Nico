@@ -136,9 +136,18 @@
 
 
 <div class="d-flex justify-content-center mt-4">
-	@Html.PagedListPager(Model.Patients, page => Url.Action("Index", new { page, Filtre = ViewData["FitlreActue"], SortBy = ViewData["ActiveSort"], sortDir = ViewData["SortDir"] }), new PagedListRenderOptions())
+    @Html.PagedListPager(
+        Model.Patients,
+        page => Url.Action("Index", new { page, Filtre = ViewData["FiltreActuel"], SortBy = ViewData["ActiveSort"], sortDir = ViewData["SortDir"] }),
+        new PagedListRenderOptions
+        {
+            UlElementClasses = new[] { "pagination", "justify-content-center" }, 
+            LiElementClasses = new[] { "page-item" }, 
+            PageClasses = new[] { "page-link" }, 
+            ActiveLiElementClass = "active" 
+        }
+    )
 </div>
-
 
 <script>
 

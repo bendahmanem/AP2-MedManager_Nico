@@ -82,7 +82,9 @@
                         <select id="ComboBoxMultiselectAntecedents"
                                 name="AntecedentIdSelectionnes"
                                 multiple
-                                class="tom-select">
+                                class="tom-select"
+                                asp-for="AntecedentIdSelectionnes"
+                                asp-items="@(new SelectList(Model.Antecedents, "AntecedentId", "Nom", Model.AntecedentIdSelectionnes))">
                         </select>
                     </div>
                     <div class="col-md-6">
@@ -90,7 +92,9 @@
                         <select id="ComboBoxMultiselectAllergies"
                                 name="AllergieIdSelectionnes"
                                 multiple
-                                class="tom-select">
+                                class="tom-select"
+                                asp-for="AllergieIdSelectionnes"
+                                asp-items="@(new SelectList(Model.Allergies, "AllergieId", "Nom", Model.AllergieIdSelectionnes))">
                         </select>
                     </div>
                 </div>
