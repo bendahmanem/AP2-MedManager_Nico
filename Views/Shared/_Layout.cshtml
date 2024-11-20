@@ -23,7 +23,7 @@
 					<a asp-controller="ContreIndications" asp-action="Index" class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "ContreIndications" ? "active" : "")">Contre indications</a>
 				</div>
 				<div class="user-actions">
-					<span class="username">Bonjour, @User.Identity.Name!</span>
+					<span class="username">Bienvenue docteur @User.Identity.Name</span>
 					<a asp-controller="Parametres" asp-action="Index" class="settings-icon" data-bs-toggle="tooltip" title="Paramètres"><i class="bi bi-gear"></i></a>
 					<a asp-controller="Compte" asp-action="Deconnexion">Déconnexion</a>
 				</div>
@@ -70,4 +70,12 @@
 			toast.show();
 		});
 	});
+</script>
+
+<script>
+		document.addEventListener('DOMContentLoaded', function () {
+		const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+		const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+	});
+
 </script>

@@ -14,8 +14,9 @@
 	}
 </div>
 
+<h2>Gestion des contre-indications</h2>
 
-<h1>Allergies</h1>
+<h3>Allergies</h3>
 <div class="col-auto">
 	<a asp-action="Ajouter" class="btn btn-outline-primary">
 		<i class="bi bi-plus-circle"></i> Ajouter une allergie
@@ -94,7 +95,7 @@
 </table>
 
 
-<h1>Antécédents</h1>
+<h3>Antécédents</h3>
 <div class="row">
 	<div class="col-8">
 		<p>
@@ -174,13 +175,7 @@
 	</tbody>
 </table>
 
-<script>
-		document.addEventListener('DOMContentLoaded', function () {
-		const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-		const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
-	});
 
-</script>
 
 
 <script>
@@ -220,7 +215,6 @@
 	});
 
 	RechercheEntreeAntecedent.addEventListener('input', () => {
-		console.log("Je suis dans l'event antécédent")
 		clearTimeout(timeoutId);
 		timeoutId = setTimeout(majListe, 500);
 	});
