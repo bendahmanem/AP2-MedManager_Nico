@@ -4,53 +4,57 @@
 }
 <div class="container mt-4">
     <div class="card">
-        <div class="card-header">
+        <div class="card-header text-center">
             <h2 class="mb-0">Détail du Médicament</h2>
         </div>
         <div class="card-body">
-            <h4 class="card-title">Informations Générales</h4>
-            <hr />
-            <p><strong>Nom :</strong> @Model.Nom</p>
-            <p><strong>Quantité :</strong> @Model.Quantite</p>
-            <p><strong>Posologie :</strong> @Model.Posologie</p>
-            <p><strong>Composition :</strong> @Model.Composition</p>
-            <p>
-                <strong>Allergies :</strong>
-                @if (Model.Allergies.Any())
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Nom :</strong> @Model.Nom</p>
+                    <p><strong>Quantité :</strong> @Model.Quantite</p>
+                    <p><strong>Posologie :</strong> @Model.Posologie</p>
+                    <p><strong>Composition :</strong> @Model.Composition</p>
+                    <p><strong>Catégorie :</strong> @Model.Categorie</p>
+                </div>
 
-                {
-                    @foreach (var a in @Model.Allergies)
-                    {
-                        <span class=" badge bg-secondary bg-opacity-25 text-dark me-1">@a.Nom  </span>
-                    }
-                }
+                <div class="col-md-6">
+                    <p><strong>Incompatibilités : </strong></p>
+                    <ul>
+                        <li><strong>Allergies :</strong></li>
+                        @if (Model.Allergies.Any())
+                        {
+                            @foreach (var a in Model.Allergies)
+                            {
+                                <li class="badge bg-secondary bg-opacity-25 text-dark me-1">@a.Nom</li>
+                            }
+                        }
+                        else
+                        {
+                            <li>Aucune</li>
+                        }
+                    </ul>
 
-                else
-
-                {
-                    <span>Aucune</span>
-                }
-            </p>
-            <p>
-                <strong>Antécédents :</strong>
-                @if (Model.Antecedents.Any())
-
-                {
-                    @foreach (var ant in @Model.Antecedents)
-                    {
-                        <span class=" badge bg-secondary bg-opacity-25 text-dark me-1">@ant.Nom  </span>
-                    }
-                }
-
-                else
-
-                {
-                    <span>Aucun</span>
-                }
-            </p>
+                    <ul>
+                        <li><strong>Antécédents :</strong></li>
+                        @if (Model.Antecedents.Any())
+                        {
+                            @foreach (var ant in Model.Antecedents)
+                            {
+                                <li class="badge bg-secondary bg-opacity-25 text-dark me-1">@ant.Nom</li>
+                            }
+                        }
+                        else
+                        {
+                            <li>Aucun</li>
+                        }
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div class="card-footer text-end">
-            <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
-        </div>
+    </div>
+    <div class="mt-3 d-flex justify-content-start">
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-return-left"> Retour</i>
+        </a>
     </div>
 </div>

@@ -3,8 +3,6 @@
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
 	@if (TempData["SuccessMessage"] != null)
 
-
-
 	{
 		<div class="toast align-items-center border-0 bg-success text-white" role="alert" aria-live="assertive" aria-atomic="true">
 			<div class="d-flex">
@@ -58,19 +56,10 @@
 				<a id="triNom" href="#" class="text-dark text-decoration-none">
 					Nom
 					@if (ViewData["TriActuel"]?.ToString() == "nom_desc")
-
-
-
 					{
 						<i class="bi bi-arrow-down-short"></i>
 					}
-
-
-
 					else if (ViewData["TriActuel"]?.ToString() == "nom_asc")
-
-
-
 					{
 						<i class="bi bi-arrow-up-short"></i>
 					}
@@ -83,19 +72,10 @@
 				<a id="triCategorie" href="#" class="text-dark text-decoration-none">
 					Catégorie
 					@if (ViewData["TriActuel"]?.ToString() == "categorie_desc")
-
-
-
 					{
 						<i class="bi bi-arrow-down-short"></i>
 					}
-
-
-
 					else if (ViewData["TriActuel"]?.ToString() == "categorie_asc")
-
-
-
 					{
 						<i class="bi bi-arrow-up-short"></i>
 					}
@@ -106,9 +86,6 @@
 	</thead>
 	<tbody id="MedicamentListContainer">
 		@foreach (var m in Model)
-
-
-
 		{
 			<tr>
 				<td>@m.Nom</td>

@@ -30,6 +30,7 @@ namespace MedManager.Models
         [StringLength(200, ErrorMessage = "La posologie ne peut pas dépasser 200 caractères.")]
         public required string Posologie { get; set; }
 
+        [Required(ErrorMessage = "La composition est requise")]
         [StringLength(500, ErrorMessage = "La composition ne peut pas dépasser 500 caractères.")]
         public required string Composition { get; set; }
 
