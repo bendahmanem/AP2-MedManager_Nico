@@ -5,12 +5,32 @@
       "PackagePath": "staticwebassets\\MedManager.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\Images\\CreationOrdonnance.png",
+      "PackagePath": "staticwebassets\\Images\\CreationOrdonnance.png"
+    },
+    {
+      "Id": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\Images\\Dashboard.png",
+      "PackagePath": "staticwebassets\\Images\\Dashboard.png"
+    },
+    {
+      "Id": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\Images\\Patients.png",
+      "PackagePath": "staticwebassets\\Images\\Patients.png"
+    },
+    {
+      "Id": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\Images\\PdfOrdo.png",
+      "PackagePath": "staticwebassets\\Images\\PdfOrdo.png"
+    },
+    {
       "Id": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\Images\\PhotoDefaut-200.png",
       "PackagePath": "staticwebassets\\Images\\PhotoDefaut-200.png"
     },
     {
       "Id": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\Images\\PhotoDefaut-300.png",
       "PackagePath": "staticwebassets\\Images\\PhotoDefaut-300.png"
+    },
+    {
+      "Id": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\Images\\gsbtransparent.png",
+      "PackagePath": "staticwebassets\\Images\\gsbtransparent.png"
     },
     {
       "Id": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\css\\site.css",
@@ -267,6 +287,10 @@
     {
       "Id": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\pdfs\\Ordonnance_Karim Benzema_14.pdf",
       "PackagePath": "staticwebassets\\pdfs\\Ordonnance_Karim Benzema_14.pdf"
+    },
+    {
+      "Id": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\pdfs\\Ordonnance_Karim Benzema_15.pdf",
+      "PackagePath": "staticwebassets\\pdfs\\Ordonnance_Karim Benzema_15.pdf"
     },
     {
       "Id": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\pdfs\\Ordonnance_Marcel Pagnol_1.pdf",
