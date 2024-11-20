@@ -12,25 +12,21 @@ using Microsoft.AspNetCore.Authorization;
 namespace MedManager.Controllers;
 
 [Authorize]
-public class MedecinController : Controller
+public class Tableaudebord : Controller
 {
 	private readonly ILogger<Medecin> _logger;
 	private readonly UserManager<Medecin> _userManager;
 	private readonly ApplicationDbContext _dbContext;
 
-	public MedecinController(ILogger<Medecin> logger, UserManager<Medecin> userManager, ApplicationDbContext dbContext)
+	public Tableaudebord(ILogger<Medecin> logger, UserManager<Medecin> userManager, ApplicationDbContext dbContext)
 	{
 		_logger = logger;
 		_userManager = userManager;
 		_dbContext = dbContext;
 	}
 
-	public IActionResult Index()
-	{
-		return View();
-	}
 
-	public async Task<IActionResult> TableauBord()
+	public async Task<IActionResult> Index()
 	{
 		var medocs = await ObtenirMedicamentLesPlusUtilises();
 		var frequenceAllergies = await ObtenirAllergiesLesPlusFrequentes();

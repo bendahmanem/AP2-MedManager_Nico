@@ -16,7 +16,7 @@
 			{
 				<div class="nav-links">
 					<a class="navbar-brand">MedManager</a>
-					<a asp-controller="Medecin" asp-action="TableauBord" class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "TableauBord" ? "active" : "")">Tableau de bord</a>
+					<a asp-controller="Tableaudebord" asp-action="Index" class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Tableaudebord" ? "active" : "")">Tableau de bord</a>
 					<a asp-controller="Patient" asp-action="Index" class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Patient" ? "active" : "")">Mes patients</a>
 					<a asp-controller="Ordonnance" asp-action="Index" class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Ordonnance" ? "active" : "")">Mes ordonnances</a>
 					<a asp-controller="Medicament" asp-action="Index" class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Medicament" ? "active" : "")">Médicaments</a>
