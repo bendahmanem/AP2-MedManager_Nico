@@ -102,11 +102,8 @@
 						   data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nouvelle ordonnance">
 							<i class="bi bi-file-earmark-text"></i>
 						</a>
-						<a href="#" class="btn btn-sm btn-outline-secondary m-1"
-							data-bs-toggle="modal"
-							data-bs-target="#Modal-@p.PatientId"
-							data-bs-title="Supprimer le patient">
-							<i class="bi bi-trash"></i>
+						<a href="#" data-bs-toggle="modal" data-bs-target="#Modal-@p.PatientId">
+							<i class="bi bi-trash btn btn-outline-secondary btn-sm m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Supprimer le patient"></i>
 						</a>
 						<div class="modal fade" id="Modal-@p.PatientId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 							<div class="modal-dialog modal-dialog-centered">

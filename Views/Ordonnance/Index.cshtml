@@ -54,9 +54,8 @@
                                data-bs-toggle="tooltip" data-bs-placement="bottom" title="Éditer l'ordonnance">
                                 <i class="bi bi-pencil"></i>
                             </a>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#Modal-@o.OrdonnanceId" 
-                            class="btn btn-outline-secondary m-1">
-                                <i class="bi bi-trash"></i>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#Modal-@o.OrdonnanceId">
+                                <i class="bi bi-trash btn btn-outline-secondary  m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Supprimer l'ordonannce'"></i>
                             </a>
                             <a asp-action="GenererPdf" asp-controller="Ordonnance" asp-route-ordonnanceId="@o.OrdonnanceId" asp-route-patientId="@o.PatientId" 
                             class="btn btn-outline-secondary m-1"
