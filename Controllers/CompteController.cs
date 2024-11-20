@@ -34,7 +34,7 @@ namespace MedManager.Controllers
 
 				if (resultat.Succeeded)
 				{
-					return RedirectToAction("TableauBord", "Medecin");
+					return RedirectToAction("Index", "Tableaudebord");
 				}
 
 				ModelState.AddModelError("", "Le nom d'utilisateur ou le mot de passe que vous avez saisi est incorrect. Veuillez réessayer.");
@@ -47,7 +47,7 @@ namespace MedManager.Controllers
 		{
 			await _gestionConnexion.SignOutAsync();
 
-			return RedirectToAction("Index", "Medecin");
+			return RedirectToAction("Index", "Accueil");
 		}
 
 		public IActionResult Inscription()

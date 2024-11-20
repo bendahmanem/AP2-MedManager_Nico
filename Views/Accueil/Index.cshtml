@@ -1,8 +1,65 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Accueil";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Bienvenue sur Med Manager - GSB </h1>
+<div class="container-fluid flex-1">
+    <div class="text-center my-5">
+        <h1 class="display-4">Bienvenue sur Med Manager - GSB</h1>
+        <p class="lead">Votre solution complète pour la gestion des patients et des ordonnances médicales.</p>
+    </div>
+
+    <section class="py-5" style="background-color: #f0f4f8;">
+        <div class="container text-center">
+            <h2 class="h3">À propos de Med Manager</h2>
+            <p>Med Manager est une application dédiée à la gestion des patients, des ordonnances et de la création de PDF pour les prescriptions médicales.</p>
+        </div>
+    </section>
+
+    <section class="py-5" style="background-color: rgba(71, 85, 105, 1);">
+        <div class="container text-center text-black">
+            <h3 class="text-white">Dashboard</h3>
+            <div class="row justify-content-center">
+                <div class="col-md-4 mb-3">
+                    <img src="@Url.Content("~/Images/Dashboard.png")" alt="Dashboard" class="img-fluid rounded shadow">
+                </div>
+            </div>
+            <p>Consultez un aperçu global de vos patients et ordonnances en un coup d'œil. Suivi facile et rapide.</p>
+        </div>
+    </section>
+
+    <section class="py-5" style="background-color: rgba(71, 85, 105, 0.6);">
+        <div class="container text-center text-black">
+            <h3 class="text-white">Gestion des Patients</h3>
+            <div class="row justify-content-center">
+                <div class="col-md-4 mb-3">
+                    <img src="https://via.placeholder.com/300" alt="Gestion des Patients" class="img-fluid rounded shadow">
+                </div>
+            </div>
+            <p>Ajoutez, modifiez et suivez les informations de vos patients facilement, tout en assurant une gestion optimale des données.</p>
+        </div>
+    </section>
+
+    <section class="py-5" style="background-color: rgba(71, 85, 105, 1);">
+        <div class="container text-center">
+            <h3 class="text-white">Création d'Ordonnances</h3>
+            <div class="row justify-content-center">
+                <div class="col-md-4 mb-3">
+                    <img src="https://via.placeholder.com/300" alt="Création d'Ordonnances" class="img-fluid rounded shadow">
+                </div>
+            </div>
+            <p>Créez facilement des ordonnances médicales, personnalisez-les pour chaque patient, et gérez les prescriptions rapidement.</p>
+        </div>
+    </section>
+
+    <section class="py-5" style="background-color: rgba(71, 85, 105, 0.6);">
+        <div class="container text-center">
+            <h3 class="text-white">Génération de PDF</h3>
+            <div class="row justify-content-center">
+                <div class="col-md-4 mb-3">
+                    <img src="https://via.placeholder.com/300" alt="Génération de PDF" class="img-fluid rounded shadow">
+                </div>
+            </div>
+            <p>Générez facilement des ordonnances et prescriptions au format PDF pour une impression rapide et pratique.</p>
+        </div>
+    </section>
 </div>
