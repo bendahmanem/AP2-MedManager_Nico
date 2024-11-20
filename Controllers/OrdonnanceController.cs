@@ -27,7 +27,7 @@ namespace MedManager.Controllers
 			_userManager = userManager;
 		}
 
-		private async Task<Medecin> GetCurrentMedecinAsync()
+		private async Task<Medecin> ObtenirMedecin()
 		{
 			var MedecinId = _userManager.GetUserId(User);
 			if (MedecinId == null)
@@ -45,7 +45,7 @@ namespace MedManager.Controllers
 			return medecin ?? throw new InvalidOperationException("Médecin non trouvé");
 		}
 
-		private async Task<Patient> GetPatientWithDetailsAsync(int? patientId)
+		private async Task<Patient> ObtenierPatient(int? patientId)
 		{
 			return await _dbContext.Patients
 				.Include(p => p.Allergies)
@@ -54,7 +54,7 @@ namespace MedManager.Controllers
 				?? throw new InvalidOperationException("Patient non trouvé");
 		}
 
-		private async Task<List<Medicament>> GetCompatibleMedicamentsAsync(Patient patient)
+		private async Task<List<Medicament>> ObtenirMedicamentsCompatibles(Patient patient)
 		{
 			var AllergiesPatient = patient.Allergies.Select(p => p.AllergieId).ToList();
 			var AntecedentPatient = patient.Antecedents.Select(p => p.AntecedentId).ToList();
@@ -65,7 +65,7 @@ namespace MedManager.Controllers
 				.ToListAsync();
 		}
 
-		private async Task<List<Medicament>> GetIncompatibleMedicamentsAsync(Patient patient)
+		private async Task<List<Medicament>> ObtenierMedicamentsIncompatibles(Patient patient)
 		{
 			var AllergiesPatient = patient.Allergies.Select(p => p.AllergieId).ToList();
 			var AntecedentPatient = patient.Antecedents.Select(p => p.AntecedentId).ToList();
@@ -106,7 +106,7 @@ namespace MedManager.Controllers
 		{
 			try
 			{
-				var medecin = await GetCurrentMedecinAsync();
+				var medecin = await ObtenirMedecin();
 				var ordonnances = medecin.Ordonnances.AsQueryable();
 
 				if (!string.IsNullOrEmpty(filtre))
@@ -141,7 +141,7 @@ namespace MedManager.Controllers
 		{
 			try
 			{
-				var medecin = await GetCurrentMedecinAsync();
+				var medecin = await ObtenirMedecin();
 
 				var modele = new SelectionPatientViewModel
 				{
@@ -161,12 +161,12 @@ namespace MedManager.Controllers
 		{
 			try
 			{
-				var medecin = await GetCurrentMedecinAsync();
+				var medecin = await ObtenirMedecin();
 
 				if (ModelState.IsValid)
 				{
-					var patient = await GetPatientWithDetailsAsync(modele.PatientId);
-					var ListeMedicament = await GetCompatibleMedicamentsAsync(patient);
+					var patient = await ObtenierPatient(modele.PatientId);
+					var ListeMedicament = await ObtenirMedicamentsCompatibles(patient);
 
 					if (ListeMedicament.Count == 0)
 					{
@@ -192,9 +192,9 @@ namespace MedManager.Controllers
 		{
 			try
 			{
-				var patient = await GetPatientWithDetailsAsync(id);
-				var ListeMedicamentsCompatibles = await GetCompatibleMedicamentsAsync(patient);
-				var ListeMedicamentsIncompatibles = await GetIncompatibleMedicamentsAsync(patient);
+				var patient = await ObtenierPatient(id);
+				var ListeMedicamentsCompatibles = await ObtenirMedicamentsCompatibles(patient);
+				var ListeMedicamentsIncompatibles = await ObtenierMedicamentsIncompatibles(patient);
 
 				if (!ListeMedicamentsCompatibles.Any())
 				{
@@ -224,9 +224,9 @@ namespace MedManager.Controllers
 
 				if (!ModelState.IsValid)
 				{
-					var patient = await GetPatientWithDetailsAsync(model.PatientId);
-					var ListeMedicamentCompatible = await GetCompatibleMedicamentsAsync(patient);
-					var ListeMedicamentsIncompatibles = await GetIncompatibleMedicamentsAsync(patient);
+					var patient = await ObtenierPatient(model.PatientId);
+					var ListeMedicamentCompatible = await ObtenirMedicamentsCompatibles(patient);
+					var ListeMedicamentsIncompatibles = await ObtenierMedicamentsIncompatibles(patient);
 
 					model.MedicamentsIncompatibles = ListeMedicamentsIncompatibles;
 					model.MedicamentsCompatibles = ListeMedicamentCompatible;
@@ -236,9 +236,9 @@ namespace MedManager.Controllers
 				if (model.DateDebut > model.DateFin)
 				{
 					ModelState.AddModelError("DateFin", "La date de fin doit être supérieure à la date de début.");
-					var patient = await GetPatientWithDetailsAsync(model.PatientId);
-					var ListeMedicamentCompatible = await GetCompatibleMedicamentsAsync(patient);
-					var ListeMedicamentsIncompatibles = await GetIncompatibleMedicamentsAsync(patient);
+					var patient = await ObtenierPatient(model.PatientId);
+					var ListeMedicamentCompatible = await ObtenirMedicamentsCompatibles(patient);
+					var ListeMedicamentsIncompatibles = await ObtenierMedicamentsIncompatibles(patient);
 
 					model.MedicamentsIncompatibles = ListeMedicamentsIncompatibles;
 					model.MedicamentsCompatibles = ListeMedicamentCompatible;
@@ -308,9 +308,9 @@ namespace MedManager.Controllers
 				if (ordonnance == null)
 					return NotFound();
 
-				var patient = await GetPatientWithDetailsAsync(ordonnance.Patient.PatientId);
-				var ListeMedicamentsCompatibles = await GetCompatibleMedicamentsAsync(patient);
-				var ListeMedicamentsIncompatibles = await GetIncompatibleMedicamentsAsync(patient);
+				var patient = await ObtenierPatient(ordonnance.Patient.PatientId);
+				var ListeMedicamentsCompatibles = await ObtenirMedicamentsCompatibles(patient);
+				var ListeMedicamentsIncompatibles = await ObtenierMedicamentsIncompatibles(patient);
 
 				var model = new OrdonnanceViewModel
 				{
@@ -380,9 +380,9 @@ namespace MedManager.Controllers
 				}
 				else
 				{
-					var patient = await GetPatientWithDetailsAsync(model.PatientId);
-					var ListeMedicamentsCompatibles = await GetCompatibleMedicamentsAsync(patient);
-					var ListeMedicamentsIncompatibles = await GetIncompatibleMedicamentsAsync(patient);
+					var patient = await ObtenierPatient(model.PatientId);
+					var ListeMedicamentsCompatibles = await ObtenirMedicamentsCompatibles(patient);
+					var ListeMedicamentsIncompatibles = await ObtenierMedicamentsIncompatibles(patient);
 					model.MedicamentsIncompatibles = ListeMedicamentsIncompatibles;
 					model.MedicamentsCompatibles = ListeMedicamentsIncompatibles;
 					return View("Action", model);
@@ -421,7 +421,7 @@ namespace MedManager.Controllers
 			try
 			{
 
-			var medecin = await GetCurrentMedecinAsync();
+			var medecin = await ObtenirMedecin();
 			var ordonnance = _dbContext.Ordonnances
 						.Include(o => o.Medicaments)
 						.FirstOrDefault(o => o.OrdonnanceId == OrdonnanceId);
