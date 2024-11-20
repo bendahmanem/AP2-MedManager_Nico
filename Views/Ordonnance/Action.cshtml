@@ -14,7 +14,15 @@
                 <input type="hidden" asp-for="PatientId" />
 
                 <div class="mb-3 text-center">
-                    <label class="form-label"><strong>Patient :</strong> @Model.NomComplet <i class="bi bi-info-circle-fill" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Générer PDF"></i></label>
+                    <label class="form-label">
+                        <strong>Patient :</strong> @Model.NomComplet
+                        <i class="bi bi-info-circle-fill"
+                           id="tooltip"
+                           data-bs-toggle="tooltip"
+                           data-bs-placement="bottom"
+                           data-bs-html="true"
+                           title=""></i>
+                    </label>
                 </div>
 
                 <div class="row">
@@ -42,9 +50,9 @@
                     <select id="ComboBoxMultiselectMedicaments"
                             name="MedicamentIdSelectionnes"
                             multiple
-                            class="form-control @(ViewData.ModelState["MedicamentIdSelectionnes"]?.Errors.Count > 0 ? "is-invalid" : "") tom-select"
+                            class="@(ViewData.ModelState["MedicamentIdSelectionnes"]?.Errors.Count > 0 ? "is-invalid" : "") tom-select"
                             asp-for="MedicamentIdSelectionnes"
-                            asp-items="@(new SelectList(Model.Medicaments, "MedicamentId", "Nom", Model.MedicamentIdSelectionnes))">
+                            asp-items="@(new SelectList(Model.MedicamentsCompatibles, "MedicamentId", "Nom", Model.MedicamentIdSelectionnes))">
                     </select>
                     <span asp-validation-for="MedicamentIdSelectionnes" class="invalid-feedback"></span>
                 </div>
@@ -83,4 +91,30 @@
                placeholder: "Sélectionner un ou plusieurs médicaments...",
         });
     </script>
+  
+    <script>
+        console.log("je suis dans le script")
+        document.addEventListener('DOMContentLoaded', function () {
+            var tooltipTrigger = document.getElementById('tooltip');
+
+          var tooltipContent = 'Médicaments incompatibles:<ul>';
+        @foreach (var medicament in Model.MedicamentsIncompatibles)
+
+        {
+            <text>
+                    tooltipContent += '<li>@medicament.Nom</li>';
+            </text>
+        }
+        tooltipContent += '</ul>';
+            
+
+            var tooltip = new bootstrap.Tooltip(tooltipTrigger, {
+                title: tooltipContent,
+                html: true
+            });
+        });
+    </script>
+
+}
+
 }

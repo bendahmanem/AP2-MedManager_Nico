@@ -22,7 +22,9 @@ namespace MedManager.ViewModel.OrdonnanceVM
         public string? InfoSupplementaire { get; set; }
 
         [Required]
-        public required List<Medicament> Medicaments { get; set; } = new List<Medicament>();
+        public required List<Medicament> MedicamentsCompatibles { get; set; } = new List<Medicament>();
+
+		public required List<Medicament> MedicamentsIncompatibles { get; set; } = new List<Medicament>();
 
 		[RequiredListeNonVide(ErrorMessage = "Veuillez sélectionner au moins un médicament")]
 		[Display(Name="Médicaments disponibles")]

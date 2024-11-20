@@ -201,11 +201,14 @@ namespace MedManager.Controllers
 
 				var AllergiesPatient = patient.Allergies.Select(p => p.AllergieId).ToList();
 				var AntecedentPatient = patient.Antecedents.Select(p => p.AntecedentId).ToList();
-				var ListeMedicament = await _dbContext.Medicaments
+				var ListeMedicamentsCompatibles = await _dbContext.Medicaments
 					.Where(m => !m.Allergies.Any(a => AllergiesPatient.Contains(a.AllergieId)) && !m.Antecedents.Any(a => AntecedentPatient.Contains(a.AntecedentId)))
 					.ToListAsync();
+				var ListeMedicamentsIncompatibles = await _dbContext.Medicaments
+					.Where(m => m.Allergies.Any(a => AllergiesPatient.Contains(a.AllergieId)) || m.Antecedents.Any(a => AntecedentPatient.Contains(a.AntecedentId)))
+					.ToListAsync();
 
-				if (!ListeMedicament.Any())
+				if (!ListeMedicamentsCompatibles.Any())
 				{
 					TempData["ErrorMessage"] = "Aucun médicament compatible n'est disponible pour ce patient. Veuillez vérifier ses antécédents et allergies.";
 					return RedirectToAction("Index", "Patient");
@@ -219,7 +222,8 @@ namespace MedManager.Controllers
 
 				var model = new OrdonnanceViewModel
 				{
-					Medicaments = ListeMedicament,
+					MedicamentsCompatibles = ListeMedicamentsCompatibles,
+					MedicamentsIncompatibles = ListeMedicamentsIncompatibles,
 					MedicamentIdSelectionnes = new List<int>(),
 					PatientId = id,
 					NomComplet = patient.NomComplet,
@@ -255,10 +259,16 @@ namespace MedManager.Controllers
 
 					var allergiesPatient = Patient.Allergies.Select(p => p.AllergieId).ToList();
 					var antecedentPatient = Patient.Antecedents.Select(p => p.AntecedentId).ToList();
-					var listeMedicaments = await _dbContext.Medicaments
+					var listeMedicamentsCompatibles = await _dbContext.Medicaments
 						.Where(m => !m.Allergies.Any(a => allergiesPatient.Contains(a.AllergieId)) && !m.Antecedents.Any(a => antecedentPatient.Contains(a.AntecedentId)))
 						.ToListAsync();
-					model.Medicaments = listeMedicaments;
+
+					var ListeMedicamentsIncompatibles = await _dbContext.Medicaments
+					.Where(m => m.Allergies.Any(a => allergiesPatient.Contains(a.AllergieId)) || m.Antecedents.Any(a => antecedentPatient.Contains(a.AntecedentId)))
+					.ToListAsync();
+
+					model.MedicamentsCompatibles = listeMedicamentsCompatibles;
+					model.MedicamentsIncompatibles = ListeMedicamentsIncompatibles;
 					return View("Action", model);
 				}
 				try
@@ -325,10 +335,16 @@ namespace MedManager.Controllers
 
 			var AllergiesPatient = patient.Allergies.Select(p => p.AllergieId).ToList();
 			var AntecedentPatient = patient.Antecedents.Select(p => p.AntecedentId).ToList();
-			var ListeMedicament = await _dbContext.Medicaments
+			var ListeMedicamentCompatible = await _dbContext.Medicaments
 				.Where(m => !m.Allergies.Any(a => AllergiesPatient.Contains(a.AllergieId)) && !m.Antecedents.Any(a => AntecedentPatient.Contains(a.AntecedentId)))
 				.ToListAsync();
-			model.Medicaments = ListeMedicament;
+
+			var listeMedicamentsIncompatibles = await _dbContext.Medicaments
+					.Where(m => m.Allergies.Any(a => AllergiesPatient.Contains(a.AllergieId)) || m.Antecedents.Any(a => AntecedentPatient.Contains(a.AntecedentId)))
+					.ToListAsync();
+
+			model.MedicamentsIncompatibles = listeMedicamentsIncompatibles;
+			model.MedicamentsCompatibles = ListeMedicamentCompatible;
 
 			return View("Action", model);
 		}
@@ -366,10 +382,14 @@ namespace MedManager.Controllers
 
 				var AllergiesPatient = patient.Allergies.Select(p => p.AllergieId).ToList();
 				var AntecedentPatient = patient.Antecedents.Select(p => p.AntecedentId).ToList();
-				var ListeMedicament = await _dbContext.Medicaments
+				var ListeMedicamentsCompatibles = await _dbContext.Medicaments
 					.Where(m => !m.Allergies.Any(a => AllergiesPatient.Contains(a.AllergieId)) && !m.Antecedents.Any(a => AntecedentPatient.Contains(a.AntecedentId)))
 					.ToListAsync();
-				
+				var listeMedicamentsIncompatibles = await _dbContext.Medicaments
+					.Where(m => m.Allergies.Any(a => AllergiesPatient.Contains(a.AllergieId)) || m.Antecedents.Any(a => AntecedentPatient.Contains(a.AntecedentId)))
+					.ToListAsync();
+
+
 
 				var model = new OrdonnanceViewModel
 				{
@@ -378,7 +398,8 @@ namespace MedManager.Controllers
 					DateFin = ordonnance.DateFin,
 					InfoSupplementaire = ordonnance.InfoSupplementaire,
 					MedicamentIdSelectionnes = MedicamentsSelectionnes,
-					Medicaments = ListeMedicament,
+					MedicamentsCompatibles = ListeMedicamentsCompatibles,
+					MedicamentsIncompatibles = listeMedicamentsIncompatibles,
 					PatientId = ordonnance.Patient.PatientId,
 					NomComplet = ordonnance.Patient.NomComplet
 				};
@@ -442,7 +463,7 @@ namespace MedManager.Controllers
 						}
 					}
 					_dbContext.Entry(ordonnance).State = EntityState.Modified;
-					model.Medicaments = await _dbContext.Medicaments.ToListAsync();
+					//model.Medicaments = await _dbContext.Medicaments.ToListAsync(); Quel est l'intérêt de cette ligne ? 
 					await _dbContext.SaveChangesAsync();
 					TempData["SuccessMessage"] = "L'ordonnance a été modifiée avec succès.";
 					return RedirectToAction("Index", "Ordonnance");
@@ -459,7 +480,12 @@ namespace MedManager.Controllers
 					var ListeMedicament = await _dbContext.Medicaments
 						.Where(m => !m.Allergies.Any(a => AllergiesPatient.Contains(a.AllergieId)) && !m.Antecedents.Any(a => AntecedentPatient.Contains(a.AntecedentId)))
 						.ToListAsync();
-					model.Medicaments = ListeMedicament;
+					var ListeMedicamentsIncompatibles = await _dbContext.Medicaments
+						.Where(m => m.Allergies.Any(a => AllergiesPatient.Contains(a.AllergieId)) || m.Antecedents.Any(a => AntecedentPatient.Contains(a.AntecedentId)))
+						.ToListAsync();
+
+					model.MedicamentsIncompatibles = ListeMedicamentsIncompatibles;
+					model.MedicamentsCompatibles = ListeMedicament;
 					return View("Action", model);
 				}
 			}
