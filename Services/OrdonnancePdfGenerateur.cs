@@ -102,7 +102,6 @@ public class OrdonnancePdfGenerateur
 
 
 			document.Add(new Paragraph("\n"));
-			document.Add(new Paragraph("\n"));
 
 			foreach (var medicament in ordonnance.Medicaments)
 			{
@@ -112,6 +111,15 @@ public class OrdonnancePdfGenerateur
 
 				document.Add(new Paragraph($"{medicament.Posologie}")
 					.SetFontSize(10));
+			}
+			document.Add(new Paragraph("\n"));
+
+			document.Add(new Paragraph("Informations supplémentaires :")
+				.SetFont(bold)
+				.SetFontSize(12));
+			if(ordonnance.InfoSupplementaire != "")
+			{
+				document.Add(new Paragraph($"{ordonnance.InfoSupplementaire}"));
 			}
 
 			document.Add(new Paragraph("\n\nSignature :")

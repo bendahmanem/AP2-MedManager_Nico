@@ -9,94 +9,114 @@
         <small class="text-muted float-end">Tous les champs sont obligatoires</small>
     </div>
     <div class="card-body">
-
         <form asp-action="Index" asp-controller="Parametres" method="post">
             <div class="mb-6">
-                <label asp-for="NomUtilisateur" class="form-label" ></label>
+                <label asp-for="NomUtilisateur" class="form-label"></label>
                 <div class="input-group input-group-merge">
-                    <input asp-for="NomUtilisateur" type="text" class="form-control" placeholder="Nom d'utilisateur">
+                    <input asp-for="NomUtilisateur" type="text"
+                           class="form-control @(ViewData.ModelState["NomUtilisateur"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                           placeholder="Nom d'utilisateur">
+                    <span asp-validation-for="NomUtilisateur" class="invalid-feedback"></span>
                 </div>
-                <span asp-validation-for="NomUtilisateur" class="text-danger"></span>
             </div>
 
             <div class="mb-6">
-                <label asp-for="Prenom" class="form-label" ></label>
+                <label asp-for="Prenom" class="form-label"></label>
                 <div class="input-group input-group-merge">
-                    <input asp-for="Prenom" type="text" class="form-control"  placeholder="Prénom">
+                    <input asp-for="Prenom" type="text"
+                           class="form-control @(ViewData.ModelState["Prenom"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                           placeholder="Prénom">
+                    <span asp-validation-for="Prenom" class="invalid-feedback"></span>
                 </div>
-                <span asp-validation-for="Prenom" class="text-danger"></span>
             </div>
 
             <div class="mb-6">
-                <label asp-for="Nom" class="form-label" ></label>
+                <label asp-for="Nom" class="form-label"></label>
                 <div class="input-group input-group-merge">
-                    <input asp-for="Nom" type="text" class="form-control"  placeholder="Nom">
+                    <input asp-for="Nom" type="text"
+                           class="form-control @(ViewData.ModelState["Nom"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                           placeholder="Nom">
+                    <span asp-validation-for="Nom" class="invalid-feedback"></span>
                 </div>
-                <span asp-validation-for="Nom" class="text-danger"></span>
             </div>
 
             <div class="mb-6">
-                <label asp-for="Email" class="form-label" ></label>
+                <label asp-for="Email" class="form-label"></label>
                 <div class="input-group input-group-merge">
-                    <input asp-for="Email" type="text" class="form-control"  placeholder="Email">
+                    <input asp-for="Email" type="text"
+                           class="form-control @(ViewData.ModelState["Email"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                           placeholder="Email">
+                    <span asp-validation-for="Email" class="invalid-feedback"></span>
                 </div>
-                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
 
             <div class="mb-6">
-                <label asp-for="Adresse" class="form-label" ></label>
+                <label asp-for="Adresse" class="form-label"></label>
                 <div class="input-group input-group-merge">
-                    <input asp-for="Adresse" type="text" class="form-control"  placeholder="Adresse">
+                    <input asp-for="Adresse" type="text"
+                           class="form-control @(ViewData.ModelState["Adresse"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                           placeholder="Adresse">
+                    <span asp-validation-for="Adresse" class="invalid-feedback"></span>
                 </div>
-                <span asp-validation-for="Adresse" class="text-danger"></span>
             </div>
 
             <div class="mb-6">
-                <label asp-for="Ville" class="form-label" ></label>
+                <label asp-for="Ville" class="form-label"></label>
                 <div class="input-group input-group-merge">
-                    <input asp-for="Ville" type="text" class="form-control"  placeholder="Ville">
+                    <input asp-for="Ville" type="text"
+                           class="form-control @(ViewData.ModelState["Ville"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                           placeholder="Ville">
+                    <span asp-validation-for="Ville" class="invalid-feedback"></span>
                 </div>
-                <span asp-validation-for="Ville" class="text-danger"></span>
             </div>
 
-
             <div class="mb-6">
-                <label asp-for="NumeroTel" class="form-label" ></label>
+                <label asp-for="NumeroTel" class="form-label"></label>
                 <div class="input-group input-group-merge">
-                    <input asp-for="NumeroTel" type="text" class="form-control" placeholder="Numéro de téléphone">
+                    <input asp-for="NumeroTel" type="text"
+                           class="form-control @(ViewData.ModelState["NumeroTel"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                           placeholder="Numéro de téléphone">
+                    <span asp-validation-for="NumeroTel" class="invalid-feedback"></span>
                 </div>
-                <span asp-validation-for="NumeroTel" class="text-danger"></span>
             </div>
 
             <div class="mb-6">
                 <label asp-for="Faculte" class="form-label"></label>
                 <div class="input-group input-group-merge">
-                    <input asp-for="Faculte" type="text" class="form-control"  placeholder="Faculté">
+                    <input asp-for="Faculte" type="text"
+                           class="form-control @(ViewData.ModelState["Faculte"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                           placeholder="Faculté">
+                    <span asp-validation-for="Faculte" class="invalid-feedback"></span>
                 </div>
-                <span asp-validation-for="Faculte" class="text-danger"></span>
             </div>
+
             <div class="mb-6">
-                <label asp-for="Specialite" class="form-label" ></label>
+                <label asp-for="Specialite" class="form-label"></label>
                 <div class="input-group input-group-merge">
-                    <select asp-for="Specialite" class="form-control" >
+                    <select asp-for="Specialite"
+                            class="form-control @(ViewData.ModelState["Specialite"]?.Errors.Count > 0 ? "is-invalid" : "")">
                         <option value="">Sélectionnez une spécialité</option>
                         @foreach (var spe in Enum.GetValues(typeof(Specialite)))
+
                         {
                             <option value="@spe">@spe</option>
                         }
                     </select>
+                    <span asp-validation-for="Specialite" class="invalid-feedback"></span>
                 </div>
-                <span asp-validation-for="Specialite" class="text-danger"></span>
             </div>
 
             <div class="mb-6">
                 <label asp-for="MotDePasse" class="form-label"></label>
                 <div class="input-group input-group-merge">
-                    <input asp-for="MotDePasse" type="password" class="form-control" placeholder="Mot de passe">
+                    <input asp-for="MotDePasse" type="password"
+                           class="form-control @(ViewData.ModelState["MotDePasse"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                           placeholder="Mot de passe">
+                    <span asp-validation-for="MotDePasse" class="invalid-feedback"></span>
                 </div>
-                <span asp-validation-for="MotDePasse" class="text-danger"></span>
             </div>
-            <div class="d-flex justify-content-center ">
+
+            <div class="d-flex justify-content-center">
                 <button type="submit" class="btn btn-outline-primary mt-3">Modifier</button>
             </div>
         </form>

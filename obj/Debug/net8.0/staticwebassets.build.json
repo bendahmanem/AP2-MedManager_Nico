@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "81WZZvPY0k2M2EP3dNAkHeaADpOGo08YTBbxpRYqTF0=",
+  "Hash": "BuheBNmkf1K6vGJyvhY1fM/Q39CKnZk2uLqbO7bsj44=",
   "Source": "MedManager",
   "BasePath": "_content/MedManager",
   "Mode": "Default",
@@ -2523,6 +2523,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\pdfs\\Ordonnance_Tom Select_10.pdf"
+    },
+    {
+      "Identity": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\pdfs\\Ordonnance_Tom Select_13.pdf",
+      "SourceId": "MedManager",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\",
+      "BasePath": "_content/MedManager",
+      "RelativePath": "pdfs/Ordonnance_Tom Select_13.pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\pdfs\\Ordonnance_Tom Select_13.pdf"
     }
   ]
 }

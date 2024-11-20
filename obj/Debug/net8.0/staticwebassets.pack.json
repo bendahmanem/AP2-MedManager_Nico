@@ -285,6 +285,10 @@
       "PackagePath": "staticwebassets\\pdfs\\Ordonnance_Tom Select_10.pdf"
     },
     {
+      "Id": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\pdfs\\Ordonnance_Tom Select_13.pdf",
+      "PackagePath": "staticwebassets\\pdfs\\Ordonnance_Tom Select_13.pdf"
+    },
+    {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.MedManager.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },
