@@ -1,349 +1,355 @@
 ﻿@model TableauDeBordViewModel
 @{
-    ViewData["Title"] = "Tableau de bord";
+	ViewData["Title"] = "Tableau de bord";
 }
 
 <div class="container-fluid mt-4">
-    <h1 class="h3 mb-4">Tableau de Bord</h1>
+	<h1 class="h3 mb-4">Tableau de Bord</h1>
 
-    <!-- KPIs Row -->
-    <div class="row g-3 mb-4">
-        <div class="col-md-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body d-flex align-items-center">
-                    <div class="flex-shrink-0 bg-soft-purple rounded-3 p-3 me-3">
-                        <i class="bi bi-people fs-4 text-purple"></i>
-                    </div>
-                    <div>
-                        <h6 class="card-title mb-1">Patients</h6>
-                        <h3 class="mb-0 fw-bold">@Model.TotalPatient</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body d-flex align-items-center">
-                    <div class="flex-shrink-0 bg-soft-green rounded-3 p-3 me-3">
-                        <i class="bi bi-file-text fs-4 text-green"></i>
-                    </div>
-                    <div>
-                        <h6 class="card-title mb-1">Ordonnances</h6>
-                        <h3 class="mb-0 fw-bold">@Model.TotalOrdonnance</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="row g-3 mb-4">
+		<div class="col-md-6">
+			<div class="card border-0 shadow-sm h-100">
+				<div class="card-body d-flex align-items-center">
+					<div class="flex-shrink-0 bg-soft-purple rounded-3 p-3 me-3">
+						<i class="bi bi-people fs-4 text-purple"></i>
+					</div>
+					<div>
+						<h6 class="card-title mb-1">Patients</h6>
+						<h3 class="mb-0 fw-bold">@Model.TotalPatient</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="card border-0 shadow-sm h-100">
+				<div class="card-body d-flex align-items-center">
+					<div class="flex-shrink-0 bg-soft-green rounded-3 p-3 me-3">
+						<i class="bi bi-file-text fs-4 text-green"></i>
+					</div>
+					<div>
+						<h6 class="card-title mb-1">Ordonnances</h6>
+						<h3 class="mb-0 fw-bold">@Model.TotalOrdonnance</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-    <!-- Charts Row -->
-    <div class="row g-3 mb-4">
-        <div class="col-md-6">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <h6 class="card-title mb-3">Répartition des âges</h6>
-                    <div style="height: 200px">
-                        <canvas id="ageChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <h6 class="card-title mb-3">Top 5 des médicaments</h6>
-                    <div style="height: 200px">
-                        <canvas id="medicamentChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="row g-3 mb-4">
+		<div class="col-md-6">
+			<div class="card border-0 shadow-sm">
+				<div class="card-body">
+					<h6 class="card-title mb-3">Répartition des âges</h6>
+					@if (Model.RepartitionAges.Any())
+					{
+						<div style="height: 200px">
+							<canvas id="ageChart"></canvas>
+						</div>
+					}
+					else
+					{
+						<p class="text-muted">Aucune donnée sur les âges pour le moment.</p>
+					}
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="card border-0 shadow-sm">
+				<div class="card-body">
+					<h6 class="card-title mb-3">Top 5 des médicaments</h6>
+					@if (Model.MedicamentPlusUtilises.Any())
+					{
+						<div style="height: 200px">
+							<canvas id="medicamentChart"></canvas>
+						</div>
+					}
+					else
+					{
+						<p class="text-muted">Aucune donnée sur les médicaments pour le moment.</p>
+					}
+				</div>
+			</div>
+		</div>
+	</div>
 
-    <!-- Second Charts Row -->
-    <div class="row g-3 mb-4">
-        <div class="col-md-6">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <h6 class="card-title mb-3">Allergies fréquentes</h6>
-                    <div style="height: 200px">
-                        <canvas id="allergieChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <h6 class="card-title mb-3">Antécédents fréquents</h6>
-                    <div style="height: 200px">
-                        <canvas id="antecedentChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="row g-3 mb-4">
+		<div class="col-12">
+			<div class="card border-0 shadow-sm text-center">
+				<div class="card-body">
+					<h6 class="card-title mb-3">Ordonnances en cours</h6>
+					@if (Model.OrdonnanceEnCours.Any())
 
-    <!-- Tables Row -->
-    <div class="row g-3 mb-4">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm text-center">
-                <div class="card-body">
-                    <h6 class="card-title mb-3 ">Ordonnances en cours</h6>
-                    <div class="table-responsive">
-                        <table class="table table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Nom</th>
-                                    <th>Date de début</th>
-                                    <th>Date de fin</th>
-                                    <th>Date de création</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var ordo in Model.OrdonnanceEnCours)
+					{
+						<div class="table-responsive">
+							<table class="table table-sm">
+								<thead>
+									<tr>
+										<th>Nom</th>
+										<th>Date de début</th>
+										<th>Date de fin</th>
+										<th>Date de création</th>
+										<th>Actions</th>
+									</tr>
+								</thead>
+								<tbody>
+									@foreach (var ordo in Model.OrdonnanceEnCours)
 
-                                {
-                                    <tr>
-                                        <td>@ordo.Patient.NomComplet</td>
-                                        <td>@ordo.DateDebut.ToShortDateString()</td>
-                                        <td>@ordo.DateFin.ToShortDateString()</td>
-                                        <td>@ordo.DateCreation.ToShortDateString()</td>
-                                        <td>
-                                            <a asp-action="Detail" asp-controller="Ordonnance" asp-route-id="@ordo.OrdonnanceId" class="btn btn-link btn-sm p-0 me-2">
-                                                <i class="bi bi-eye text-muted"></i>
-                                            </a>
-                                            <a asp-action="Editer" asp-controller="Ordonnance" asp-route-id="@ordo.OrdonnanceId" class="btn btn-link btn-sm p-0">
-                                                <i class="bi bi-pencil text-muted"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+									{
+										<tr>
+											<td>@ordo.Patient.NomComplet</td>
+											<td>@ordo.DateDebut.ToShortDateString()</td>
+											<td>@ordo.DateFin.ToShortDateString()</td>
+											<td>@ordo.DateCreation.ToShortDateString()</td>
+											<td>
+												<a asp-action="Detail" asp-controller="Ordonnance" asp-route-id="@ordo.OrdonnanceId" class="btn btn-link btn-sm p-0 me-2">
+													<i class="bi bi-eye text-muted"></i>
+												</a>
+												<a asp-action="Editer" asp-controller="Ordonnance" asp-route-id="@ordo.OrdonnanceId" class="btn btn-link btn-sm p-0">
+													<i class="bi bi-pencil text-muted"></i>
+												</a>
+											</td>
+										</tr>
+									}
+								</tbody>
+							</table>
+						</div>
+					}
+					else
+					{
+						<p class="text-muted">Aucune ordonnance en cours pour le moment.</p>
+					}
+				</div>
+			</div>
+		</div>
+	</div>
 
-    <!-- Last Row -->
-    <div class="row g-3 mb-4">
-        <div class="col-md-6">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <h6 class="card-title mb-3">Derniers patients</h6>
-                    <div class="table-responsive">
-                        <table class="table table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Nom</th>
-                                    <th>Prénom</th>
-                                    <th>Date de naissance</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var patient in Model.CinqDerniersPatient)
-
-                                {
-                                    <tr>
-                                        <td>@patient.Nom</td>
-                                        <td>@patient.Prenom</td>
-                                        <td>@patient.DateNaissance?.ToShortDateString()</td>
-                                        <td>
-                                            <a asp-action="Detail" asp-controller="Patient" asp-route-id="@patient.PatientId" class="btn btn-link btn-sm p-0 me-2">
-                                                <i class="bi bi-eye text-muted"></i>
-                                            </a>
-                                            <a asp-action="Editer" asp-controller="Patient" asp-route-id="@patient.PatientId" class="btn btn-link btn-sm p-0">
-                                                <i class="bi bi-pencil text-muted"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <h6 class="card-title mb-3">Dernières ordonnances</h6>
-                    <div class="table-responsive">
-                        <table class="table table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Nom</th>
-                                    <th>Date de début</th>
-                                    <th>Date de fin</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var ordo in Model.CinqDerniersOrdo)
-
-                                {
-                                    <tr>
-                                        <td>@ordo.Patient.NomComplet</td>
-                                        <td>@ordo.DateDebut.ToString("dd/MM/yyyy")</td>
-                                        <td>@ordo.DateFin.ToString("dd/MM/yyyy")</td>
-                                        <td>
-                                            <a asp-action="Detail" asp-controller="Ordonnance" asp-route-id="@ordo.OrdonnanceId" class="btn btn-link btn-sm p-0 me-2">
-                                                <i class="bi bi-eye text-muted"></i>
-                                            </a>
-                                            <a asp-action="Editer" asp-controller="Ordonnance" asp-route-id="@ordo.OrdonnanceId" class="btn btn-link btn-sm p-0">
-                                                <i class="bi bi-pencil text-muted"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<style>
-    .bg-soft-purple {
-        background-color: rgba(71, 120, 186, 0.4); 
-    }
-
-    .text-purple {
-        color: rgba(71, 120, 186, 1); 
-    }
-
-    .bg-soft-green {
-        background-color: rgba(87, 182, 174, 0.4); 
-    }
-
-    .text-green {
-        color: rgba(87, 182, 174, 1); 
-    }
-
-   
-    .table {
-        font-size: 0.875rem;
-    }
-
-        .table th {
-            font-weight: 600;
-            color: rgba(71, 120, 186, 0.9);
-        }
-
-</style>
-
-@section Scripts {
-    <script>
-        Chart.register(ChartDataLabels);
+	<div class="row g-3 mb-4">
+		<div class="col-md-6">
+			<div class="card border-0 shadow-sm">
+				<div class="card-body">
+					<h6 class="card-title mb-3">Derniers patients</h6>
+					@if (Model.CinqDerniersPatient != null && Model.CinqDerniersPatient.Any())
+					{
+						<div class="table-responsive">
+							<table class="table table-sm">
+								<thead>
+									<tr>
+										<th>Nom</th>
+										<th>Prénom</th>
+										<th>Date de naissance</th>
+										<th>Actions</th>
+									</tr>
+								</thead>
+								<tbody>
+									@foreach (var patient in Model.CinqDerniersPatient)
+									{
+										<tr>
+											<td>@patient.Nom</td>
+											<td>@patient.Prenom</td>
+											<td>@patient.DateNaissance?.ToShortDateString()</td>
+											<td>
+												<a asp-action="Detail" asp-controller="Patient" asp-route-id="@patient.PatientId" class="btn btn-link btn-sm p-0 me-2">
+													<i class="bi bi-eye text-muted"></i>
+												</a>
+												<a asp-action="Editer" asp-controller="Patient" asp-route-id="@patient.PatientId" class="btn btn-link btn-sm p-0">
+													<i class="bi bi-pencil text-muted"></i>
+												</a>
+											</td>
+										</tr>
+									}
+								</tbody>
+							</table>
+						</div>
+					}
+					else
+					{
+							<p colspan="4" class="text-center text-muted">Aucun patient trouvé.</p>
+						
+					}
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="card border-0 shadow-sm">
+				<div class="card-body">
+					<h6 class="card-title mb-3">Dernières ordonnances</h6>
+						@if (Model.CinqDerniersOrdo != null && Model.CinqDerniersOrdo.Any())
+						{
+							<div class="table-responsive">
+								<table class="table table-sm">
+									<thead>
+										<tr>
+											<th>Nom</th>
+											<th>Date de début</th>
+											<th>Date de fin</th>
+											<th>Actions</th>
+										</tr>
+									</thead>
+									<tbody>
+											@foreach (var ordo in Model.CinqDerniersOrdo)
+											{
+												<tr>
+													<td>@ordo.Patient.NomComplet</td>
+													<td>@ordo.DateDebut.ToString("dd/MM/yyyy")</td>
+													<td>@ordo.DateFin.ToString("dd/MM/yyyy")</td>
+													<td>
+														<a asp-action="Detail" asp-controller="Ordonnance" asp-route-id="@ordo.OrdonnanceId" class="btn btn-link btn-sm p-0 me-2">
+															<i class="bi bi-eye text-muted"></i>
+														</a>
+														<a asp-action="Editer" asp-controller="Ordonnance" asp-route-id="@ordo.OrdonnanceId" class="btn btn-link btn-sm p-0">
+															<i class="bi bi-pencil text-muted"></i>
+														</a>
+													</td>
+												</tr>
+											}
+									</tbody>
+								</table>
+							</div>
+						}
+						else
+						{
+							<p colspan="4" class="text-center text-muted">Aucune ordonnance trouvée.</p>
+						}
+				</div>
+			</div>
+		</div>
+	</div>
 
 
-        const colors = [
-            'rgba(71, 120, 186, 0.75)',  
-            'rgba(87, 182, 174, 0.75)',  
-            'rgba(121, 161, 197, 0.75)', 
-            'rgba(129, 199, 190, 0.75)', 
-            'rgba(162, 184, 203, 0.75)'  
-        ];
+	<style>
+		.bg-soft-purple {
+			background-color: rgba(71, 120, 186, 0.4);
+		}
 
-    
+		.text-purple {
+			color: rgba(71, 120, 186, 1);
+		}
 
-        const commonOptions = {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                        padding: 20,
-                        usePointStyle: true,
-                        font: {
-                            size: 11
-                        }
-                    }
-                },
-                datalabels: {
-                    formatter: (value) => value, 
-                    color: '#333',
-                    font: {
-                        size: 11,
-                        weight: 'bold'
-                    }
-                }
-            }
-        };
+		.bg-soft-green {
+			background-color: rgba(87, 182, 174, 0.4);
+		}
 
-        // Age Chart (Bar chart)
-        new Chart(document.getElementById('ageChart'), {
-            type: 'bar',
-            data: {
-                labels: @Json.Serialize(Model.RepartitionAges.OrderBy(x => x.categorie).Select(x => x.categorie)),
-                datasets: [{
-                    data: @Json.Serialize(Model.RepartitionAges.Select(x => x.compte)),
-                    backgroundColor: colors
-                }]
-            },
-            options: {
-                ...commonOptions,
-                plugins: {
-                    ...commonOptions.plugins,
-                    datalabels: {
-                        formatter: (value) => value,
-                        anchor: 'end',
-                        align: 'bottom'
-                    }
-                }
-            }
-        });
+		.text-green {
+			color: rgba(87, 182, 174, 1);
+		}
 
-        // Configuration commune pour les donut charts
-        const donutOptions = {
-            ...commonOptions,
-            cutout: '60%'
-        };
 
-        // Medicament Chart
-        new Chart(document.getElementById('medicamentChart'), {
-            type: 'doughnut',
-            data: {
-                labels: @Json.Serialize(Model.MedicamentPlusUtilises.Select(x => x.Nom)),
-                datasets: [{
-                    data: @Json.Serialize(Model.MedicamentPlusUtilises.Select(x => x.UtilisationCount)),
-                    backgroundColor: colors
-                }]
-            },
-            options: donutOptions
-        });
+		.table {
+			font-size: 0.875rem;
+		}
 
-        // Allergie Chart
-        new Chart(document.getElementById('allergieChart'), {
-            type: 'doughnut',
-            data: {
-                labels: @Json.Serialize(Model.FrequenceAllergies.Select(x => x.nom)),
-                datasets: [{
-                    data: @Json.Serialize(Model.FrequenceAllergies.Select(x => x.compte)),
-                    backgroundColor: colors
-                }]
-            },
-            options: donutOptions
-        });
+			.table th {
+				font-weight: 600;
+				color: rgba(71, 120, 186, 0.9);
+			}
+	</style>
 
-        // Antecedent Chart
-        new Chart(document.getElementById('antecedentChart'), {
-            type: 'doughnut',
-            data: {
-                labels: @Json.Serialize(Model.FrequenceAntecedents.Select(x => x.nom)),
-                datasets: [{
-                    data: @Json.Serialize(Model.FrequenceAntecedents.Select(x => x.compte)),
-                    backgroundColor: colors
-                }]
-            },
-            options: donutOptions
-        });
-    </script>
-}
+	@section Scripts {
+		<script>
+			Chart.register(ChartDataLabels);
+
+
+			const colors = [
+				'rgba(71, 120, 186, 0.75)',
+				'rgba(87, 182, 174, 0.75)',
+				'rgba(121, 161, 197, 0.75)',
+				'rgba(129, 199, 190, 0.75)',
+				'rgba(162, 184, 203, 0.75)'
+			];
+
+
+
+			const commonOptions = {
+				responsive: true,
+				maintainAspectRatio: false,
+				plugins: {
+					legend: {
+						position: 'bottom',
+						labels: {
+							padding: 20,
+							usePointStyle: true,
+							font: {
+								size: 11
+							}
+						}
+					},
+					datalabels: {
+						formatter: (value) => value,
+						color: '#333',
+						font: {
+							size: 11,
+							weight: 'bold'
+						}
+					}
+				}
+			};
+
+			// Age Chart (Bar chart)
+			new Chart(document.getElementById('ageChart'), {
+				type: 'bar',
+				data: {
+					labels: @Json.Serialize(Model.RepartitionAges.OrderBy(x => x.categorie).Select(x => x.categorie)),
+					datasets: [{
+						data: @Json.Serialize(Model.RepartitionAges.Select(x => x.compte)),
+						backgroundColor: colors
+					}]
+				},
+				options: {
+					...commonOptions,
+					plugins: {
+						...commonOptions.plugins,
+						datalabels: {
+							formatter: (value) => value,
+							anchor: 'end',
+							align: 'bottom'
+						}
+					}
+				}
+			});
+
+			// Configuration commune pour les donut charts
+			const donutOptions = {
+				...commonOptions,
+				cutout: '60%'
+			};
+
+			// Medicament Chart
+			new Chart(document.getElementById('medicamentChart'), {
+				type: 'doughnut',
+				data: {
+					labels: @Json.Serialize(Model.MedicamentPlusUtilises.Select(x => x.Nom)),
+					datasets: [{
+						data: @Json.Serialize(Model.MedicamentPlusUtilises.Select(x => x.UtilisationCount)),
+						backgroundColor: colors
+					}]
+				},
+				options: donutOptions
+			});
+
+			// Allergie Chart
+			new Chart(document.getElementById('allergieChart'), {
+				type: 'doughnut',
+				data: {
+					labels: @Json.Serialize(Model.FrequenceAllergies.Select(x => x.nom)),
+					datasets: [{
+						data: @Json.Serialize(Model.FrequenceAllergies.Select(x => x.compte)),
+						backgroundColor: colors
+					}]
+				},
+				options: donutOptions
+			});
+
+			// Antecedent Chart
+			new Chart(document.getElementById('antecedentChart'), {
+				type: 'doughnut',
+				data: {
+					labels: @Json.Serialize(Model.FrequenceAntecedents.Select(x => x.nom)),
+					datasets: [{
+						data: @Json.Serialize(Model.FrequenceAntecedents.Select(x => x.compte)),
+						backgroundColor: colors
+					}]
+				},
+				options: donutOptions
+			});
+		</script>
+	}
