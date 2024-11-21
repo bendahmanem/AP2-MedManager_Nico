@@ -29,12 +29,12 @@
 			</a>
 		</div>
 
-		<div class="col-auto">
+		<div class="col-auto ms-auto">
 			<input type="text" class="form-control" id="RechercheEntree" placeholder="Rechercher..."
 				   value="@ViewData["FiltreActuel"]" />
 		</div>
 
-		<div class="col-auto position-relative">
+		<div class="col-auto">
 			<select class="form-control" name="FiltreCate">
 				<option value="">Sélectionnez la catégorie</option>
 				@foreach (var cate in Enum.GetValues(typeof(CategorieEnum)))
