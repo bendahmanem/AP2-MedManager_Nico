@@ -135,6 +135,12 @@
 		)
 	</div>
 }
+else if (Model.Patients != null && !Model.Patients.Any() && string.IsNullOrEmpty(ViewData["FiltreActuel"]?.ToString()))
+{
+	<div class="d-flex justify-content-center align-items-center" style="height: 50vh;">
+		<p class="text-center text-muted fw-bold">Aucun patient ne correspond à votre recherche.</p>
+	</div>
+}
 else
 {
 	<div class="d-flex justify-content-center align-items-center" style="height: 50vh;">

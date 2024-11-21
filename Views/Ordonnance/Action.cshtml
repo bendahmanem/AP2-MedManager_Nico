@@ -20,10 +20,8 @@
 							style="cursor: pointer;"
 						   data-bs-toggle="popover" 
 						   data-bs-title="Incompatibilités" 
-						   data-bs-content="@{
-							   var incompatibilites = string.Join(", ", Model.MedicamentsIncompatibles.Select(m => m.Nom));
-							   @incompatibilites;
-						   }"></i>
+						   data-bs-content="@(Model.MedicamentsIncompatibles.Count == 0 ? "Aucune incompatibilité" : string.Join(", ", Model.MedicamentsIncompatibles.Select(m => m.Nom)))">
+						</i>
 					</label>
 				</div>
 
