@@ -23,19 +23,29 @@
 
 <h3>Allergies</h3>
 
-<div class="col-auto">
-	<a asp-action="Ajouter" asp-route-type="Allergie" class="btn btn-outline-primary">
-		<i class="bi bi-plus-circle"></i> Ajouter une allergie
-	</a>
+<div class="row mb-2 align-items-center d-flex justify-content-between">
+	<div class="col-md-6 text-start">
+		<a asp-action="Ajouter" asp-route-type="Allergie" class="btn btn-outline-primary">
+			<i class="bi bi-plus-circle"></i> Ajouter une allergie
+		</a>
+	</div>
+	<div class="col-md-3 text-end">
+		<input type="text"
+			   class="form-control mb-3"
+			   id="RechercheEntreeAllergie"
+			   placeholder="Rechercher une allergie..."
+			   value="@ViewData["FiltreActuel"]" />
+	</div>
 </div>
-<input type="text" class="col-4 form-control mb-3" id="RechercheEntreeAllergie" placeholder="Rechercher une allergie..."
-	   value="@ViewData["FiltreActuel"]" />
-@if(Model.Allergies != null && Model.Allergies.Any())
+
+
+
+@if (Model.Allergies != null && Model.Allergies.Any())
 {
-	<table class="table table-bordered table-hover align-middle text-center">
+	<table class="table table-bordered table-hover align-middle text-center table-sm">
 		<thead class="table-primary">
 			<tr>
-				<th>
+				<th style="width: 25%;">
 					<a class="text-dark" asp-action="Index" asp-route-OrdreTriAllergie="@ViewData["NomAllergieParamTri"]" asp-route-filtreAllergies="@ViewData["FiltreActuelAllergie"]">
 						Nom
 						@if ((ViewData["TriActuelAllergie"]?.ToString() ?? "") == "nomAllergie_desc")
@@ -48,12 +58,11 @@
 						}
 					</a>
 				</th>
-				<th class="text-center">Actions</th>
+				<th class="text-center" style="width: 15%;">Actions</th>
 			</tr>
 		</thead>
 		<tbody id="AllergieListContainer">
 			@foreach (var allergie in Model.Allergies)
-
 			{
 				<tr>
 					<td>@allergie.Nom</td>
@@ -110,23 +119,27 @@ else
 
 
 <h3>Antécédents</h3>
-<div class="row">
-	<div class="col-8">
-		<p>
-			<a asp-action="Ajouter" asp-route-type="Antecedent" class="btn btn-outline-primary"> <i class="bi bi-plus-circle me-2"></i>Ajouter un antécédent</a>
-		</p>
+<div class="row mb-2 align-items-center d-flex justify-content-between">
+	<div class="col-md-6 text-start">
+		<a asp-action="Ajouter" asp-route-type="Antecedent" class="btn btn-outline-primary">
+			<i class="bi bi-plus-circle me-2"></i> Ajouter un antécédent
+		</a>
+	</div>
+	<div class="col-md-3 text-end">
+		<input type="text"
+			   class="form-control mb-3"
+			   id="RechercheEntreeAntecedent"
+			   placeholder="Rechercher un antécédent..."
+			   value="@ViewData["FiltreActuel"]" />
 	</div>
 </div>
-<input type="text" class="col-4 form-control mb-3" id="RechercheEntreeAntecedent" placeholder="Rechercher un antécédent..."
-	   value="@ViewData["FiltreActuel"]" />
 
-@if(Model.Antecedents != null && Model.Antecedents.Any())
+@if (Model.Antecedents != null && Model.Antecedents.Any())
 {
-	
-	<table class="table table-bordered table-hover align-middle text-center">
+	<table class="table table-bordered table-hover align-middle text-center table-sm">
 		<thead class="table-primary">
 			<tr>
-				<th>
+				<th style="width: 25%;">
 					<a class="text-dark" asp-action="Index" asp-route-OrdreTriAntecedent="@ViewData["NomAntecedentParamTri"]" asp-route-filtreAntecedents="@ViewData["FiltreActuelAntecedent"]">
 						Nom
 						@if ((ViewData["TriActuelAntecedent"]?.ToString() ?? "") == "nomAntecedent_desc")
@@ -139,27 +152,26 @@ else
 						}
 					</a>
 				</th>
-				<th class="text-center">Actions</th>
+				<th class="text-center" style="width: 15%;">Actions</th>
 			</tr>
 		</thead>
 		<tbody id="AntecedentListContainer">
 			@foreach (var antecedent in Model.Antecedents)
-
 			{
 				<tr>
 					<td>@antecedent.Nom</td>
-					<td>
+					<td class="text-center">
 						<a asp-action="Detail" asp-controller="ContreIndications" asp-route-id="@antecedent.AntecedentId" asp-route-type="Antecedent"
 						   class="btn btn-outline-secondary btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Détails de l'antécédent">
 							<i class="bi bi-eye"></i>
 						</a>
 
-						<a asp-action="Modifier" asp-controller="ContreIndications" asp-route-id="@@antecedent.AntecedentId" asp-route-type="Antecedent"
+						<a asp-action="Modifier" asp-controller="ContreIndications" asp-route-id="@antecedent.AntecedentId" asp-route-type="Antecedent"
 						   class="btn btn-outline-secondary btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Modifier l'antécédent">
 							<i class="bi bi-pen"></i>
 						</a>
 
-						<a href="#" data-bs-toggle="modal" data-bs-target="#Modal-@@antecedent.AntecedentId">
+						<a href="#" data-bs-toggle="modal" data-bs-target="#Modal-@antecedent.AntecedentId">
 							<i class="bi bi-trash btn btn-outline-secondary btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Supprimer l'antécédent"></i>
 						</a>
 
@@ -197,10 +209,7 @@ else
 	<div class="d-flex justify-content-center align-items-center" style="height: 22vh;">
 		<p class="text-center text-muted fw-bold">Aucun antécédent trouvé. Veuillez en ajouter.</p>
 	</div>
-
 }
-
-
 
 
 <script>
