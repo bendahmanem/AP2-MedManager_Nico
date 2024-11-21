@@ -28,8 +28,8 @@
 
         <form asp-action="Index" method="get" class="d-flex mb-0">
             <div class="input-group">
-                <input type="text" name="Filtre" class="form-control" placeholder="Rechercher par nom ou prénom du patient" value="@ViewData["FiltreActuel"]" style="min-width: 350px;" />
-                <button class="btn btn-outline-primary" type="submit">Rechercher</button>
+                <input type="text" name="Filtre" class="form-control" placeholder="Rechercher par nom ou prénom" value="@ViewData["FiltreActuel"]" style="min-width: 350px;" />
+                <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
             </div>
         </form>
     </div>
@@ -106,6 +106,12 @@
                 ActiveLiElementClass = "active" 
             }
                      )
+        </div>
+    }
+    else if (Model.Ordonnances != null && !Model.Ordonnances.Any() && !string.IsNullOrEmpty(ViewData["FiltreActuel"]?.ToString()))
+    {
+        <div class="d-flex justify-content-center align-items-center" style="height: 50vh;">
+            <p class="text-center text-muted fw-bold">Aucune ordonnance ne correspond à votre recherche.</p>
         </div>
     }
     else

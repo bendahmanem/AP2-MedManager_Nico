@@ -29,9 +29,8 @@
 			</a>
 		</div>
 
-		<div class="col-auto ms-auto">
-			<input type="text" class="form-control" id="RechercheEntree" placeholder="Rechercher..."
-				   value="@ViewData["FiltreActuel"]" />
+		<div class="input-group">
+			<input type="text" name="Filtre" class="form-control" placeholder="Rechercher par nom ou prénom" value="@ViewData["FiltreActuel"]" style="min-width: 350px;" />
 		</div>
 
 		<div class="col-auto">
@@ -45,7 +44,7 @@
 		</div>
 
 		<div class="col-auto">
-			<button class="btn btn-outline-primary" type="submit">Rechercher</button>
+			<button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
 		</div>
 	</div>
 
@@ -56,94 +55,94 @@
 @if(Model.Count > 0 && Model.Any())
 {
 	
-<table class="table table-bordered table-hover align-middle text-center">
-	<thead class="table-primary">
-		<tr>
-			<th>
-				<a id="triNom" href="#" class="text-dark text-decoration-none">
-					Nom
-					@if (ViewData["TriActuel"]?.ToString() == "nom_desc")
-					{
-						<i class="bi bi-arrow-down-short"></i>
-					}
-					else if (ViewData["TriActuel"]?.ToString() == "nom_asc")
-					{
-						<i class="bi bi-arrow-up-short"></i>
-					}
-				</a>
-			</th>
-			<th>Quantité</th>
-			<th>Posologie</th>
-			<th>Composition</th>
-			<th>
-				<a id="triCategorie" href="#" class="text-dark text-decoration-none">
-					Catégorie
-					@if (ViewData["TriActuel"]?.ToString() == "categorie_desc")
-					{
-						<i class="bi bi-arrow-down-short"></i>
-					}
-					else if (ViewData["TriActuel"]?.ToString() == "categorie_asc")
-					{
-						<i class="bi bi-arrow-up-short"></i>
-					}
-				</a>
-			</th>
-			<th class="text-center">Actions</th>
-		</tr>
-	</thead>
-	<tbody id="MedicamentListContainer">
-		@foreach (var m in Model)
-		{
+	<table class="table table-bordered table-hover align-middle text-center">
+		<thead class="table-primary">
 			<tr>
-				<td>@m.Nom</td>
-				<td>@m.Quantite</td>
-				<td>@m.Posologie</td>
-				<td>@m.Composition</td>
-				<td>@m.Categorie</td>
-				<td class="text-center">
-					<a asp-action="Detail" asp-controller="Medicament" asp-route-id="@m.MedicamentId"
-					   class="btn btn-outline-secondary btn-sm me-2"
-					   data-bs-toggle="tooltip" data-bs-placement="bottom" title="Détails du médicament">
-						<i class="bi bi-eye"></i>
+				<th>
+					<a id="triNom"
+					   asp-action="Index"
+					   asp-controller="Medicament"
+					   asp-route-Ordretri="@(ViewData["TriActuel"]?.ToString() == "nom_asc" ? "nom_desc" : "nom_asc")"
+					   asp-route-Filtre="@ViewData["FiltreActuel"]"
+					   asp-route-FiltreCate="@ViewData["FiltreCateActuel"]"
+					   class="text-dark text-decoration-none">
+						Nom
+						@if (ViewData["TriActuel"]?.ToString() == "nom_desc")
+						{
+							<i class="bi bi-arrow-down-short"></i>
+						}
+						else if (ViewData["TriActuel"]?.ToString() == "nom_asc")
+						{
+							<i class="bi bi-arrow-up-short"></i>
+						}
 					</a>
-					<a asp-action="Modifier" asp-controller="Medicament" asp-route-id="@m.MedicamentId"
-					   class="btn btn-outline-secondary btn-sm me-2"
-					   data-bs-toggle="tooltip" data-bs-placement="bottom" title="Modifier le médicament">
-						<i class="bi bi-pencil"></i>
-					</a>
-					<a href="#" data-bs-toggle="modal" data-bs-target="#Modal-@m.MedicamentId">
-						<i class="bi bi-trash btn btn-outline-secondary btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Supprimer le médicament"></i>
-					</a>
-					<div class="modal fade" id="Modal-@m.MedicamentId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-						<div class="modal-dialog modal-dialog-centered">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title">Confirmation de suppression</h5>
-									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-								</div>
-								<div class="modal-body">
-									Voulez-vous vraiment supprimer le médicament <strong>@m.Nom</strong> ?
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-									<a asp-action="Supprimer" asp-controller="Medicament" asp-route-id="@m.MedicamentId" class="btn btn-danger">
-										Confirmer
-									</a>
+				</th>
+				<th>Quantité</th>
+				<th>Posologie</th>
+				<th>Composition</th>
+				<th>Categorie</th>
+				<th class="text-center">Actions</th>
+			</tr>
+		</thead>
+		<tbody id="MedicamentListContainer">
+			@foreach (var m in Model)
+			{
+				<tr>
+					<td>@m.Nom</td>
+					<td>@m.Quantite</td>
+					<td>@m.Posologie</td>
+					<td>@m.Composition</td>
+					<td>@m.Categorie</td>
+					<td class="text-center">
+						<a asp-action="Detail" asp-controller="Medicament" asp-route-id="@m.MedicamentId"
+						   class="btn btn-outline-secondary btn-sm me-2"
+						   data-bs-toggle="tooltip" data-bs-placement="bottom" title="Détails du médicament">
+							<i class="bi bi-eye"></i>
+						</a>
+						<a asp-action="Modifier" asp-controller="Medicament" asp-route-id="@m.MedicamentId"
+						   class="btn btn-outline-secondary btn-sm me-2"
+						   data-bs-toggle="tooltip" data-bs-placement="bottom" title="Modifier le médicament">
+							<i class="bi bi-pencil"></i>
+						</a>
+						<a href="#" data-bs-toggle="modal" data-bs-target="#Modal-@m.MedicamentId">
+							<i class="bi bi-trash btn btn-outline-secondary btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Supprimer le médicament"></i>
+						</a>
+						<div class="modal fade" id="Modal-@m.MedicamentId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-dialog-centered">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title">Confirmation de suppression</h5>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+										Voulez-vous vraiment supprimer le médicament <strong>@m.Nom</strong> ?
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+										<a asp-action="Supprimer" asp-controller="Medicament" asp-route-id="@m.MedicamentId" class="btn btn-danger">
+											Confirmer
+										</a>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-				</td>
-			</tr>
-		}
-	</tbody>
+					</td>
+				</tr>
+			}
+		</tbody>
 	</table>
 }
-		else
-	{
-		<div class="d-flex justify-content-center align-items-center" style="height: 50vh;">
-			<p class="text-center text-muted fw-bold">Aucune médicament trouvé. Veuillez en ajouter.</p>
-		</div>
-	}
+else if (Model.Count > 0 && Model.Any() && !string.IsNullOrEmpty(ViewData["FiltreActuel"]?.ToString()))
+{
+	<div class="d-flex justify-content-center align-items-center" style="height: 50vh;">
+		<p class="text-center text-muted fw-bold">Aucune médicament ne correspond à votre recherche.</p>
+	</div>
+}
+else
+{
+	<div class="d-flex justify-content-center align-items-center" style="height: 50vh;">
+		<p class="text-center text-muted fw-bold">Aucune médicament trouvé. Veuillez en ajouter.</p>
+	</div>
+}
 
 

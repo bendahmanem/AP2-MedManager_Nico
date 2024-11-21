@@ -29,12 +29,12 @@
 	</div>
 	<div class="col-md-9">
 		<div class="d-flex justify-content-end align-items-center">
-			<div class="input-group me-3" style="max-width: 300px;">
-				<input type="text" class="form-control" id="RechercheEntree"
-					   placeholder="Rechercher par nom ou prénom..."
-					   value="@ViewData["FiltreActuel"]" />
-				<span class="input-group-text"><i class="bi bi-search"></i></span>
-			</div>
+			<form asp-action="Index" method="get" class="d-flex mb-0">
+				<div class="input-group">
+					<input type="text" name="Filtre" class="form-control" placeholder="Rechercher par nom ou prénon" value="@ViewData["FiltreActuel"]" style="min-width: 350px;" />
+					<button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
+				</div>
+			</form>
 
 			<div class="btn-group" role="group">
 				<a href="@Url.Action("Index", new { Filtre = ViewData["FiltreActuel"], sortBy = "nom", sortDir = ViewData["SortDir"]?.ToString() == "asc" ? "desc" : "asc" })"
@@ -140,36 +140,6 @@ else
 	</div>
 
 }
-
-
-
-<script>
-	const RechercheEntree = document.getElementById('RechercheEntree');
-	let timeoutId;
-
-	RechercheEntree.addEventListener('input', (e) => {
-		clearTimeout(timeoutId);
-		timeoutId = setTimeout(MajPatient(e), 500);
-	});
-
-	function MajPatient(e) {
-		const requete = e.target.value;
-		const Url = '@Url.Action("Index")' + '?Filtre=' + encodeURIComponent(requete);
-
-		history.pushState(null, '', Url);
-
-		fetch(Url, {
-			headers: { 'X-Requested-With': 'XMLHttpRequest' }
-		})
-			.then(response => response.text())
-			.then(html => {
-				const tempDiv = document.createElement('div');
-				tempDiv.innerHTML = html;
-				const PatientsFiltres = tempDiv.querySelector('#patientListContainer').innerHTML;
-				document.getElementById('patientListContainer').innerHTML = PatientsFiltres;
-			});
-	}
-</script>
 
 
 
