@@ -32,6 +32,9 @@
 	<form asp-action="Index" method="get" class="d-flex mb-0">
 		<div class="input-group">
 			<input type="text" name="filtreAllergies" class="form-control" placeholder="Rechercher une allergie" value="@ViewData["FiltreActuelAllergie"]" style="min-width: 350px;" />
+			<input type="hidden" name="OrdreTriAllergie" value="@ViewData["TriActuelAllergie"]" />
+			<input type="hidden" name="OrdreTriAntecedent" value="@ViewData["TriActuelAntecedent"]" />
+			<input type="hidden" name="filtreAntecedents" value="@ViewData["FiltreActuelAntecedent"]" />
 			<button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
 		</div>
 	</form>
@@ -45,7 +48,11 @@
 		<thead class="table-primary">
 			<tr>
 				<th style="width: 25%;">
-					<a class="text-dark" asp-action="Index" asp-route-OrdreTriAllergie="@ViewData["NomAllergieParamTri"]" asp-route-filtreAllergies="@ViewData["FiltreActuelAllergie"]">
+					<a class="text-dark" asp-action="Index" 
+					asp-route-OrdreTriAntecedent="@ViewData["TriActuelAntecedent"]" 
+					asp-route-filtreAntecedents="@ViewData["FiltreActuelAntecedent"]" 
+					asp-route-OrdreTriAllergie="@ViewData["NomAllergieParamTri"]" 
+					asp-route-filtreAllergies="@ViewData["FiltreActuelAllergie"]">
 						Nom
 						@if ((ViewData["TriActuelAllergie"]?.ToString() ?? "") == "nomAllergie_desc")
 						{
@@ -133,6 +140,9 @@ else
 	<form asp-action="Index" method="get" class="d-flex mb-0">
 		<div class="input-group">
 			<input type="text" name="filtreAntecedents" class="form-control" placeholder="Rechercher un antécédent" value="@ViewData["FiltreActuelAntecedent"]" style="min-width: 350px;" />
+			<input type="hidden" name="OrdreTriAllergie" value="@ViewData["TriActuelAllergie"]" />
+			<input type="hidden" name="OrdreTriAntecedent" value="@ViewData["TriActuelAntecedent"]" />
+			<input type="hidden" name="filtreAntecedents" value="@ViewData["FiltreActuelAllergie"]" />
 			<button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
 		</div>
 	</form>
@@ -144,7 +154,11 @@ else
 		<thead class="table-primary">
 			<tr>
 				<th style="width: 25%;">
-					<a class="text-dark" asp-action="Index" asp-route-OrdreTriAntecedent="@ViewData["NomAntecedentParamTri"]" asp-route-filtreAntecedents="@ViewData["FiltreActuelAntecedent"]">
+					<a class="text-dark" asp-action="Index"  asp-route-OrdreTriAntecedent="@ViewData["NomAntecedentParamTri"]" 
+					asp-route-filtreAntecedents="@ViewData["FiltreActuelAntecedent"]"
+					   asp-route-OrdreTriAllergie="@ViewData["TriActuelAllergie"]"
+					   asp-route-filtreAllergies="@ViewData["FiltreActuelAllergie"]">
+						
 						Nom
 						@if ((ViewData["TriActuelAntecedent"]?.ToString() ?? "") == "nomAntecedent_desc")
 						{
