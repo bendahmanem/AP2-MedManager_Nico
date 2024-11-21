@@ -144,7 +144,7 @@
 		</tbody>
 	</table>
 }
-else if (Model.Medicaments.Count > 0 && Model.Medicaments.Any() && !string.IsNullOrEmpty(ViewData["FiltreActuel"]?.ToString()))
+else if (!Model.Medicaments.Any() && !string.IsNullOrEmpty(ViewData["FiltreActuel"]?.ToString()))
 {
 	<div class="d-flex justify-content-center align-items-center" style="height: 50vh;">
 		<p class="text-center text-muted fw-bold">Aucune médicament ne correspond à votre recherche.</p>
@@ -153,7 +153,7 @@ else if (Model.Medicaments.Count > 0 && Model.Medicaments.Any() && !string.IsNul
 else
 {
 	<div class="d-flex justify-content-center align-items-center" style="height: 50vh;">
-		<p class="text-center text-muted fw-bold">Aucune médicament trouvé. Veuillez en ajouter.</p>
+		<p class="text-center fw-bold">Aucune médicament trouvé. Veuillez en ajouter.</p>
 	</div>
 }
 

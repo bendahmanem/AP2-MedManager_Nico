@@ -24,6 +24,7 @@ namespace MedManager.Controllers
 		public async Task<IActionResult> Index(string Filtre, string OrdreTri, MedicamentViewModel model, string FiltreCate)
 		{
 			OrdreTri ??= "nom_asc";
+			Filtre ??= "";
 			model.FiltreCateActuel ??= "";
 
 			if (string.IsNullOrEmpty(model.FiltreCateActuel) && !string.IsNullOrEmpty(FiltreCate))

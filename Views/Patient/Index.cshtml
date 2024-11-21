@@ -32,6 +32,8 @@
 			<form asp-action="Index" method="get" class="d-flex mb-0">
 				<div class="input-group">
 					<input type="text" name="Filtre" class="form-control" placeholder="Rechercher par nom ou prénon" value="@ViewData["FiltreActuel"]" style="min-width: 350px;" />
+					<input type="hidden" name="sortBy" value="@ViewData["ActiveSort"]" />
+					<input type="hidden" name="sortDir" value="@ViewData["SortDir"]" />
 					<button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
 				</div>
 			</form>

@@ -29,13 +29,12 @@
 			<i class="bi bi-plus-circle"></i> Ajouter une allergie
 		</a>
 	</div>
-	<div class="col-md-3 text-end">
-		<input type="text"
-			   class="form-control mb-3"
-			   id="RechercheEntreeAllergie"
-			   placeholder="Rechercher une allergie..."
-			   value="@ViewData["FiltreActuel"]" />
-	</div>
+	<form asp-action="Index" method="get" class="d-flex mb-0">
+		<div class="input-group">
+			<input type="text" name="filtreAllergies" class="form-control" placeholder="Rechercher une allergie" value="@ViewData["FiltreActuelAllergie"]" style="min-width: 350px;" />
+			<button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
+		</div>
+	</form>
 </div>
 
 
@@ -110,6 +109,12 @@
 		</tbody>
 	</table>
 }
+else if (Model.Allergies != null && !Model.Allergies.Any() && !string.IsNullOrEmpty(ViewData["FiltreActuelAllergie"]?.ToString()))
+{
+	<div class="d-flex justify-content-center align-items-center" style="height: 22vh;">
+		<p class="text-center text-muted fw-bold">Aucune allergie correspond à votre recherche.</p>
+	</div>
+}
 else
 {
 	<div class="d-flex justify-content-center align-items-center" style="height: 22vh;">
@@ -125,13 +130,12 @@ else
 			<i class="bi bi-plus-circle me-2"></i> Ajouter un antécédent
 		</a>
 	</div>
-	<div class="col-md-3 text-end">
-		<input type="text"
-			   class="form-control mb-3"
-			   id="RechercheEntreeAntecedent"
-			   placeholder="Rechercher un antécédent..."
-			   value="@ViewData["FiltreActuel"]" />
-	</div>
+	<form asp-action="Index" method="get" class="d-flex mb-0">
+		<div class="input-group">
+			<input type="text" name="filtreAntecedents" class="form-control" placeholder="Rechercher un antécédent" value="@ViewData["FiltreActuelAntecedent"]" style="min-width: 350px;" />
+			<button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
+		</div>
+	</form>
 </div>
 
 @if (Model.Antecedents != null && Model.Antecedents.Any())
@@ -204,55 +208,18 @@ else
 		</tbody>
 	</table>
 }
+else if (Model.Antecedents != null && !Model.Antecedents.Any() && !string.IsNullOrEmpty(ViewData["FiltreActuelAntecedent"]?.ToString()))
+{
+	<div class="d-flex justify-content-center align-items-center" style="height: 22vh;">
+		<p class="text-center text-muted fw-bold">Aucun antécédent correspond à votre recherche.</p>
+	</div>
+}
 else
 {
 	<div class="d-flex justify-content-center align-items-center" style="height: 22vh;">
 		<p class="text-center text-muted fw-bold">Aucun antécédent trouvé. Veuillez en ajouter.</p>
 	</div>
 }
-
-
-<script>
-
-
-	const RechercheEntreeAllergie = document.getElementById('RechercheEntreeAllergie');
-	const RechercheEntreeAntecedent = document.getElementById('RechercheEntreeAntecedent');
-
-	let timeoutId;
-
-	function majListe() {
-		const filtreAllergies = encodeURIComponent(RechercheEntreeAllergie.value);
-		const filtreAntecedents = encodeURIComponent(RechercheEntreeAntecedent.value);
-		const triAllergie = '@ViewData["TriActuelAllergie"]';
-		const triAntecedent = '@ViewData["TriActuelAntecedent"]';
-
-		const url = `@Url.Action("Index")?filtreAllergies=${filtreAllergies}&filtreAntecedents=${filtreAntecedents}&OrdreTriAllergie=${triAllergie}&OrdreTriAntecedent=${triAntecedent}`;
-
-		history.pushState(null, '', url);
-
-		fetch(url, {
-			headers: { 'X-Requested-With': 'XMLHttpRequest' }
-		})
-			.then(response => response.text())
-			.then(html => {
-				const tempDiv = document.createElement('div');
-				tempDiv.innerHTML = html;
-
-				document.getElementById('AllergieListContainer').innerHTML = tempDiv.querySelector('#AllergieListContainer').innerHTML;
-				document.getElementById('AntecedentListContainer').innerHTML = tempDiv.querySelector('#AntecedentListContainer').innerHTML;
-			});
-	}
-
-	RechercheEntreeAllergie.addEventListener('input', () => {
-		clearTimeout(timeoutId);
-		timeoutId = setTimeout(majListe, 500);
-	});
-
-	RechercheEntreeAntecedent.addEventListener('input', () => {
-		clearTimeout(timeoutId);
-		timeoutId = setTimeout(majListe, 500);
-	});
-</script>
 
 
 
