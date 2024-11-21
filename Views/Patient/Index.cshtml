@@ -54,58 +54,61 @@
 	</div>
 </div>
 
-<div id="patientListContainer" class="row g-4">
-	@foreach (var p in Model.Patients)
-	{
-		<div class="col-md-3">
-			<div class="card h-100 shadow-sm" style="border-radius: 25px; overflow: hidden; max-width: 300px; max-height:350px ">
-				<div class="d-flex justify-content-center align-items-center mt-3 mb-3" style="height: 200px">
-					<img src="@Url.Action("ObtenirPhoto", "Patient", new { id = p.PatientId })"
-						 class="card-img-top object-fit-cover rounded-circle border table-bordered"
-						 style="height: 180px; width: 180px;" />
-				</div>
+@if(Model.Patients != null && Model.Patients.Any())
+{
+	<div id="patientListContainer" class="row g-4">
+		@foreach (var p in Model.Patients)
+		{
+			<div class="col-md-3 ">
+				<div class="card h-100 shadow-sm" style="border-radius: 20px; overflow: hidden; max-width: 300px; max-height:350px ">
+					<div class="d-flex justify-content-center align-items-center mt-3 mb-3" style="height: 200px">
+						<img src="@Url.Action("ObtenirPhoto", "Patient", new { id = p.PatientId })"
+							 class="card-img-top object-fit-cover rounded-circle border table-bordered"
+							 style="height: 180px; width: 180px;" />
+					</div>
 
-				<div class="card-body text-center" style="background-color: rgba(71, 85, 105, 0.5);">
-					<h5 class="card-title">@p.NomComplet</h5>
-					<p class="card-text text-dark">Âge : @p.Age ans</p>
+					<div class="card-body text-center" style="background-color: rgba(71, 85, 105, 0.5);">
+						<h5 class="card-title">@p.NomComplet</h5>
+						<p class="card-text text-dark">Âge : @p.Age ans</p>
 
-					<div class="d-flex justify-content-center">
-						<a asp-action="Detail" asp-controller="Patient" asp-route-id="@p.PatientId"
-						   class="btn btn-sm btn-outline-dark m-1"
-						   data-bs-toggle="tooltip" data-bs-placement="bottom" title="Détails du patient">
-							<i class="bi bi-eye"></i>
-						</a>
-						<a asp-action="Editer" asp-controller="Patient" asp-route-id="@p.PatientId"
-						   class="btn btn-sm btn-outline-dark m-1"
-						   data-bs-toggle="tooltip" data-bs-placement="bottom" title="Modifier le patient"> 
-							<i class="bi bi-pencil"></i>
-						</a>
-						<a asp-action="Ajouter" asp-controller="Ordonnance" asp-route-id="@p.PatientId"
-						   class="btn btn-sm btn-outline-dark m-1"
-						   data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nouvelle ordonnance">
-							<i class="bi bi-file-earmark-text"></i>
-						</a>
-						<a href="#" data-bs-toggle="modal" data-bs-target="#Modal-@p.PatientId">
-							<i class="bi bi-trash btn btn-outline-dark btn-sm m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Supprimer le patient"></i>
-						</a>
-						<div class="modal fade" id="Modal-@p.PatientId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-							<div class="modal-dialog modal-dialog-centered">
-								<div class="modal-content">
-									<div class="modal-header">
-										<h1 class="modal-title fs-5" id="exampleModalLabel">Suppression patient</h1>
-										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-									</div>
-									<div class="modal-body">
-										Confirmez-vous la suppression du patient : <strong>@p.NomComplet</strong> ?
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-										<a asp-action="Supprimer"
-										   asp-controller="Patient"
-										   asp-route-id="@p.PatientId"
-										   class="btn btn-danger">
-											Confirmer
-										</a>
+						<div class="d-flex justify-content-center">
+							<a asp-action="Detail" asp-controller="Patient" asp-route-id="@p.PatientId"
+							   class="btn btn-sm btn-outline-dark m-1"
+							   data-bs-toggle="tooltip" data-bs-placement="bottom" title="Détails du patient">
+								<i class="bi bi-eye"></i>
+							</a>
+							<a asp-action="Editer" asp-controller="Patient" asp-route-id="@p.PatientId"
+							   class="btn btn-sm btn-outline-dark m-1"
+							   data-bs-toggle="tooltip" data-bs-placement="bottom" title="Modifier le patient"> 
+								<i class="bi bi-pencil"></i>
+							</a>
+							<a asp-action="Ajouter" asp-controller="Ordonnance" asp-route-id="@p.PatientId"
+							   class="btn btn-sm btn-outline-dark m-1"
+							   data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nouvelle ordonnance">
+								<i class="bi bi-file-earmark-text"></i>
+							</a>
+							<a href="#" data-bs-toggle="modal" data-bs-target="#Modal-@p.PatientId">
+								<i class="bi bi-trash btn btn-outline-dark btn-sm m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Supprimer le patient"></i>
+							</a>
+							<div class="modal fade" id="Modal-@p.PatientId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h1 class="modal-title fs-5" id="exampleModalLabel">Suppression patient</h1>
+											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											Confirmez-vous la suppression du patient : <strong>@p.NomComplet</strong> ?
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+											<a asp-action="Supprimer"
+											   asp-controller="Patient"
+											   asp-route-id="@p.PatientId"
+											   class="btn btn-danger">
+												Confirmer
+											</a>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -113,24 +116,30 @@
 					</div>
 				</div>
 			</div>
-		</div>
-	}
-</div>
+		}
+	</div>
 
+	<div class="d-flex justify-content-center mt-4">
+		@Html.PagedListPager(
+			Model.Patients,
+			page => Url.Action("Index", new { page, Filtre = ViewData["FiltreActuel"], SortBy = ViewData["ActiveSort"], sortDir = ViewData["SortDir"] }),
+			new PagedListRenderOptions
+			{
+				UlElementClasses = new[] { "pagination", "justify-content-center" }, 
+				LiElementClasses = new[] { "page-item" }, 
+				PageClasses = new[] { "page-link" }, 
+				ActiveLiElementClass = "active" 
+			}
+		)
+	</div>
+}
+else
+{
+	<div class="d-flex justify-content-center align-items-center" style="height: 50vh;">
+		<p class="text-center text-muted fw-bold">Aucun patient trouvé pour vous. Veuillez en ajouter.</p>
+	</div>
 
-<div class="d-flex justify-content-center mt-4">
-    @Html.PagedListPager(
-        Model.Patients,
-        page => Url.Action("Index", new { page, Filtre = ViewData["FiltreActuel"], SortBy = ViewData["ActiveSort"], sortDir = ViewData["SortDir"] }),
-        new PagedListRenderOptions
-        {
-            UlElementClasses = new[] { "pagination", "justify-content-center" }, 
-            LiElementClasses = new[] { "page-item" }, 
-            PageClasses = new[] { "page-link" }, 
-            ActiveLiElementClass = "active" 
-        }
-    )
-</div>
+}
 
 
 <script>
