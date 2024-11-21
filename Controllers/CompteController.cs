@@ -78,7 +78,7 @@ namespace MedManager.Controllers
 				if (resultat.Succeeded)
 				{
 					await _gestionConnexion.SignInAsync(utilisateur, isPersistent: false);
-					return RedirectToAction("Index", "Medecin");
+					return RedirectToAction("Index", "Tableaudebord");
 				}
 
 				foreach (var erreur in resultat.Errors)

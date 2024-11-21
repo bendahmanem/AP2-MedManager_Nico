@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MedManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241113145358_InitialCreate")]
+    [Migration("20241121084928_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -277,9 +277,6 @@ namespace MedManager.Migrations
 
                     b.Property<int?>("PatientId")
                         .HasColumnType("int");
-
-                    b.Property<byte[]>("Pdf")
-                        .HasColumnType("longblob");
 
                     b.HasKey("OrdonnanceId");
 

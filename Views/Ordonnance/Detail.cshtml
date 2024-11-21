@@ -47,14 +47,6 @@
 				}
 			</ul>
 
-			@if (Model.Pdf != null)
-			{
-				<div class="mt-4 text-center">
-					<a href="@Url.Action("DownloadPdf", "Ordonnances", new { id = Model.OrdonnanceId })" class="btn btn-primary">
-						Télécharger l'ordonnance en PDF
-					</a>
-				</div>
-			}
 		</div>
 		<div class="card-footer text-muted text-center">
 			Date de création : @Model.DateCreation.ToString("dd/MM/yyyy")

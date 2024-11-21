@@ -275,9 +275,6 @@ namespace MedManager.Migrations
                     b.Property<int?>("PatientId")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("Pdf")
-                        .HasColumnType("longblob");
-
                     b.HasKey("OrdonnanceId");
 
                     b.HasIndex("MedecinId");

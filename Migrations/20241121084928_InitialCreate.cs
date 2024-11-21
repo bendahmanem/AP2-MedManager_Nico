@@ -406,7 +406,6 @@ namespace MedManager.Migrations
                     DateFin = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     InfoSupplementaire = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Pdf = table.Column<byte[]>(type: "longblob", nullable: true),
                     PatientId = table.Column<int>(type: "int", nullable: true),
                     MedecinId = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
