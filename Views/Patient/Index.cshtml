@@ -4,17 +4,18 @@
 }
 
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body bg-primary text-white p-3 rounded-3">
-                    @TempData["SuccessMessage"]
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-        </div>
-    }
+	@if (TempData["SuccessMessage"] != null)
+
+	{
+		<div class="toast align-items-center border-0 bg-primary text-white" role="alert" aria-live="assertive" aria-atomic="true">
+			<div class="d-flex">
+				<div class="toast-body">
+					<i class="bi bi-check-circle me-2"></i>@TempData["SuccessMessage"]
+				</div>
+				<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+		</div>
+	}
 </div>
 
 
@@ -56,41 +57,36 @@
 <div id="patientListContainer" class="row g-4">
 	@foreach (var p in Model.Patients)
 	{
-		<div class="col-md-4">
-			<div class="card h-100 shadow-sm">
+		<div class="col-md-3">
+			<div class="card h-100 shadow-sm" style="border-radius: 25px; overflow: hidden; max-width: 300px; max-height:350px ">
 				<div class="d-flex justify-content-center align-items-center mt-3 mb-3" style="height: 200px">
 					<img src="@Url.Action("ObtenirPhoto", "Patient", new { id = p.PatientId })"
 						 class="card-img-top object-fit-cover rounded-circle border table-bordered"
 						 style="height: 180px; width: 180px;" />
 				</div>
 
-
-				<hr class="mx-3 my-0" style="border-width: 2px; border-color: #000000;" />
-
-
-
-				<div class="card-body text-center" style="background-color: rgba(71, 85, 105, 0.8);">
+				<div class="card-body text-center" style="background-color: rgba(71, 85, 105, 0.5);">
 					<h5 class="card-title">@p.NomComplet</h5>
-					<p class="card-text text-muted">Âge : @p.Age ans</p>
+					<p class="card-text text-dark">Âge : @p.Age ans</p>
 
-					<div class="d-flex justify-content-center mt-3">
+					<div class="d-flex justify-content-center">
 						<a asp-action="Detail" asp-controller="Patient" asp-route-id="@p.PatientId"
-						   class="btn btn-sm btn-outline-light m-1"
+						   class="btn btn-sm btn-outline-dark m-1"
 						   data-bs-toggle="tooltip" data-bs-placement="bottom" title="Détails du patient">
 							<i class="bi bi-eye"></i>
 						</a>
 						<a asp-action="Editer" asp-controller="Patient" asp-route-id="@p.PatientId"
-						   class="btn btn-sm btn-outline-light m-1"
+						   class="btn btn-sm btn-outline-dark m-1"
 						   data-bs-toggle="tooltip" data-bs-placement="bottom" title="Modifier le patient"> 
 							<i class="bi bi-pencil"></i>
 						</a>
 						<a asp-action="Ajouter" asp-controller="Ordonnance" asp-route-id="@p.PatientId"
-						   class="btn btn-sm btn-outline-light m-1"
+						   class="btn btn-sm btn-outline-dark m-1"
 						   data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nouvelle ordonnance">
 							<i class="bi bi-file-earmark-text"></i>
 						</a>
 						<a href="#" data-bs-toggle="modal" data-bs-target="#Modal-@p.PatientId">
-							<i class="bi bi-trash btn btn-outline-light btn-sm m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Supprimer le patient"></i>
+							<i class="bi bi-trash btn btn-outline-dark btn-sm m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Supprimer le patient"></i>
 						</a>
 						<div class="modal fade" id="Modal-@p.PatientId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 							<div class="modal-dialog modal-dialog-centered">
