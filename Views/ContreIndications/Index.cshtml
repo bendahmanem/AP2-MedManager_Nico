@@ -23,24 +23,30 @@
 
 <h3>Allergies</h3>
 
-<div class="row mb-2 align-items-center d-flex justify-content-between">
-	<div class="col-md-6 text-start">
+<div class="row mb-2 align-items-center d-flex">
+	<div class="col-md-3 text-start">
 		<a asp-action="Ajouter" asp-route-type="Allergie" class="btn btn-outline-primary">
 			<i class="bi bi-plus-circle"></i> Ajouter une allergie
 		</a>
 	</div>
-	<form asp-action="Index" method="get" class="d-flex mb-0">
-		<div class="input-group">
-			<input type="text" name="filtreAllergies" class="form-control" placeholder="Rechercher une allergie" value="@ViewData["FiltreActuelAllergie"]" style="min-width: 350px;" />
-			<input type="hidden" name="OrdreTriAllergie" value="@ViewData["TriActuelAllergie"]" />
-			<input type="hidden" name="OrdreTriAntecedent" value="@ViewData["TriActuelAntecedent"]" />
-			<input type="hidden" name="filtreAntecedents" value="@ViewData["FiltreActuelAntecedent"]" />
-			<button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
-		</div>
-	</form>
-	<a href="@Url.Action("Index")" class="btn btn-outline-primary">
-		<i class="bi bi-arrow-counterclockwise"></i> Réinitialiser
-	</a>
+
+	<div class="col-md-6 d-flex justify-content-between">
+		<form asp-action="Index" method="get" class="d-flex mb-0 w-100">
+			<div class="input-group">
+				<input type="text" name="filtreAllergies" class="form-control" placeholder="Rechercher une allergie" value="@ViewData["FiltreActuelAllergie"]" style="min-width: 300px;" />
+				<input type="hidden" name="OrdreTriAllergie" value="@ViewData["TriActuelAllergie"]" />
+				<input type="hidden" name="OrdreTriAntecedent" value="@ViewData["TriActuelAntecedent"]" />
+				<input type="hidden" name="filtreAntecedents" value="@ViewData["FiltreActuelAntecedent"]" />
+				<button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
+			</div>
+		</form>
+	</div>
+
+	<div class="col-md-3 text-end">
+		<a href="@Url.Action("Index")" class="btn btn-outline-primary">
+			<i class="bi bi-arrow-counterclockwise"></i> Réinitialiser
+		</a>
+	</div>
 </div>
 
 
@@ -134,24 +140,30 @@ else
 
 
 <h3>Antécédents</h3>
-<div class="row mb-2 align-items-center d-flex justify-content-between">
-	<div class="col-md-6 text-start">
+<div class="row mb-2 align-items-center d-flex">
+	<div class="col-md-3 text-start">
 		<a asp-action="Ajouter" asp-route-type="Antecedent" class="btn btn-outline-primary">
 			<i class="bi bi-plus-circle me-2"></i> Ajouter un antécédent
 		</a>
 	</div>
-	<form asp-action="Index" method="get" class="d-flex mb-0">
-		<div class="input-group">
-			<input type="text" name="filtreAntecedents" class="form-control" placeholder="Rechercher un antécédent" value="@ViewData["FiltreActuelAntecedent"]" style="min-width: 350px;" />
-			<input type="hidden" name="OrdreTriAllergie" value="@ViewData["TriActuelAllergie"]" />
-			<input type="hidden" name="OrdreTriAntecedent" value="@ViewData["TriActuelAntecedent"]" />
-			<input type="hidden" name="filtreAntecedents" value="@ViewData["FiltreActuelAllergie"]" />
-			<button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
-		</div>
-	</form>
-	<a href="@Url.Action("Index")" class="btn btn-outline-primary">
-		<i class="bi bi-arrow-counterclockwise"></i> Réinitialiser
-	</a>
+
+	<div class="col-md-6 d-flex justify-content-between">
+		<form asp-action="Index" method="get" class="d-flex mb-0 w-100">
+			<div class="input-group">
+				<input type="text" name="filtreAntecedents" class="form-control" placeholder="Rechercher un antécédent" value="@ViewData["FiltreActuelAntecedent"]" style="min-width: 300px;" />
+				<input type="hidden" name="OrdreTriAllergie" value="@ViewData["TriActuelAllergie"]" />
+				<input type="hidden" name="OrdreTriAntecedent" value="@ViewData["TriActuelAntecedent"]" />
+				<input type="hidden" name="filtreAllergies" value="@ViewData["FiltreActuelAllergie"]" />
+				<button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
+			</div>
+		</form>
+	</div>
+
+	<div class="col-md-3 text-end">
+		<a href="@Url.Action("Index")" class="btn btn-outline-primary">
+			<i class="bi bi-arrow-counterclockwise"></i> Réinitialiser
+		</a>
+	</div>
 </div>
 
 @if (Model.Antecedents != null && Model.Antecedents.Any())
