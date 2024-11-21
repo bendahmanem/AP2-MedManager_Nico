@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
 using Microsoft.AspNetCore.Authorization;
+using iText.Commons.Actions.Contexts;
+using MedManager.ViewModel;
 namespace MedManager.Controllers
 {
     [Authorize]
@@ -19,9 +21,15 @@ namespace MedManager.Controllers
 			_logger = logger;
 		}
 
-		public async Task<IActionResult> Index(string Filtre, string OrdreTri, string FiltreCate)
+		public async Task<IActionResult> Index(string Filtre, string OrdreTri, MedicamentViewModel model, string FiltreCate)
 		{
 			OrdreTri ??= "nom_asc";
+			model.FiltreCateActuel ??= "";
+
+			if (string.IsNullOrEmpty(model.FiltreCateActuel) && !string.IsNullOrEmpty(FiltreCate))
+			{
+				model.FiltreCateActuel = FiltreCate;
+			}
 
 			List<Medicament> medicaments = await _dbContext.Medicaments.ToListAsync();
 
@@ -32,10 +40,10 @@ namespace MedManager.Controllers
 					.ToList();
 			}
 
-			if (!string.IsNullOrEmpty(FiltreCate))
+			if (!string.IsNullOrEmpty(model.FiltreCateActuel))
 			{
 				medicaments = medicaments
-					.Where(m => m.Categorie.ToString() == FiltreCate)
+					.Where(m => m.Categorie.ToString() == model.FiltreCateActuel)
 					.ToList();
 			}
 
@@ -49,10 +57,17 @@ namespace MedManager.Controllers
 				medicaments = medicaments.OrderBy(m => m.Nom).ToList();
 			}
 
+			var viewModel = new MedicamentViewModel
+			{
+				Medicaments = medicaments,
+				FiltreCateActuel = model.FiltreCateActuel
+			};
+
+
 			ViewData["TriActuel"] = OrdreTri;
 			ViewData["FiltreActuel"] = Filtre;
-			ViewData["FiltreCateActuel"] = FiltreCate;
-			return View(medicaments);
+			//ViewData["FiltreCateActuel"] = FiltreCate;
+			return View(viewModel);
 		}
 
 

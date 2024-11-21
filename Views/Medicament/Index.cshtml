@@ -1,4 +1,6 @@
-﻿@model List<Medicament>
+﻿@* @model List<Medicament> *@
+
+	@model MedManager.ViewModel.MedicamentViewModel
 @{
 	ViewData["Title"] = "Médicaments";
 }
@@ -33,8 +35,17 @@
 			<input type="text" name="Filtre" class="form-control" placeholder="Rechercher par nom ou prénom" value="@ViewData["FiltreActuel"]" style="min-width: 350px;" />
 		</div>
 
-		<div class="col-auto">
+@* 		<div class="col-auto">
 			<select class="form-control" name="FiltreCate">
+				<option value="">Sélectionnez la catégorie</option>
+				@foreach (var cate in Enum.GetValues(typeof(CategorieEnum)))
+				{
+					<option value="@cate" @(Model.FiltreCateActuel == cate.ToString() ? "selected" : "")>@cate</option>
+				}
+			</select>
+		</div> *@
+		<div class="col-auto">
+			<select class="form-control" asp-for="FiltreCateActuel">
 				<option value="">Sélectionnez la catégorie</option>
 				@foreach (var cate in Enum.GetValues(typeof(CategorieEnum)))
 				{
@@ -52,19 +63,20 @@
 	<input type="hidden" name="OrdreTri" value="@ViewData["TriActuel"]" />
 </form>
 
-@if(Model.Count > 0 && Model.Any())
+@if(Model.Medicaments.Count > 0 && Model.Medicaments.Any())
 {
 	
 	<table class="table table-bordered table-hover align-middle text-center">
 		<thead class="table-primary">
 			<tr>
 				<th>
+					   @* asp-route-FiltreCate="@ViewData["FiltreCateActuel"]" *@
 					<a id="triNom"
 					   asp-action="Index"
 					   asp-controller="Medicament"
 					   asp-route-Ordretri="@(ViewData["TriActuel"]?.ToString() == "nom_asc" ? "nom_desc" : "nom_asc")"
 					   asp-route-Filtre="@ViewData["FiltreActuel"]"
-					   asp-route-FiltreCate="@ViewData["FiltreCateActuel"]"
+					   asp-route-FiltreCate="@Model.FiltreCateActuel"
 					   class="text-dark text-decoration-none">
 						Nom
 						@if (ViewData["TriActuel"]?.ToString() == "nom_desc")
@@ -85,7 +97,7 @@
 			</tr>
 		</thead>
 		<tbody id="MedicamentListContainer">
-			@foreach (var m in Model)
+			@foreach (var m in Model.Medicaments)
 			{
 				<tr>
 					<td>@m.Nom</td>
@@ -132,7 +144,7 @@
 		</tbody>
 	</table>
 }
-else if (Model.Count > 0 && Model.Any() && !string.IsNullOrEmpty(ViewData["FiltreActuel"]?.ToString()))
+else if (Model.Medicaments.Count > 0 && Model.Medicaments.Any() && !string.IsNullOrEmpty(ViewData["FiltreActuel"]?.ToString()))
 {
 	<div class="d-flex justify-content-center align-items-center" style="height: 50vh;">
 		<p class="text-center text-muted fw-bold">Aucune médicament ne correspond à votre recherche.</p>
