@@ -2,14 +2,13 @@
 <section class="contact" id="contact">
 	<div class="container">
 		<div class="card shadow-sm mt-5">
-			<div class="card-header text-center text-dark text-white">
-				<h2>Nous contacter</h2>
+			<div class="card-header text-center text-dark">
+				<h5>Nous contacter</h5>
 			</div>
 			<div class="card-body">
 				<form action="https://api.web3forms.com/submit" method="POST" id="form">
 					<input type="hidden" name="access_key" value="9500b774-9f66-4a1f-90ad-53ef9b523d4a">
-
-					<div class="form-row">
+					<div class="row">
 						<div class="form-group col-md-6">
 							<label for="nom">Nom et prénom</label>
 							<input name="nom" type="text" class="form-control" placeholder="Nom et prénom" required>
@@ -20,7 +19,7 @@
 						</div>
 					</div>
 
-					<div class="form-row">
+					<div class="row">
 						<div class="form-group col-md-6">
 							<label for="tel">Numéro de téléphone</label>
 							<input name="tel" type="tel" class="form-control" placeholder="Numéro de téléphone">
@@ -36,15 +35,15 @@
 						<textarea name="message" cols="30" rows="5" class="form-control" placeholder="Votre message" required></textarea>
 					</div>
 
-					<div class="text-center">
-						<button type="submit" class="btn btn-primary">Envoyer</button>
+					<div class="text-center mt-3">
+						<button type="submit" class="btn btn-outline-primary">Envoyer</button>
 					</div>
-
 				</form>
 			</div>
+
 		</div>
 	</div>
-	<div class ="text-center" id="result"></div>
+	<div class="text-center" id="result"></div>
 </section>
 
 <script>
