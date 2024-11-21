@@ -18,6 +18,22 @@
 	}
 </div>
 
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+	@if (TempData["ErrorMessage"] != null)
+
+	{
+		<div class="toast align-items-center border-0 bg-danger text-white" role="alert" aria-live="assertive" aria-atomic="true">
+			<div class="d-flex">
+				<div class="toast-body">
+					<i class="bi bi-check-circle me-2"></i>@TempData["ErrorMessage"]
+				</div>
+				<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+		</div>
+	}
+</div>
+
+
 
 <h2 class="mb-3">Gestion des patients</h2>
 
@@ -28,15 +44,18 @@
 		</a>
 	</div>
 	<div class="col-md-9">
-		<div class="d-flex justify-content-end align-items-center">
+		<div class="d-flex justify-content-end align-items-center gap-3">
 			<form asp-action="Index" method="get" class="d-flex mb-0">
 				<div class="input-group">
-					<input type="text" name="Filtre" class="form-control" placeholder="Rechercher par nom ou prénon" value="@ViewData["FiltreActuel"]" style="min-width: 350px;" />
+					<input type="text" name="Filtre" class="form-control" placeholder="Rechercher par nom ou prénom" value="@ViewData["FiltreActuel"]" style="min-width: 350px;" />
 					<input type="hidden" name="sortBy" value="@ViewData["ActiveSort"]" />
 					<input type="hidden" name="sortDir" value="@ViewData["SortDir"]" />
-					<button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
+					<button class="btn btn-outline-primary" type="submit">
+						<i class="bi bi-search"></i>
+					</button>
 				</div>
 			</form>
+
 
 			<div class="btn-group" role="group">
 				<a href="@Url.Action("Index", new { Filtre = ViewData["FiltreActuel"], sortBy = "nom", sortDir = ViewData["SortDir"]?.ToString() == "asc" ? "desc" : "asc" })"
@@ -52,9 +71,13 @@
 					Âge @(ViewData["ActiveSort"]?.ToString() == "age" ? (ViewData["SortDir"]?.ToString() == "asc" ? "▲" : "▼") : "")
 				</a>
 			</div>
+			<a href="@Url.Action("Index")" class="btn btn-outline-primary">
+				<i class="bi bi-arrow-counterclockwise"></i> Réinitialiser
+			</a>
 		</div>
 	</div>
 </div>
+
 
 @if(Model.Patients != null && Model.Patients.Any())
 {

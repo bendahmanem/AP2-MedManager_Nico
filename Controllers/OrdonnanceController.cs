@@ -196,7 +196,7 @@ namespace MedManager.Controllers
 				var ListeMedicamentsCompatibles = await ObtenirMedicamentsCompatibles(patient);
 				var ListeMedicamentsIncompatibles = await ObtenierMedicamentsIncompatibles(patient);
 
-				if (!ListeMedicamentsCompatibles.Any())
+				if (ListeMedicamentsCompatibles.Count == 0)
 				{
 					TempData["ErrorMessage"] = "Aucun médicament compatible n'est disponible pour ce patient.";
 					return RedirectToAction("Index", "Patient");
