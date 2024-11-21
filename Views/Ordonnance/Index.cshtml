@@ -34,74 +34,84 @@
         </div>
     </form>
 
-    <div class="row mt-3">
-        @foreach (var o in Model.Ordonnances)
-        {
-            <div class="col-md-4 mb-3">
-                <div class="card shadow-sm">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">@o.Patient?.NomComplet</h5>
-                        <hr class="my-2">
+    @if(Model.Ordonnances != null && Model.Ordonnances.Any())
+    {
+        
+        <div class="row mt-3">
+            @foreach (var o in Model.Ordonnances)
+            {
+                <div class="col-md-4 mb-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">@o.Patient?.NomComplet</h5>
+                            <hr class="my-2">
 
-                        <p class="card-text">Date de début : @o.DateDebut.ToString("dd/MM/yyyy")</p>
-                        <p class="card-text">Date de fin : @o.DateFin.ToString("dd/MM/yyyy")</p>
+                            <p class="card-text">Date de début : @o.DateDebut.ToString("dd/MM/yyyy")</p>
+                            <p class="card-text">Date de fin : @o.DateFin.ToString("dd/MM/yyyy")</p>
 
-                        <div class="d-flex justify-content-center mt-3">
-                            <a asp-action="Detail" asp-controller="Ordonnance" asp-route-id="@o.OrdonnanceId" 
-                            class="btn btn-outline-secondary m-1" 
-                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Voir les détails">
-                                <i class="bi bi-eye"></i>
-                            </a>
-                            <a asp-action="Editer" asp-controller="Ordonnance" asp-route-id="@o.OrdonnanceId" 
-                            class="btn btn-outline-secondary m-1"
-                               data-bs-toggle="tooltip" data-bs-placement="bottom" title="Éditer l'ordonnance">
-                                <i class="bi bi-pencil"></i>
-                            </a>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#Modal-@o.OrdonnanceId">
-                                <i class="bi bi-trash btn btn-outline-secondary  m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Supprimer l'ordonannce'"></i>
-                            </a>
-                            <a asp-action="GenererPdf" asp-controller="Ordonnance" asp-route-ordonnanceId="@o.OrdonnanceId" asp-route-patientId="@o.PatientId" 
-                            class="btn btn-outline-secondary m-1"
-                            data-bs-toggle="tooltip" data-bs-placement="bottom"  title="Générer PDF">
-                            <i class="bi bi-filetype-pdf"></i>
-                            </a>
+                            <div class="d-flex justify-content-center mt-3">
+                                <a asp-action="Detail" asp-controller="Ordonnance" asp-route-id="@o.OrdonnanceId" 
+                                class="btn btn-outline-secondary m-1" 
+                                data-bs-toggle="tooltip" data-bs-placement="bottom" title="Voir les détails">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a asp-action="Editer" asp-controller="Ordonnance" asp-route-id="@o.OrdonnanceId" 
+                                class="btn btn-outline-secondary m-1"
+                                   data-bs-toggle="tooltip" data-bs-placement="bottom" title="Éditer l'ordonnance">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#Modal-@o.OrdonnanceId">
+                                    <i class="bi bi-trash btn btn-outline-secondary  m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Supprimer l'ordonannce'"></i>
+                                </a>
+                                <a asp-action="GenererPdf" asp-controller="Ordonnance" asp-route-ordonnanceId="@o.OrdonnanceId" asp-route-patientId="@o.PatientId" 
+                                class="btn btn-outline-secondary m-1"
+                                data-bs-toggle="tooltip" data-bs-placement="bottom"  title="Générer PDF">
+                                <i class="bi bi-filetype-pdf"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="modal fade" id="Modal-@o.OrdonnanceId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Suppression ordonnance</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            Confirmez-vous la suppression de l'ordonnance du patient : <strong>@o.Patient.NomComplet</strong> ?
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                            <a asp-action="Supprimer" asp-controller="Ordonnance" asp-route-id="@o.OrdonnanceId" class="btn btn-danger">Confirmer</a>
+                <div class="modal fade" id="Modal-@o.OrdonnanceId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Suppression ordonnance</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Confirmez-vous la suppression de l'ordonnance du patient : <strong>@o.Patient.NomComplet</strong> ?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                <a asp-action="Supprimer" asp-controller="Ordonnance" asp-route-id="@o.OrdonnanceId" class="btn btn-danger">Confirmer</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        }
-    </div>
+            }
+        </div>
 
-    <div class="d-flex justify-content-center">
-        @Html.PagedListPager(
-                 Model.Ordonnances,
-                 page => Url.Action("Index", new { page }),
-                 new PagedListRenderOptions
-        {
-            UlElementClasses = new[] { "pagination", "justify-content-center" }, 
-            LiElementClasses = new[] { "page-item" }, 
-            PageClasses = new[] { "page-link" }, 
-            ActiveLiElementClass = "active" 
-        }
-                 )
-    </div>
+        <div class="d-flex justify-content-center mt-4 pagination-container">
+            @Html.PagedListPager(
+                     Model.Ordonnances,
+                     page => Url.Action("Index", new { page }),
+                     new PagedListRenderOptions
+            {
+                UlElementClasses = new[] { "pagination", "justify-content-center" }, 
+                LiElementClasses = new[] { "page-item" }, 
+                PageClasses = new[] { "page-link" }, 
+                ActiveLiElementClass = "active" 
+            }
+                     )
+        </div>
+    }
+    else
+    {
+        <div class="d-flex justify-content-center align-items-center" style="height: 50vh;">
+            <p class="text-center text-muted fw-bold">Aucune ordonnance pour vos patients. Veuillez en ajouter.</p>
+        </div>
+    }
 </div>
 

@@ -131,8 +131,8 @@ footer a:hover {
 
 .pagination-container {
     position: absolute;
-    bottom: 40px; 
-    width: 65%;
+    bottom: 35px; 
+    width: 70%;
 }
 
 /*.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
