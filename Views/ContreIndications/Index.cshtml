@@ -17,7 +17,9 @@
 
 <h2>Gestion des contre-indications</h2>
 
+
 <h3>Allergies</h3>
+
 <div class="col-auto">
 	<a asp-action="Ajouter" asp-route-type="Allergie" class="btn btn-outline-primary">
 		<i class="bi bi-plus-circle"></i> Ajouter une allergie
@@ -25,75 +27,83 @@
 </div>
 <input type="text" class="col-4 form-control mb-3" id="RechercheEntreeAllergie" placeholder="Rechercher une allergie..."
 	   value="@ViewData["FiltreActuel"]" />
-
-<table class="table table-bordered table-hover align-middle text-center">
-	<thead class="table-primary">
-		<tr>
-			<th>
-				<a class="text-dark" asp-action="Index" asp-route-OrdreTriAllergie="@ViewData["NomAllergieParamTri"]" asp-route-filtreAllergies="@ViewData["FiltreActuelAllergie"]">
-					Nom
-					@if ((ViewData["TriActuelAllergie"]?.ToString() ?? "") == "nomAllergie_desc")
-					{
-						<i class="bi bi-arrow-down-short"></i>
-					}
-					else if ((ViewData["TriActuelAllergie"]?.ToString() ?? "") == "")
-					{
-						<i class="bi bi-arrow-up-short"></i>
-					}
-				</a>
-			</th>
-			<th class="text-center">Actions</th>
-		</tr>
-	</thead>
-	<tbody id="AllergieListContainer">
-		@foreach (var allergie in Model.Allergies)
-
-		{
+@if(Model.Allergies != null && Model.Allergies.Any())
+{
+	<table class="table table-bordered table-hover align-middle text-center">
+		<thead class="table-primary">
 			<tr>
-				<td>@allergie.Nom</td>
-				<td class="text-center">
-					<a asp-action="Detail" asp-controller="ContreIndications" asp-route-id="@allergie.AllergieId" asp-route-type="Allergie"
-					   class="btn btn-outline-secondary btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Détails de l'allergie">
-						<i class="bi bi-eye"></i>
+				<th>
+					<a class="text-dark" asp-action="Index" asp-route-OrdreTriAllergie="@ViewData["NomAllergieParamTri"]" asp-route-filtreAllergies="@ViewData["FiltreActuelAllergie"]">
+						Nom
+						@if ((ViewData["TriActuelAllergie"]?.ToString() ?? "") == "nomAllergie_desc")
+						{
+							<i class="bi bi-arrow-down-short"></i>
+						}
+						else if ((ViewData["TriActuelAllergie"]?.ToString() ?? "") == "")
+						{
+							<i class="bi bi-arrow-up-short"></i>
+						}
 					</a>
+				</th>
+				<th class="text-center">Actions</th>
+			</tr>
+		</thead>
+		<tbody id="AllergieListContainer">
+			@foreach (var allergie in Model.Allergies)
 
-					<a asp-action="Modifier" asp-controller="ContreIndications" asp-route-id="@allergie.AllergieId" asp-route-type="Allergie"
-					   class="btn btn-outline-secondary btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Modifier l'allergie">
-						<i class="bi bi-pen"></i>
-					</a>
+			{
+				<tr>
+					<td>@allergie.Nom</td>
+					<td class="text-center">
+						<a asp-action="Detail" asp-controller="ContreIndications" asp-route-id="@allergie.AllergieId" asp-route-type="Allergie"
+						   class="btn btn-outline-secondary btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Détails de l'allergie">
+							<i class="bi bi-eye"></i>
+						</a>
 
-					<a href="#" data-bs-toggle="modal" data-bs-target="#Modal-@allergie.AllergieId">
-						<i class="bi bi-trash btn btn-outline-secondary btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Supprimer l'allergie"></i>
-					</a>
+						<a asp-action="Modifier" asp-controller="ContreIndications" asp-route-id="@allergie.AllergieId" asp-route-type="Allergie"
+						   class="btn btn-outline-secondary btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Modifier l'allergie">
+							<i class="bi bi-pen"></i>
+						</a>
 
-					<div class="modal fade" id="Modal-@allergie.AllergieId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-						<div class="modal-dialog modal-dialog-centered">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h1 class="modal-title fs-5" id="exampleModalLabel">Suppression allergie</h1>
-									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-								</div>
-								<div class="modal-body">
-									Confirmez-vous l'allergie : <strong>@allergie.Nom</strong> ?
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-									<a asp-action="Supprimer"
-									   asp-controller="ContreIndications"
-									   asp-route-id="@allergie.AllergieId"
-									   asp-route-type="Allergie"
-									   class="btn btn-danger">
-										Confirmer
-									</a>
+						<a href="#" data-bs-toggle="modal" data-bs-target="#Modal-@allergie.AllergieId">
+							<i class="bi bi-trash btn btn-outline-secondary btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Supprimer l'allergie"></i>
+						</a>
+
+						<div class="modal fade" id="Modal-@allergie.AllergieId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-dialog-centered">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h1 class="modal-title fs-5" id="exampleModalLabel">Suppression allergie</h1>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+										Confirmez-vous l'allergie : <strong>@allergie.Nom</strong> ?
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+										<a asp-action="Supprimer"
+										   asp-controller="ContreIndications"
+										   asp-route-id="@allergie.AllergieId"
+										   asp-route-type="Allergie"
+										   class="btn btn-danger">
+											Confirmer
+										</a>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-				</td>
-			</tr>
-		}
-	</tbody>
-</table>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+else
+{
+	<div class="d-flex justify-content-center align-items-center" style="height: 22vh;">
+		<p class="text-center text-muted fw-bold">Aucune allergie trouvée. Veuillez en ajouter.</p>
+	</div>
+}
 
 
 <h3>Antécédents</h3>
@@ -107,74 +117,85 @@
 <input type="text" class="col-4 form-control mb-3" id="RechercheEntreeAntecedent" placeholder="Rechercher un antécédent..."
 	   value="@ViewData["FiltreActuel"]" />
 
-<table class="table table-bordered table-hover align-middle text-center">
-	<thead class="table-primary">
-		<tr>
-			<th>
-				<a class="text-dark" asp-action="Index" asp-route-OrdreTriAntecedent="@ViewData["NomAntecedentParamTri"]" asp-route-filtreAntecedents="@ViewData["FiltreActuelAntecedent"]">
-					Nom
-					@if ((ViewData["TriActuelAntecedent"]?.ToString() ?? "") == "nomAntecedent_desc")
-					{
-						<i class="bi bi-arrow-down-short"></i>
-					}
-					else if ((ViewData["TriActuelAntecedent"]?.ToString() ?? "") == "")
-					{
-						<i class="bi bi-arrow-up-short"></i>
-					}
-				</a>
-			</th>
-			<th class="text-center">Actions</th>
-		</tr>
-	</thead>
-	<tbody id="AntecedentListContainer">
-		@foreach (var antecedent in Model.Antecedents)
-
-		{
+@if(Model.Antecedents != null && Model.Antecedents.Any())
+{
+	
+	<table class="table table-bordered table-hover align-middle text-center">
+		<thead class="table-primary">
 			<tr>
-				<td>@antecedent.Nom</td>
-				<td>
-					<a asp-action="Detail" asp-controller="ContreIndications" asp-route-id="@antecedent.AntecedentId" asp-route-type="Antecedent"
-					   class="btn btn-outline-secondary btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Détails de l'antécédent">
-						<i class="bi bi-eye"></i>
+				<th>
+					<a class="text-dark" asp-action="Index" asp-route-OrdreTriAntecedent="@ViewData["NomAntecedentParamTri"]" asp-route-filtreAntecedents="@ViewData["FiltreActuelAntecedent"]">
+						Nom
+						@if ((ViewData["TriActuelAntecedent"]?.ToString() ?? "") == "nomAntecedent_desc")
+						{
+							<i class="bi bi-arrow-down-short"></i>
+						}
+						else if ((ViewData["TriActuelAntecedent"]?.ToString() ?? "") == "")
+						{
+							<i class="bi bi-arrow-up-short"></i>
+						}
 					</a>
+				</th>
+				<th class="text-center">Actions</th>
+			</tr>
+		</thead>
+		<tbody id="AntecedentListContainer">
+			@foreach (var antecedent in Model.Antecedents)
 
-					<a asp-action="Modifier" asp-controller="ContreIndications" asp-route-id="@@antecedent.AntecedentId" asp-route-type="Antecedent"
-					   class="btn btn-outline-secondary btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Modifier l'antécédent">
-						<i class="bi bi-pen"></i>
-					</a>
+			{
+				<tr>
+					<td>@antecedent.Nom</td>
+					<td>
+						<a asp-action="Detail" asp-controller="ContreIndications" asp-route-id="@antecedent.AntecedentId" asp-route-type="Antecedent"
+						   class="btn btn-outline-secondary btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Détails de l'antécédent">
+							<i class="bi bi-eye"></i>
+						</a>
 
-					<a href="#" data-bs-toggle="modal" data-bs-target="#Modal-@@antecedent.AntecedentId">
-						<i class="bi bi-trash btn btn-outline-secondary btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Supprimer l'antécédent"></i>
-					</a>
+						<a asp-action="Modifier" asp-controller="ContreIndications" asp-route-id="@@antecedent.AntecedentId" asp-route-type="Antecedent"
+						   class="btn btn-outline-secondary btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Modifier l'antécédent">
+							<i class="bi bi-pen"></i>
+						</a>
 
-					<div class="modal fade" id="Modal-@antecedent.AntecedentId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-						<div class="modal-dialog modal-dialog-centered">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h1 class="modal-title fs-5" id="exampleModalLabel">Suppression antécédent</h1>
-									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-								</div>
-								<div class="modal-body">
-									Confirmez-vous la suppression de l'antécédent : <strong>@antecedent.Nom</strong> ?
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-									<a asp-action="Supprimer"
-									   asp-controller="ContreIndications"
-									   asp-route-id="@antecedent.AntecedentId"
-									   asp-route-type="Antecedent"
-									   class="btn btn-danger">
-										Confirmer
-									</a>
+						<a href="#" data-bs-toggle="modal" data-bs-target="#Modal-@@antecedent.AntecedentId">
+							<i class="bi bi-trash btn btn-outline-secondary btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Supprimer l'antécédent"></i>
+						</a>
+
+						<div class="modal fade" id="Modal-@antecedent.AntecedentId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-dialog-centered">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h1 class="modal-title fs-5" id="exampleModalLabel">Suppression antécédent</h1>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+										Confirmez-vous la suppression de l'antécédent : <strong>@antecedent.Nom</strong> ?
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+										<a asp-action="Supprimer"
+										   asp-controller="ContreIndications"
+										   asp-route-id="@antecedent.AntecedentId"
+										   asp-route-type="Antecedent"
+										   class="btn btn-danger">
+											Confirmer
+										</a>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-				</td>
-			</tr>
-		}
-	</tbody>
-</table>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+else
+{
+	<div class="d-flex justify-content-center align-items-center" style="height: 22vh;">
+		<p class="text-center text-muted fw-bold">Aucun antécédent trouvé. Veuillez en ajouter.</p>
+	</div>
+
+}
 
 
 
