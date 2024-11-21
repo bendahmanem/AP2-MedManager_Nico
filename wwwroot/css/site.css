@@ -81,6 +81,7 @@ body {
     transition: all 0.3s ease;
 }
 
+
 .user-actions a:hover {
     background-color: var(--accent-blue-hover);
 }
@@ -117,6 +118,17 @@ footer a:hover {
     color: var(--light-hover);
     text-decoration: underline;
 }
+
+.register-link a {
+    text-decoration:none;
+    color: var(--accent-blue);
+    cursor:pointer;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
 
 /*.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem var(--accent-blue);

@@ -13,32 +13,32 @@
 
             <div class="card-body">
                 <form asp-action="Connexion" method="post">
-                    <div class="form-group">
+                    <div class="form-group mb-2">
                         <label asp-for="NomUtilisateur"></label>
                         <input asp-for="NomUtilisateur"
                                class="form-control @(ViewData.ModelState["NomUtilisateur"]?.Errors.Count > 0 ? "is-invalid" : "")" />
                         <span asp-validation-for="NomUtilisateur" class="invalid-feedback"></span>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mb-2">
                         <label asp-for="MotDePasse" class="control-label"></label>
                         <input asp-for="MotDePasse"
                                class="form-control @(ViewData.ModelState["MotDePasse"]?.Errors.Count > 0 ? "is-invalid" : "")" />
                         <span asp-validation-for="MotDePasse" class="invalid-feedback"></span>
                     </div>
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
+                    <div class="form-group mb-2">
                         <div class="form-check">
                             <input asp-for="SeRappelerDeMoi" class="form-check-input" />
                             <label asp-for="SeRappelerDeMoi" class="form-check-label"></label>
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group mb-2">
                         <button type="submit" class="btn btn-outline-primary">Connexion</button>
                     </div>
                 </form>
 
-                <div class="form-group">
+                <div class="register-link">
                     <p>Vous n'avez pas de compte ? <a asp-action="Inscription" asp-controller="Compte">Inscrivez-vous ici</a></p>
                 </div>
             </div>
