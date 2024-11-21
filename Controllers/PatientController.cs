@@ -32,9 +32,6 @@ namespace MedManager.Controllers
 		{
 			try
 			{
-                //debug
-                var mm = ViewData["FiltreActuel"];
-
 				var user = await _userManager.GetUserAsync(User);
 				if (user == null)
 				{
@@ -68,7 +65,7 @@ namespace MedManager.Controllers
 					"nom" => sortDir == "asc" ? patients.OrderBy(p => p.Nom) : patients.OrderByDescending(p => p.Nom),
 					"prenom" => sortDir == "asc" ? patients.OrderBy(p => p.Prenom) : patients.OrderByDescending(p => p.Prenom),
 					"age" => sortDir == "asc" ? patients.OrderBy(p => p.Age) : patients.OrderByDescending(p => p.Age),
-					_ => patients.OrderBy(p => p.Nom) // Tri par défaut
+					_ => patients.OrderBy(p => p.Nom) 
 				};
 
 				int TaillePage = 9;
