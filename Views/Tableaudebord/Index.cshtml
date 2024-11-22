@@ -71,6 +71,48 @@
 			</div>
 		</div>
 	</div>
+	<div class="row g-3 mb-4">
+		<div class="col-md-6">
+			<div class="card border-0 shadow-sm">
+				<div class="card-body">
+					<h6 class="card-title mb-3 text-center">Allergies les plus fréquentes</h6>
+					@if (Model.FrequenceAllergies.Any())
+
+					{
+						<div style="height: 200px">
+							<canvas id="allergieChart"></canvas>
+						</div>
+					}
+
+					else
+
+					{
+						<p class="text-muted">Aucune donnée sur les allergies pour le moment.</p>
+					}
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="card border-0 shadow-sm">
+				<div class="card-body">
+					<h6 class="card-title mb-3 text-center">Antécédents les plus fréquents</h6>
+					@if (Model.FrequenceAntecedents.Any())
+
+					{
+						<div style="height: 200px">
+							<canvas id="antecedentChart"></canvas>
+						</div>
+					}
+
+					else
+
+					{
+						<p class="text-muted">Aucune donnée sur les antécédents pour le moment.</p>
+					}
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<div class="row g-3 mb-4">
 		<div class="col-12">
