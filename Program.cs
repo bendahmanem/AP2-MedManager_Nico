@@ -9,8 +9,9 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 Log.Logger = new LoggerConfiguration()
-	.WriteTo.Console() 
-	.WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)  
+	.ReadFrom.Configuration(new ConfigurationBuilder()
+		.AddJsonFile("appsettings.json")
+		.Build())
 	.CreateLogger();
 
 builder.Services.AddControllersWithViews();
@@ -46,12 +47,7 @@ builder.Services.AddLogging(loggingBuilder =>
 	loggingBuilder.AddSerilog(); 
 });
 
-
-
-
 var app = builder.Build();
-
-
 
 if (app.Environment.IsDevelopment())
 {
@@ -65,10 +61,11 @@ else
 	app.UseStatusCodePagesWithRedirects("/Error/Index");
 }
 
+
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAuthentication();
-
 
 app.UseRouting();
 

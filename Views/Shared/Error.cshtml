@@ -3,30 +3,33 @@
     ViewData["Title"] = "Error";
 }
 
-<div class="card shadow-lg w-75">
-    <div class="card-header text-center">
-        <h1 class="h4">Oups ! Une erreur s'est produite.</h1>
-    </div>
-    <div class="card-body text-center">
-        @if (ViewData["ErrorCode"] != null)
-        {
-            <h2 class="text-danger display-4">Erreur @ViewData["ErrorCode"]</h2>
-            <p class="text-muted">@ViewData["ErrorMessage"]</p>
-        }
-        else
-        {
-            <p class="text-muted">Une erreur inattendue s'est produite. Veuillez réessayer plus tard.</p>
-        }
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card shadow-lg w-75">
+        <div class="card-header text-center">
+            <h1 class="h4 text-danger">Oups ! Une erreur s'est produite.</h1>
+        </div>
+        <div class="card-body text-center">
+            @if (ViewData["ErrorCode"] != null)
+            {
+                <h2 class="text-danger display-4">Erreur @ViewData["ErrorCode"]</h2>
+                <p class="text-muted">@ViewData["ErrorMessage"]</p>
+            }
+            else
+            {
+                <p class="text-muted">Une erreur inattendue s'est produite. Veuillez réessayer plus tard.</p>
+            }
 
-        @if (Model.ShowRequestId)
-        {
-            <p class="text-muted mt-3">
-                <strong>Identifiant de requête :</strong> @Model.RequestId
-            </p>
-        }
+            @if (Model.ShowRequestId)
+            {
+                <p class="text-muted mt-3">
+                    <strong>Identifiant de requête :</strong> @Model.RequestId
+                </p>
+            }
 
-        <a href="/" class="btn btn-primary mt-4">
-            Retour à l'accueil
-        </a>
+            <a href="/" class="btn btn-primary mt-4">
+                Retour à l'accueil
+            </a>
+        </div>
     </div>
 </div>
+

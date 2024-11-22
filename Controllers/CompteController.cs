@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using MedManager.Models;
 using MedManager.ViewModel.Compte;
 
-
 namespace MedManager.Controllers
 {
 	public class CompteController : Controller
@@ -22,22 +21,34 @@ namespace MedManager.Controllers
 		[HttpGet]
 		public IActionResult Connexion()
 		{
+			_logger.LogInformation("Affichage de la page de connexion.");
 			return View();
 		}
 
 		[HttpPost]
 		public async Task<IActionResult> Connexion(ConnexionViewModel modele)
 		{
+			_logger.LogInformation("Tentative de connexion pour l'utilisateur {NomUtilisateur}.", modele.NomUtilisateur);
+
 			if (ModelState.IsValid)
 			{
-				var resultat = await _gestionConnexion.PasswordSignInAsync(modele.NomUtilisateur, modele.MotDePasse, modele.SeRappelerDeMoi, false);
-
-				if (resultat.Succeeded)
+				try
 				{
-					return RedirectToAction("Index", "Tableaudebord");
-				}
+					var resultat = await _gestionConnexion.PasswordSignInAsync(modele.NomUtilisateur, modele.MotDePasse, modele.SeRappelerDeMoi, false);
 
-				ModelState.AddModelError("", "Le nom d'utilisateur ou le mot de passe que vous avez saisi est incorrect. Veuillez réessayer.");
+					if (resultat.Succeeded)
+					{
+						_logger.LogInformation("Connexion réussie pour l'utilisateur {NomUtilisateur}.", modele.NomUtilisateur);
+						return RedirectToAction("Index", "Tableaudebord");
+					}
+
+					_logger.LogWarning("Échec de connexion pour l'utilisateur {NomUtilisateur}. Mot de passe ou nom incorrect.", modele.NomUtilisateur);
+				}
+				catch (Exception ex)
+				{
+					_logger.LogError(ex, "Erreur lors de la tentative de connexion pour l'utilisateur {NomUtilisateur}.", modele.NomUtilisateur);
+					ModelState.AddModelError("", "Une erreur est survenue lors de la tentative de connexion.");
+				}
 			}
 
 			return View(modele);
@@ -45,46 +56,73 @@ namespace MedManager.Controllers
 
 		public async Task<IActionResult> Deconnexion()
 		{
-			await _gestionConnexion.SignOutAsync();
+			try
+			{
+				_logger.LogInformation("Déconnexion en cours.");
+				await _gestionConnexion.SignOutAsync();
+				_logger.LogInformation("Déconnexion réussie.");
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "Erreur lors de la tentative de déconnexion.");
+				throw; // Optionnel, peut être géré si vous souhaitez afficher une page d'erreur.
+			}
 
 			return RedirectToAction("Index", "Accueil");
 		}
 
 		public IActionResult Inscription()
 		{
+			_logger.LogInformation("Affichage de la page d'inscription.");
 			return View();
 		}
 
 		[HttpPost]
 		public async Task<IActionResult> Inscription(CompteViewModel modele)
 		{
+			_logger.LogInformation("Tentative d'inscription pour l'utilisateur {NomUtilisateur}.", modele.NomUtilisateur);
+
 			if (ModelState.IsValid)
 			{
-				var utilisateur = new Medecin
+				try
 				{
-                    UserName = modele.NomUtilisateur,
-					Email = modele.Email,
-					Nom = modele.Nom,
-					Prenom = modele.Prenom,
-					Ville = modele.Ville,
-					Adresse = modele.Adresse,
-					Faculte = modele.Faculte,
-					Specialite = modele.Specialite,
-                    NumeroTel = modele.MotDePasse,
-				};
+					var utilisateur = new Medecin
+					{
+						UserName = modele.NomUtilisateur,
+						Email = modele.Email,
+						Nom = modele.Nom,
+						Prenom = modele.Prenom,
+						Ville = modele.Ville,
+						Adresse = modele.Adresse,
+						Faculte = modele.Faculte,
+						Specialite = modele.Specialite,
+						NumeroTel = modele.MotDePasse,
+					};
 
-                var resultat = await _gestionUtilisateurs.CreateAsync(utilisateur, modele.MotDePasse);
+					var resultat = await _gestionUtilisateurs.CreateAsync(utilisateur, modele.MotDePasse);
 
-				if (resultat.Succeeded)
-				{
-					await _gestionConnexion.SignInAsync(utilisateur, isPersistent: false);
-					return RedirectToAction("Index", "Tableaudebord");
+					if (resultat.Succeeded)
+					{
+						_logger.LogInformation("Inscription réussie pour l'utilisateur {NomUtilisateur}.", modele.NomUtilisateur);
+						await _gestionConnexion.SignInAsync(utilisateur, isPersistent: false);
+						return RedirectToAction("Index", "Tableaudebord");
+					}
+
+					foreach (var erreur in resultat.Errors)
+					{
+						_logger.LogWarning("Erreur lors de l'inscription pour l'utilisateur {NomUtilisateur} : {Description}.", modele.NomUtilisateur, erreur.Description);
+						ModelState.AddModelError(string.Empty, erreur.Description);
+					}
 				}
-
-				foreach (var erreur in resultat.Errors)
+				catch (Exception ex)
 				{
-					ModelState.AddModelError(string.Empty, erreur.Description);
+					_logger.LogError(ex, "Erreur lors de la tentative d'inscription pour l'utilisateur {NomUtilisateur}.", modele.NomUtilisateur);
+					ModelState.AddModelError("", "Une erreur est survenue lors de la tentative d'inscription.");
 				}
+			}
+			else
+			{
+				_logger.LogWarning("Échec de validation du modèle pour l'utilisateur {NomUtilisateur}.", modele.NomUtilisateur);
 			}
 
 			return View(modele);

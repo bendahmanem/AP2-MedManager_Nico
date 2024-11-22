@@ -258,3 +258,12 @@ C:\Users\ponsn\OneDrive\Bureau\AP2 - MedManager\MedManager\obj\Debug\net8.0\MedM
 C:\Users\ponsn\OneDrive\Bureau\AP2 - MedManager\MedManager\obj\Debug\net8.0\ref\MedManager.dll
 C:\Users\ponsn\OneDrive\Bureau\AP2 - MedManager\MedManager\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
 C:\Users\ponsn\OneDrive\Bureau\AP2 - MedManager\MedManager\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\ponsn\OneDrive\Bureau\AP2 - MedManager\MedManager\bin\Debug\net8.0\Serilog.dll
+C:\Users\ponsn\OneDrive\Bureau\AP2 - MedManager\MedManager\bin\Debug\net8.0\Serilog.AspNetCore.dll
+C:\Users\ponsn\OneDrive\Bureau\AP2 - MedManager\MedManager\bin\Debug\net8.0\Serilog.Extensions.Hosting.dll
+C:\Users\ponsn\OneDrive\Bureau\AP2 - MedManager\MedManager\bin\Debug\net8.0\Serilog.Extensions.Logging.dll
+C:\Users\ponsn\OneDrive\Bureau\AP2 - MedManager\MedManager\bin\Debug\net8.0\Serilog.Formatting.Compact.dll
+C:\Users\ponsn\OneDrive\Bureau\AP2 - MedManager\MedManager\bin\Debug\net8.0\Serilog.Settings.Configuration.dll
+C:\Users\ponsn\OneDrive\Bureau\AP2 - MedManager\MedManager\bin\Debug\net8.0\Serilog.Sinks.Console.dll
+C:\Users\ponsn\OneDrive\Bureau\AP2 - MedManager\MedManager\bin\Debug\net8.0\Serilog.Sinks.Debug.dll
+C:\Users\ponsn\OneDrive\Bureau\AP2 - MedManager\MedManager\bin\Debug\net8.0\Serilog.Sinks.File.dll

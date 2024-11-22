@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "E8DExqN+vrCtTp03pcrUOSAqhbMhGDB6iq0FR9T2zuc=",
+  "Hash": "7bswAEitOeH6K22rCIvwtO3vM7yLOj7eaWNy+UrSRWs=",
   "Source": "MedManager",
   "BasePath": "_content/MedManager",
   "Mode": "Default",
@@ -2694,6 +2694,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\pdfs\\Ordonnance_Pons Nico_1.pdf"
+    },
+    {
+      "Identity": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\pdfs\\Ordonnance_Simon Veil_8.pdf",
+      "SourceId": "MedManager",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\",
+      "BasePath": "_content/MedManager",
+      "RelativePath": "pdfs/Ordonnance_Simon Veil_8.pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\pdfs\\Ordonnance_Simon Veil_8.pdf"
     },
     {
       "Identity": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\pdfs\\Ordonnance_Tom Select_10.pdf",
