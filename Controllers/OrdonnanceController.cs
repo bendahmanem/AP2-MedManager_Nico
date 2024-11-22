@@ -82,7 +82,7 @@ namespace MedManager.Controllers
 			{
 				_logger.LogError(dbEx, logMessage, id);
 				TempData["ErrorMessage"] = errorMessage;
-				return RedirectToAction("Error");
+				return RedirectToAction("Index", "Error");
 			}
 
 			_logger.LogError(ex, "Une erreur inattendue s'est produite.");

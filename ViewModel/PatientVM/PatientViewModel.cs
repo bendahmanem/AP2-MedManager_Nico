@@ -37,7 +37,6 @@ namespace MedManager.ViewModel.PatientVM
 
         [Display(Name = "Numéro de sécurité sociale")]
         [Required(ErrorMessage = "Le numéro de sécurité sociale est obligatoire")]
-        //[RegularExpression("^[1-3][0-9]{2}(0[1-9]|1[0-2])[0-9]{2}[0-9]{3}[0-9]{3}[0-9]{2}$", ErrorMessage = "Le numéro de sécurité sociale n'est pas valide.")]
         public string? NuméroSécuritéSociale { get; set; }
 
         [Required(ErrorMessage = "La ville est obligatoire")]

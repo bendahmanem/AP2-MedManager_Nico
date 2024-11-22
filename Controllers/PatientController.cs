@@ -45,7 +45,7 @@ namespace MedManager.Controllers
 
                 if (medecin == null)
                 {
-                    return RedirectToAction("Error");
+                    return RedirectToAction("Index", "Error");
                 }
 
                 var patients = medecin.Patients.AsQueryable();
@@ -83,12 +83,12 @@ namespace MedManager.Controllers
             catch (DbException ex)
             {
                 _logger.LogError(ex, "Une erreur s'est produite lors de la récupération des données.");
-                return RedirectToAction("Error");
+                return RedirectToAction("Index", "Error");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Une erreur inattendue est survenue.");
-                return RedirectToAction("Error");
+                return RedirectToAction("Index", "Error");
             }
         }
 
@@ -108,12 +108,12 @@ namespace MedManager.Controllers
             catch (DbException ex)
             {
                 _logger.LogError(ex, "Une erreur s'est produite lors de la récupération des allergies ou des antécédents.");
-                return RedirectToAction("Error");
+                return RedirectToAction("Index", "Error");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Une erreur inattendue est survenue.");
-                return RedirectToAction("Error");
+                return RedirectToAction("Index", "Error");
             }
         }
 
@@ -208,13 +208,13 @@ namespace MedManager.Controllers
             {
                 _logger.LogError(ex, "Une erreur s'est produite lors de la mise à jour de la base de données.");
                 TempData["ErrorMessage"] = "Une erreur s'est produite lors de l'ajout du patient. Veuillez réessayer.";
-                return RedirectToAction("Ajouter");
+                return RedirectToAction("Index", "Error");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Une erreur inattendue est survenue lors de l'ajout du patient.");
                 TempData["ErrorMessage"] = "Une erreur inattendue est survenue. Veuillez réessayer.";
-                return RedirectToAction("Ajouter");
+                return RedirectToAction("Index", "Error");
             }
         }
 
@@ -237,12 +237,12 @@ namespace MedManager.Controllers
             catch (DbUpdateException ex)
             {
                 _logger.LogError(ex, "Une erreur s'est produite lors de la suppression du patient.");
-                return RedirectToAction("Index", "Patient");
+                return RedirectToAction("Index", "Error");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Une erreur inattendue est survenue lors de la suppression du patient.");
-                return RedirectToAction("Index", "Patient");
+                return RedirectToAction("Index", "Error");
             }
         }
 
@@ -282,12 +282,12 @@ namespace MedManager.Controllers
             catch (DbUpdateException ex)
             {
                 _logger.LogError(ex, "Une erreur s'est produite lors de la récupération des informations du patient.");
-                return RedirectToAction("Index", "Patient");
+                return RedirectToAction("Index", "Error");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Une erreur inattendue est survenue lors de la récupération des informations du patient.");
-                return RedirectToAction("Index", "Patient");
+                return RedirectToAction("Index", "Error");
             }
         }
 
@@ -357,12 +357,12 @@ namespace MedManager.Controllers
             catch (DbUpdateException ex)
             {
                 _logger.LogError(ex, "Une erreur s'est produite lors de la mise à jour des informations du patient.");
-                return View(viewModel);
+                return RedirectToAction("Index", "Error");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Une erreur inattendue est survenue lors de la mise à jour des informations du patient.");
-                return View(viewModel);
+                return RedirectToAction("Index", "Error");
             }
         }
 
@@ -390,12 +390,12 @@ namespace MedManager.Controllers
             catch (DbException ex)
             {
                 _logger.LogError(ex, "Une erreur s'est produite lors de la récupération des détails du patient.");
-                return RedirectToAction("Index", "Patient");
+                return RedirectToAction("Index", "Error");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Une erreur inattendue est survenue lors de la récupération des détails du patient.");
-                return RedirectToAction("Index", "Patient");
+                return RedirectToAction("Index", "Error");
             }
         }
 
@@ -415,12 +415,12 @@ namespace MedManager.Controllers
             catch (DbException ex)
             {
                 _logger.LogError(ex, "Une erreur s'est produite lors de la récupération de la photo du patient.");
-                return RedirectToAction("Error");
+                return RedirectToAction("Index", "Error");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Une erreur inattendue est survenue lors de la récupération de la photo du patient.");
-                return RedirectToAction("Error");
+                return RedirectToAction("Index", "Error");
             }
         }
 

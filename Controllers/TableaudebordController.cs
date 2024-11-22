@@ -194,7 +194,6 @@ public class TableaudebordController : Controller
 		if (id != null)
 		{
 			var patients = await _dbContext.Patients
-							.Include(p => p.Antecedents)
 							.Where(p => p.MedecinID == id)
 							.ToListAsync();
 			var ageCategoriesOrder = new Dictionary<string, int>

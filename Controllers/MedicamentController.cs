@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
 using Microsoft.AspNetCore.Authorization;
 using iText.Commons.Actions.Contexts;
-using MedManager.ViewModel;
+using MedManager.ViewModel.MedicamentViewModel;
 namespace MedManager.Controllers
 {
     [Authorize]
@@ -67,7 +67,6 @@ namespace MedManager.Controllers
 
 			ViewData["TriActuel"] = OrdreTri;
 			ViewData["FiltreActuel"] = Filtre;
-			//ViewData["FiltreCateActuel"] = FiltreCate;
 			return View(viewModel);
 		}
 
@@ -108,12 +107,12 @@ namespace MedManager.Controllers
 			catch (DbException ex)
 			{
 				_logger.LogError(ex, "Une erreur est apparue pendant la modification du médicament.");
-				return RedirectToAction("Error");
+				return RedirectToAction("Index", "Error");
 			}
 			catch (Exception ex)
 			{
 				_logger.LogError(ex, "Une erreur innatendue est survenue.");
-				return RedirectToAction("Error");
+				return RedirectToAction("Index", "Error");
 			}
 		}
 
@@ -134,12 +133,12 @@ namespace MedManager.Controllers
 			catch (DbException ex)
 			{
 				_logger.LogError(ex, "Une erreur est apparue pendant la suppression du médicament.");
-				return RedirectToAction("Error");
+				return RedirectToAction("Index", "Error");
 			}
 			catch (Exception ex)
 			{
 				_logger.LogError(ex, "Une erreur innatendue est survenue.");
-				return RedirectToAction("Error");
+				return RedirectToAction("Index", "Error");
 			}
 		}
 		[HttpGet]
@@ -166,12 +165,12 @@ namespace MedManager.Controllers
 			catch (DbException ex)
 			{
 				_logger.LogError(ex, "Une erreur est apparue pendant l'ajout du médicament.");
-				return RedirectToAction("Error");
+				return RedirectToAction("Index", "Error");
 			}
 			catch (Exception ex)
 			{
 				_logger.LogError(ex, "Une erreur innatendue est survenue.");
-				return RedirectToAction("Error");
+				return RedirectToAction("Index", "Error");
 			}
 		}
 
@@ -188,12 +187,12 @@ namespace MedManager.Controllers
 			catch (DbException ex)
 			{
 				_logger.LogError(ex, "Une erreur est apparue pendant la récupération des données du médicament.");
-				return RedirectToAction("Error");
+				return RedirectToAction("Index", "Error");
 			}
 			catch (Exception ex)
 			{
 				_logger.LogError(ex, "Une erreur innatendue est survenue.");
-				return RedirectToAction("Error");
+				return RedirectToAction("Index", "Error");
 			}
 		}
 	}

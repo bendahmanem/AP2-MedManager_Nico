@@ -65,8 +65,8 @@ namespace MedManager.Controllers
 			catch (Exception ex)
 			{
 				_logger.LogError(ex, "Erreur lors de la tentative de déconnexion.");
-				throw; // Optionnel, peut être géré si vous souhaitez afficher une page d'erreur.
-			}
+                return RedirectToAction("Index", "Error");
+            }
 
 			return RedirectToAction("Index", "Accueil");
 		}
@@ -117,8 +117,8 @@ namespace MedManager.Controllers
 				catch (Exception ex)
 				{
 					_logger.LogError(ex, "Erreur lors de la tentative d'inscription pour l'utilisateur {NomUtilisateur}.", modele.NomUtilisateur);
-					ModelState.AddModelError("", "Une erreur est survenue lors de la tentative d'inscription.");
-				}
+                    return RedirectToAction("Index", "Error");
+                }
 			}
 			else
 			{

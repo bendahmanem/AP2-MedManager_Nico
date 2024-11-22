@@ -145,12 +145,12 @@ namespace MedManager.Controllers
             catch (DbException ex)
             {
                 _logger.LogError(ex, "Une erreur est apparue pendant l'ajout de la contre-indication'.");
-                return RedirectToAction("Error");
+                return RedirectToAction("Index", "Error");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Une erreur innatendue est survenue.");
-                return RedirectToAction("Error");
+                return RedirectToAction("Index", "Error");
             }
         }
 
@@ -199,12 +199,12 @@ namespace MedManager.Controllers
             catch (DbException ex)
             {
                 _logger.LogError(ex, "Une erreur est apparue pendant la modification de la contre-indication.");
-                return RedirectToAction("Error");
+                return RedirectToAction("Index", "Error");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Une erreur innatendue est survenue.");
-                return RedirectToAction("Error");
+                return RedirectToAction("Index", "Error");
             }
         }
 
@@ -270,12 +270,12 @@ namespace MedManager.Controllers
             catch (DbException ex)
             {
                 _logger.LogError(ex, "Une erreur est apparue pendant la modification de la contre-indication.");
-                return RedirectToAction("Error");
+                return RedirectToAction("Index", "Error");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Une erreur innatendue est survenue.");
-                return RedirectToAction("Error");
+                return RedirectToAction("Index", "Error");
             }
         }
 
@@ -308,13 +308,13 @@ namespace MedManager.Controllers
             {
                 _logger.LogError(ex, $"Erreur de suppression pour {type} avec ID {id}.");
                 TempData["MessageErreur"] = "Erreur de suppression. Veuillez réessayer.";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Error");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erreur inattendue lors de la suppression.");
                 TempData["MessageErreur"] = "Une erreur inattendue est survenue.";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Error");
             }
         }
 
@@ -365,13 +365,13 @@ namespace MedManager.Controllers
             {
                 _logger.LogError(ex, "Erreur lors de la récupération des données.");
                 TempData["MessageErreur"] = "Erreur de suppression. Veuillez réessayer.";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Error");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erreur inattendue lors de la récupération des données.");
                 TempData["MessageErreur"] = "Une erreur inattendue est survenue.";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Error");
             }
 
         }
