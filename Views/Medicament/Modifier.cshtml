@@ -10,7 +10,8 @@
             <h2>Modifier un Médicament</h2>
         </div>
         <div class="card-body">
-            <form asp-action="Editer" asp-controller="Medicament" method="post">
+            <form asp-action="Modifier" asp-controller="Medicament" method="post">
+                <input type="hidden" asp-for="MedicamentId" />
                 <div class="row">
                     <div class="mb-3 col-md-6">
                         <label asp-for="Nom" class="form-label"></label>

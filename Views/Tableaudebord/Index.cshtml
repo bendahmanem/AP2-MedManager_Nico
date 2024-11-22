@@ -284,7 +284,6 @@
 				}
 			};
 
-			// Age Chart (Bar chart)
 			new Chart(document.getElementById('ageChart'), {
 				type: 'bar',
 				data: {
@@ -298,6 +297,9 @@
 					...commonOptions,
 					plugins: {
 						...commonOptions.plugins,
+						legend: {
+							display: false 
+						},
 						datalabels: {
 							formatter: (value) => value,
 							anchor: 'end',
@@ -307,13 +309,11 @@
 				}
 			});
 
-			// Configuration commune pour les donut charts
 			const donutOptions = {
 				...commonOptions,
 				cutout: '60%'
 			};
 
-			// Medicament Chart
 			new Chart(document.getElementById('medicamentChart'), {
 				type: 'doughnut',
 				data: {
@@ -326,7 +326,6 @@
 				options: donutOptions
 			});
 
-			// Allergie Chart
 			new Chart(document.getElementById('allergieChart'), {
 				type: 'doughnut',
 				data: {
@@ -339,7 +338,6 @@
 				options: donutOptions
 			});
 
-			// Antecedent Chart
 			new Chart(document.getElementById('antecedentChart'), {
 				type: 'doughnut',
 				data: {
