@@ -26,36 +26,45 @@ public class TableaudebordController : Controller
 	}
 
 
-	public async Task<IActionResult> Index()
-	{
-		var medocs = await ObtenirMedicamentLesPlusUtilises();
-		var frequenceAllergies = await ObtenirAllergiesLesPlusFrequentes();
-		var frequenceAntecedents = await ObtenirAntecedentsLesPlusFrequentes();
-		var repartitionAge = await ObtenirRepartitionAge();
-		var CinqDerniersPatient = await ObtenirCinqDerniersPatients();
-		var CinqDernieresOrdo = await ObtenirCinqDerniersOrdonnances();
-		var TotalPatient = await ObtenirNombrePatient();
-		var TotalOrdo = await ObtenirNombreOrdonnance();
-		var OrdoEnCours = await ObtenirOrdonnanceEncours();
+    public async Task<IActionResult> Index()
+    {
+        try
+        {
+            var medocs = await ObtenirMedicamentLesPlusUtilises();
+            var frequenceAllergies = await ObtenirAllergiesLesPlusFrequentes();
+            var frequenceAntecedents = await ObtenirAntecedentsLesPlusFrequentes();
+            var repartitionAge = await ObtenirRepartitionAge();
+            var CinqDerniersPatient = await ObtenirCinqDerniersPatients();
+            var CinqDernieresOrdo = await ObtenirCinqDerniersOrdonnances();
+            var TotalPatient = await ObtenirNombrePatient();
+            var TotalOrdo = await ObtenirNombreOrdonnance();
+            var OrdoEnCours = await ObtenirOrdonnanceEncours();
 
-		var model = new TableauDeBordViewModel
-		{
-			FrequenceAllergies = frequenceAllergies,
-			FrequenceAntecedents = frequenceAntecedents,
-			RepartitionAges = repartitionAge,
-			MedicamentPlusUtilises = medocs,
-			CinqDerniersOrdo = CinqDernieresOrdo,
-			CinqDerniersPatient = CinqDerniersPatient,
-			TotalOrdonnance = TotalOrdo,
-			TotalPatient = TotalPatient,
-			OrdonnanceEnCours = OrdoEnCours
-		};
-		return View(model);
-	}
+            var model = new TableauDeBordViewModel
+            {
+                FrequenceAllergies = frequenceAllergies,
+                FrequenceAntecedents = frequenceAntecedents,
+                RepartitionAges = repartitionAge,
+                MedicamentPlusUtilises = medocs,
+                CinqDerniersOrdo = CinqDernieresOrdo,
+                CinqDerniersPatient = CinqDerniersPatient,
+                TotalOrdonnance = TotalOrdo,
+                TotalPatient = TotalPatient,
+                OrdonnanceEnCours = OrdoEnCours
+            };
+
+            return View(model);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Erreur lors du chargement du tableau de bord");
+            return RedirectToAction("Index", "Error");
+        }
+    }
 
 
 
-	private async Task<string?> ObtenirIdMedecin()
+    private async Task<string?> ObtenirIdMedecin()
 	{
 		var user = await _userManager.GetUserAsync(User);
 		if (user != null)

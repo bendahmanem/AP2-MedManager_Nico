@@ -21,57 +21,64 @@ namespace MedManager.Controllers
 			_logger = logger;
 		}
 
-		public async Task<IActionResult> Index(string Filtre, string OrdreTri, MedicamentViewModel model, string FiltreCate)
-		{
-			OrdreTri ??= "nom_asc";
-			Filtre ??= "";
-			model.FiltreCateActuel ??= "";
+        public async Task<IActionResult> Index(string Filtre, string OrdreTri, MedicamentViewModel model, string FiltreCate)
+        {
+            try
+            {
+                OrdreTri ??= "nom_asc";
+                Filtre ??= "";
+                model.FiltreCateActuel ??= "";
 
-			if (string.IsNullOrEmpty(model.FiltreCateActuel) && !string.IsNullOrEmpty(FiltreCate))
-			{
-				model.FiltreCateActuel = FiltreCate;
-			}
+                if (string.IsNullOrEmpty(model.FiltreCateActuel) && !string.IsNullOrEmpty(FiltreCate))
+                {
+                    model.FiltreCateActuel = FiltreCate;
+                }
 
-			List<Medicament> medicaments = await _dbContext.Medicaments.ToListAsync();
+                List<Medicament> medicaments = await _dbContext.Medicaments.ToListAsync();
 
-			if (!string.IsNullOrEmpty(Filtre))
-			{
-				medicaments = medicaments
-					.Where(m => m.Nom.ToUpper().Contains(Filtre.ToUpper()))
-					.ToList();
-			}
+                if (!string.IsNullOrEmpty(Filtre))
+                {
+                    medicaments = medicaments
+                        .Where(m => m.Nom.ToUpper().Contains(Filtre.ToUpper()))
+                        .ToList();
+                }
 
-			if (!string.IsNullOrEmpty(model.FiltreCateActuel))
-			{
-				medicaments = medicaments
-					.Where(m => m.Categorie.ToString() == model.FiltreCateActuel)
-					.ToList();
-			}
+                if (!string.IsNullOrEmpty(model.FiltreCateActuel))
+                {
+                    medicaments = medicaments
+                        .Where(m => m.Categorie.ToString() == model.FiltreCateActuel)
+                        .ToList();
+                }
+
+                if (OrdreTri == "nom_desc")
+                {
+                    medicaments = medicaments.OrderByDescending(m => m.Nom).ToList();
+                }
+                else
+                {
+                    medicaments = medicaments.OrderBy(m => m.Nom).ToList();
+                }
+
+                var viewModel = new MedicamentViewModel
+                {
+                    Medicaments = medicaments,
+                    FiltreCateActuel = model.FiltreCateActuel
+                };
+
+                ViewData["TriActuel"] = OrdreTri;
+                ViewData["FiltreActuel"] = Filtre;
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erreur lors de l'affichage de la liste des médicaments");
+                return RedirectToAction("Index", "Error");
+            }
+        }
 
 
-			if (OrdreTri == "nom_desc")
-			{
-				medicaments = medicaments.OrderByDescending(m => m.Nom).ToList();
-			}
-			else
-			{
-				medicaments = medicaments.OrderBy(m => m.Nom).ToList();
-			}
 
-			var viewModel = new MedicamentViewModel
-			{
-				Medicaments = medicaments,
-				FiltreCateActuel = model.FiltreCateActuel
-			};
-
-
-			ViewData["TriActuel"] = OrdreTri;
-			ViewData["FiltreActuel"] = Filtre;
-			return View(viewModel);
-		}
-
-
-		[HttpGet]
+        [HttpGet]
 		public async Task<IActionResult> Modifier(int id)
 		{
 
