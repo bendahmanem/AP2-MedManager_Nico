@@ -3,9 +3,15 @@ using MedManager.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+Log.Logger = new LoggerConfiguration()
+	.WriteTo.Console() 
+	.WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)  
+	.CreateLogger();
 
 builder.Services.AddControllersWithViews();
 
@@ -35,12 +41,18 @@ builder.Services.ConfigureApplicationCookie(options =>
     
 });
 
+builder.Services.AddLogging(loggingBuilder =>
+{
+	loggingBuilder.AddSerilog(); 
+});
+
+
 
 
 var app = builder.Build();
 
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
 	app.UseDeveloperExceptionPage();

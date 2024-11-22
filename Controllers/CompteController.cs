@@ -10,9 +10,9 @@ namespace MedManager.Controllers
 	{
 		private readonly SignInManager<Medecin> _gestionConnexion;
 		private readonly UserManager<Medecin> _gestionUtilisateurs;
-		private readonly ILogger<Medecin> _logger;
+		private readonly ILogger<CompteController> _logger;
 
-		public CompteController(SignInManager<Medecin> gestionConnexion, UserManager<Medecin> gestionUtilisateurs, ILogger<Medecin> logger)
+		public CompteController(SignInManager<Medecin> gestionConnexion, UserManager<Medecin> gestionUtilisateurs, ILogger<CompteController> logger)
 		{
 			_gestionConnexion = gestionConnexion;
 			_gestionUtilisateurs = gestionUtilisateurs;

@@ -12,9 +12,9 @@ namespace MedManager.Controllers
     public class ContreIndicationsController : Controller
     {
         private readonly ApplicationDbContext _dbContext;
-        private readonly ILogger<Patient> _logger;
+        private readonly ILogger<ContreIndicationsController> _logger;
 
-        public ContreIndicationsController(ApplicationDbContext dbContext, ILogger<Patient> logger)
+        public ContreIndicationsController(ApplicationDbContext dbContext, ILogger<ContreIndicationsController> logger)
         {
             _dbContext = dbContext;
             _logger = logger;

@@ -13,8 +13,8 @@ namespace MedManager.Controllers
 	{
 		private readonly ApplicationDbContext _dbContext;
 		private readonly UserManager<Medecin> _userManager;
-		private readonly ILogger<Patient> _logger;
-		public ParametresController(ApplicationDbContext dbContext, UserManager<Medecin> userManager, ILogger<Patient> logger)
+		private readonly ILogger<ParametresController> _logger;
+		public ParametresController(ApplicationDbContext dbContext, UserManager<Medecin> userManager, ILogger<ParametresController> logger)
 		{
 			_dbContext = dbContext;
 			_userManager = userManager;

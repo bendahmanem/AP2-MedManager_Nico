@@ -12,13 +12,13 @@ using Microsoft.AspNetCore.Authorization;
 namespace MedManager.Controllers;
 
 [Authorize]
-public class Tableaudebord : Controller
+public class TableaudebordController : Controller
 {
-	private readonly ILogger<Medecin> _logger;
+	private readonly ILogger<TableaudebordController> _logger;
 	private readonly UserManager<Medecin> _userManager;
 	private readonly ApplicationDbContext _dbContext;
 
-	public Tableaudebord(ILogger<Medecin> logger, UserManager<Medecin> userManager, ApplicationDbContext dbContext)
+	public TableaudebordController(ILogger<TableaudebordController> logger, UserManager<Medecin> userManager, ApplicationDbContext dbContext)
 	{
 		_logger = logger;
 		_userManager = userManager;

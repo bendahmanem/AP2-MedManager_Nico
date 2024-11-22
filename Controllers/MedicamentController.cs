@@ -12,10 +12,10 @@ namespace MedManager.Controllers
     [Authorize]
     public class MedicamentController : Controller
 	{
-		private readonly ILogger<Medecin> _logger;
+		private readonly ILogger<MedicamentController> _logger;
 		private readonly ApplicationDbContext _dbContext;
 
-		public MedicamentController(ILogger<Medecin> logger, ApplicationDbContext dbContext)
+		public MedicamentController(ILogger<MedicamentController> logger, ApplicationDbContext dbContext)
 		{
 			_dbContext = dbContext;
 			_logger = logger;
