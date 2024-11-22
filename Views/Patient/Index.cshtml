@@ -144,18 +144,18 @@
 		}
 	</div>
 
-	<div class="d-flex justify-content-center mt-4 pagination-container">
+	<div class="d-flex justify-content-center my-4 pagination-container">
 		@Html.PagedListPager(
-			Model.Patients,
-			page => Url.Action("Index", new { page, Filtre = ViewData["FiltreActuel"], SortBy = ViewData["ActiveSort"], sortDir = ViewData["SortDir"] }),
-			new PagedListRenderOptions
-			{
-				UlElementClasses = new[] { "pagination", "justify-content-center" }, 
-				LiElementClasses = new[] { "page-item" }, 
-				PageClasses = new[] { "page-link" }, 
-				ActiveLiElementClass = "active" 
-			}
-		)
+				Model.Patients,
+				page => Url.Action("Index", new { page, Filtre = ViewData["FiltreActuel"], SortBy = ViewData["ActiveSort"], sortDir = ViewData["SortDir"] }),
+				new PagedListRenderOptions
+	{
+		UlElementClasses = new[] { "pagination", "justify-content-center" },
+		LiElementClasses = new[] { "page-item" },
+		PageClasses = new[] { "page-link" },
+		ActiveLiElementClass = "active"
+	}
+				)
 	</div>
 }
 else if (Model.Patients != null && !Model.Patients.Any() && string.IsNullOrEmpty(ViewData["FiltreActuel"]?.ToString()))

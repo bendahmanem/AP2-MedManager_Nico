@@ -129,9 +129,7 @@ footer a:hover {
 }
 
 .pagination-container {
-    position: absolute;
-    bottom: 35px; 
-    width: 70%;
+    width: 100%;
 }
 
 /*.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {

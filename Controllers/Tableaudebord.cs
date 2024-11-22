@@ -97,22 +97,23 @@ public class Tableaudebord : Controller
 		return 0;
 	}
 
-	private async Task<List<Ordonnance>> ObtenirOrdonnanceEncours()
-	{
-		var id = await ObtenirIdMedecin();
-		if (id != null)
-		{
+    private async Task<List<Ordonnance>> ObtenirOrdonnanceEncours()
+    {
+        var id = await ObtenirIdMedecin();
+        if (id != null)
+        {
+            var today = DateTime.Now.Date;
+            var ordonnances = await _dbContext.Ordonnances
+                            .Where(o => o.DateFin.Date >= today && o.DateDebut.Date <= today && o.MedecinId == id)
+                            .ToListAsync();
+            return ordonnances;
+        }
 
-			var ordonnances = await _dbContext.Ordonnances
-							.Where(o => o.DateFin >= DateTime.Now && o.DateDebut <= DateTime.Now && o.MedecinId == id).ToListAsync();
-			return ordonnances;
-		}
-
-		return new List<Ordonnance>();
-	}
+        return new List<Ordonnance>();
+    }
 
 
-	private async Task<List<MedicamentUtilisationViewModel>> ObtenirMedicamentLesPlusUtilises()
+    private async Task<List<MedicamentUtilisationViewModel>> ObtenirMedicamentLesPlusUtilises()
 	{
 		var id = await ObtenirIdMedecin();
 

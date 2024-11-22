@@ -68,7 +68,7 @@ namespace MedManager.Controllers
 					_ => patients.OrderBy(p => p.Nom) 
 				};
 
-				int TaillePage = 9;
+				int TaillePage = 12;
 				int NombrePage = (page ?? 1);
 				var ListePagineesPatients = patients.ToPagedList(NombrePage, TaillePage);
 
