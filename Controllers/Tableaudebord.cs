@@ -201,6 +201,14 @@ public class Tableaudebord : Controller
 							.Include(p => p.Antecedents)
 							.Where(p => p.MedecinID == id)
 							.ToListAsync();
+			var ageCategoriesOrder = new Dictionary<string, int>
+		{
+			{ "0-20 ans", 1 },
+			{ "20-40 ans", 2 },
+			{ "40-60 ans", 3 },
+			{ "60-80 ans", 4 },
+			{ "80 ans et plus", 5 }
+		};
 
 			var repartition = patients
 				.GroupBy(p =>
@@ -212,8 +220,10 @@ public class Tableaudebord : Controller
 				.Select(g => new RepartitionAge
 				{
 					categorie = g.Key,
+
 					compte = g.Count()
 				})
+				.OrderBy(r => ageCategoriesOrder[r.categorie])
 				.ToList();
 
 			return repartition;
