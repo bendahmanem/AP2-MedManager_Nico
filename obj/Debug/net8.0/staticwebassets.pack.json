@@ -273,6 +273,10 @@
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
     },
     {
+      "Id": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\pdfs\\Ordonnance_Dark Vador_3.pdf",
+      "PackagePath": "staticwebassets\\pdfs\\Ordonnance_Dark Vador_3.pdf"
+    },
+    {
       "Id": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\pdfs\\Ordonnance_Hache  Marie_2.pdf",
       "PackagePath": "staticwebassets\\pdfs\\Ordonnance_Hache  Marie_2.pdf"
     },
@@ -285,12 +289,20 @@
       "PackagePath": "staticwebassets\\pdfs\\Ordonnance_Hache Marie_2.pdf"
     },
     {
+      "Id": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\pdfs\\Ordonnance_Harry Potter_6.pdf",
+      "PackagePath": "staticwebassets\\pdfs\\Ordonnance_Harry Potter_6.pdf"
+    },
+    {
       "Id": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\pdfs\\Ordonnance_Karim Benzema_14.pdf",
       "PackagePath": "staticwebassets\\pdfs\\Ordonnance_Karim Benzema_14.pdf"
     },
     {
       "Id": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\pdfs\\Ordonnance_Karim Benzema_15.pdf",
       "PackagePath": "staticwebassets\\pdfs\\Ordonnance_Karim Benzema_15.pdf"
+    },
+    {
+      "Id": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\pdfs\\Ordonnance_Karim Benzema_2.pdf",
+      "PackagePath": "staticwebassets\\pdfs\\Ordonnance_Karim Benzema_2.pdf"
     },
     {
       "Id": "C:\\Users\\ponsn\\OneDrive\\Bureau\\AP2 - MedManager\\MedManager\\wwwroot\\pdfs\\Ordonnance_Marcel Pagnol_1.pdf",

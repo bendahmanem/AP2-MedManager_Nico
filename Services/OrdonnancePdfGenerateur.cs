@@ -101,13 +101,19 @@ public class OrdonnancePdfGenerateur
 				.SetFontSize(10));
 
 
-			document.Add(new Paragraph("\n"));
+            document.Add(new Paragraph("\n"));
 
-			foreach (var medicament in ordonnance.Medicaments)
+            int dureeTraitement = (ordonnance.DateFin.Date - ordonnance.DateDebut.Date).Days + 1;
+            document.Add(new Paragraph($"Durée du traitement : {dureeTraitement} jour{(dureeTraitement > 1 ? "s" : "")}")
+                .SetFontSize(11));
+
+            document.Add(new Paragraph("\n"));
+
+            foreach (var medicament in ordonnance.Medicaments)
 			{
 				document.Add(new Paragraph($"{medicament.Nom} {medicament.Quantite} mg")
 					.SetFont(bold)
-					.SetFontSize(12));
+					.SetFontSize(11));
 
 				document.Add(new Paragraph($"{medicament.Posologie}")
 					.SetFontSize(10));
@@ -119,7 +125,8 @@ public class OrdonnancePdfGenerateur
 				.SetFontSize(12));
 			if(ordonnance.InfoSupplementaire != "")
 			{
-				document.Add(new Paragraph($"{ordonnance.InfoSupplementaire}"));
+				document.Add(new Paragraph($"{ordonnance.InfoSupplementaire}")
+					.SetFontSize(10));
 			}
 
 			document.Add(new Paragraph("\n\nSignature :")

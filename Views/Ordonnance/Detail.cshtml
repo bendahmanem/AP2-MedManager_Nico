@@ -2,59 +2,63 @@
 @{
 	ViewData["Title"] = "Détail de l'Ordonnance";
 }
-
-<div class="d-flex justify-content-center mt-5">
-	<div class="card shadow-sm w-75">
-		<div class="card-header text-center">
-			<h2>Détail de l'Ordonnance</h2>
-		</div>
-		<div class="card-body">
-			<h5 class="card-title text-center">Informations de l'ordonnance</h5>
-			<br />
-			<div class="row mb-3">
-				<div class="col-md-6">
-					<strong>Nom du patient :</strong> @Model.Patient?.Nom
-				</div>
-				<div class="col-md-6">
-					<strong>Prénom du patient :</strong> @Model.Patient?.Prenom
-				</div>
+<div class="row">
+	<div class="d-flex justify-content-center mt-5">
+		<div class="card shadow-sm w-75">
+			<div class="card-header text-center">
+				<h2>Détail de l'Ordonnance</h2>
 			</div>
-			<div class="row mb-3">
-				<div class="col-md-6">
-					<strong>Date de début :</strong> @Model.DateDebut.ToString("dd/MM/yyyy")
+			<div class="card-body">
+				<h5 class="card-title text-center">Informations de l'ordonnance</h5>
+				<br />
+				<div class="row mb-3">
+					<div class="col-md-6">
+						<strong>Nom du patient :</strong> @Model.Patient?.Nom
+					</div>
+					<div class="col-md-6">
+						<strong>Prénom du patient :</strong> @Model.Patient?.Prenom
+					</div>
 				</div>
-				<div class="col-md-6">
-					<strong>Date de fin :</strong> @Model.DateFin.ToString("dd/MM/yyyy")
+				<div class="row mb-3">
+					<div class="col-md-6">
+						<strong>Date de début :</strong> @Model.DateDebut.ToString("dd/MM/yyyy")
+					</div>
+					<div class="col-md-6">
+						<strong>Date de fin :</strong> @Model.DateFin.ToString("dd/MM/yyyy")
+					</div>
 				</div>
-			</div>
-			@if (!string.IsNullOrEmpty(Model.InfoSupplementaire))
-			{
-				<div class="mb-3">
-					<strong>Informations supplémentaires :</strong> @Model.InfoSupplementaire
-				</div>
-			}
-
-			<hr class="my-4">
-
-			<h5 class="card-title text-center mt-4">Médicaments</h5>
-			<ul class="list-group list-group-flush mb-3">
-				@foreach (var medicament in Model.Medicaments)
+				@if (!string.IsNullOrEmpty(Model.InfoSupplementaire))
 
 				{
-					<li class="list-group-item">
-						@medicament.Nom - Quantité : @medicament.Quantite, Posologie : @medicament.Posologie
-					</li>
+					<div class="mb-3">
+						<strong>Informations supplémentaires :</strong> @Model.InfoSupplementaire
+					</div>
 				}
-			</ul>
 
-		</div>
-		<div class="card-footer text-muted text-center">
-			Date de création : @Model.DateCreation.ToString("dd/MM/yyyy")
+				<hr class="my-4">
+
+				<h5 class="card-title text-center mt-4">Médicaments</h5>
+				<ul class="list-group list-group-flush mb-3">
+					@foreach (var medicament in Model.Medicaments)
+
+
+
+					{
+						<li class="list-group-item">
+							@medicament.Nom - Quantité : @medicament.Quantite, Posologie : @medicament.Posologie
+						</li>
+					}
+				</ul>
+
+			</div>
+			<div class="card-footer text-muted text-center">
+				Date de création : @Model.DateCreation.ToString("dd/MM/yyyy")
+			</div>
 		</div>
 	</div>
-</div>
-<div class="mt-3 d-flex justify-content-start" style="width: 75%; margin: 0 auto;">
-	<a asp-action="Index" class="btn btn-outline-secondary">
-		<i class="bi bi-arrow-return-left"> Retour</i>
-	</a>
+	<div class="container mt-3 d-flex justify-content-start" style="margin-left:162px">
+		<button type="button" class="btn btn-outline-secondary" onclick="history.back()">
+			<i class="bi bi-arrow-return-left"> Retour</i>
+		</button>
+	</div>
 </div>

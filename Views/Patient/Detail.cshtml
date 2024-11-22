@@ -4,7 +4,6 @@
 }
 
 <div class="container mt-4">
-    <!-- Carte des informations générales -->
     <div class="card shadow-sm mb-4">
         <div class="card-header text-center">
             <h4>Informations Générales</h4>
@@ -19,7 +18,6 @@
         </div>
     </div>
 
-    <!-- Navigation des sections médicales -->
     <div class="text-center mb-3">
         <div class="btn-group" role="group" aria-label="Navigation historique médical">
             <button type="button" class="btn btn-outline-primary" onclick="showSection('ordonnances')">Ordonnances</button>
@@ -28,20 +26,31 @@
         </div>
     </div>
 
-    <!-- Sections médicales -->
     <div id="ordonnances" class="medical-section">
         <h4 class="mb-3 text-center">Ordonnances</h4>
         @if (Model.Ordonnances.Any())
         {
             <div class="row">
                 @foreach (var ordonnance in Model.Ordonnances)
+
                 {
                     <div class="col-md-4 mb-4">
-                        <div class="card shadow-sm">
+                        <div class="card shadow-lg border-0 rounded-3">
                             <div class="card-body">
-                                <h5 class="card-title">Ordonnance du @ordonnance.DateDebut.ToShortDateString()</h5>
-                                <p><strong>Médicaments :</strong> @string.Join(", ", ordonnance.Medicaments.Select(m => m.Nom))</p>
-                                <p><strong>Info supplémentaire :</strong> @ordonnance.InfoSupplementaire</p>
+                                <h5 class="card-title text-center">Ordonnance du @ordonnance.DateDebut.ToShortDateString() au @ordonnance.DateFin.ToShortDateString() </h5>
+                                <p class="text-center"><strong>Médicaments :</strong> @string.Join(", ", ordonnance.Medicaments.Select(m => m.Nom))</p>
+                                <div class="d-flex justify-content-center mt-3">
+                                    <a asp-action="Detail" asp-controller="Ordonnance" asp-route-id="@ordonnance.OrdonnanceId"
+                                       class="btn btn-outline-secondary m-1"
+                                       data-bs-toggle="tooltip" data-bs-placement="bottom" title="Voir les détails">
+                                        <i class="bi bi-eye"></i> 
+                                    </a>
+                                    <a asp-action="Edit" asp-controller="Ordonnance" asp-route-id="@ordonnance.OrdonnanceId"
+                                       class="btn btn-outline-secondary m-1"
+                                       data-bs-toggle="tooltip" data-bs-placement="bottom" title="Éditer l'ordonnance">
+                                        <i class="bi bi-pencil-square"></i> 
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -101,9 +110,9 @@
     </div>
 
     <div class="mt-3 d-flex justify-content-start">
-        <a asp-action="Index" class="btn btn-outline-secondary">
+        <button type="button" class="btn btn-outline-secondary" onclick="history.back()">
             <i class="bi bi-arrow-return-left"> Retour</i>
-        </a>
+        </button>
     </div>
 </div>
 
