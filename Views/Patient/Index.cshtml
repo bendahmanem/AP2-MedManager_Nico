@@ -27,15 +27,15 @@
 
 			<div class="btn-group" role="group">
 				<a href="@Url.Action("Index", new { Filtre = ViewData["FiltreActuel"], sortBy = "nom", sortDir = ViewData["SortDir"]?.ToString() == "asc" ? "desc" : "asc" })"
-				   class="btn btn-outline-primary @(ViewData["ActiveSort"]?.ToString() == "nom" ? "active" : "")">
+				   class="btn btn-outline-primary @(ViewData["ActiveSort"]?.ToString() == "nom" ? "active" : "")" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Trier par nom">
 					Nom @(ViewData["ActiveSort"]?.ToString() == "nom" ? (ViewData["SortDir"]?.ToString() == "asc" ? "▲" : "▼") : "")
 				</a>
 				<a href="@Url.Action("Index", new { Filtre = ViewData["FiltreActuel"], sortBy = "prenom", sortDir = ViewData["SortDir"]?.ToString() == "asc" ? "desc" : "asc" })"
-				   class="btn btn-outline-primary @(ViewData["ActiveSort"]?.ToString() == "prenom" ? "active" : "")">
+				   class="btn btn-outline-primary @(ViewData["ActiveSort"]?.ToString() == "prenom" ? "active" : "")" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Trier par prénom">
 					Prénom @(ViewData["ActiveSort"]?.ToString() == "prenom" ? (ViewData["SortDir"]?.ToString() == "asc" ? "▲" : "▼") : "")
 				</a>
 				<a href="@Url.Action("Index", new {Filtre = ViewData["FiltreActuel"], sortBy = "age", sortDir = ViewData["SortDir"]?.ToString() == "asc" ? "desc" : "asc" })"
-				   class="btn btn-outline-primary @(ViewData["ActiveSort"]?.ToString() == "age" ? "active" : "")">
+				   class="btn btn-outline-primary @(ViewData["ActiveSort"]?.ToString() == "age" ? "active" : "")" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Trier par âge">
 					Âge @(ViewData["ActiveSort"]?.ToString() == "age" ? (ViewData["SortDir"]?.ToString() == "asc" ? "▲" : "▼") : "")
 				</a>
 			</div>
