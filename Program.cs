@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,17 +38,22 @@ builder.Services.AddIdentity<Medecin, IdentityRole>(options =>
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.LoginPath = "/Compte/Connexion";
-    options.AccessDeniedPath = "/Compte/Connexion";
-    
+	options.LoginPath = "/Compte/Connexion";
+	options.AccessDeniedPath = "/Compte/Connexion";
+
 });
 
 builder.Services.AddLogging(loggingBuilder =>
 {
-	loggingBuilder.AddSerilog(); 
+	loggingBuilder.AddSerilog();
 });
 
 var app = builder.Build();
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+	ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
 
 if (app.Environment.IsDevelopment())
 {
@@ -62,8 +68,10 @@ else
 }
 
 
-
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+	app.UseHttpsRedirection();
+}
 app.UseStaticFiles();
 app.UseAuthentication();
 
